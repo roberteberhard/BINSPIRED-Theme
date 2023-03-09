@@ -1,0 +1,208 @@
+<!doctype html>
+<html class='no-js' lang='{{ request.locale.iso_code }}'>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta
+      name='viewport'
+      content='width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover'
+    >
+    <meta name='theme-color' content='#171717'>
+    <meta name='facebook-domain-verification' content='x35lv28wtkvbei7xrttsudgv9eggm2'>
+    <link rel='canonical' href='{{ canonical_url }}'>
+
+    {%- if settings.favicon != blank -%}
+      <link rel='icon' type='image/png' href='{{ settings.favicon | image_url: '32x32' }}'>
+    {%- endif -%}
+
+    <meta name='apple-mobile-web-app-capable' content='yes'>
+    <meta name='apple-mobile-web-app-status-bar-style' content='black'>
+    <link rel='mask-icon' href='{{ 'mask-icon.svg' | asset_url }}' color='#171717'>
+    <link rel='shortcut icon' type='image/x-icon' href='{{ 'favicon.ico' | asset_url }}'>
+    <link rel='apple-touch-icon' sizes='152x152' href='{{ 'apple-touch-icon-152x152.png' | asset_url }}'>
+    <link rel='apple-touch-icon' sizes='114x114' href='{{ 'apple-touch-icon-114x114.png' | asset_url }}'>
+    <link rel='apple-touch-icon' sizes='120x120' href='{{ 'apple-touch-icon-120x120.png' | asset_url }}'>
+    <link rel='apple-touch-icon' sizes='144x144' href='{{ 'apple-touch-icon-144x144.png' | asset_url }}'>
+    <link rel='apple-touch-icon' sizes='72x72' href='{{ 'apple-touch-icon-72x72.png' | asset_url }}'>
+    <link rel='apple-touch-icon' sizes='57x57' href='{{ 'apple-touch-icon-57x57.png' | asset_url }}'>
+    <link rel='apple-touch-startup-image' href='apple-touch-startup-image.png'>
+    <link name='msapplication-TitleColor' content='#171717'>
+    <link name='msapplication-TitleImage' content='{{ 'mstile-144x144.png' | asset_url }}'>
+    <link name='msapplication-square70x70logo' content='{{ 'mstile-70x70.png' | asset_url }}'>
+    <link name='msapplication-square150x150logo' content='{{ 'mstile-150x150.png' | asset_url }}'>
+    <link name='msapplication-wide310x150logo' content='{{ 'mstile-310x150.png' | asset_url }}'>
+    <link name='msapplication-square310x310logo' content='{{ 'mstile-310x310.png' | asset_url }}'>
+
+    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
+      <link rel='preconnect' href='https://fonts.shopifycdn.com' crossorigin>
+    {%- endunless -%}
+
+    <title>
+      {{ page_title }}
+    </title>
+
+    {% if page_description %}
+      <meta name='description' content='{{ page_description | escape }}'>
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
+    <script src='{{ 'axios.js' | asset_url }}' defer></script>
+    <script src='{{ 'vue.global.prod.min.js' | asset_url }}' defer></script>
+    <script src='{{ 'swiper-bundle.js' | asset_url }}' defer></script>
+    <script src='{{ 'layout-theme.js' | asset_url }}' defer></script>
+    <script src='{{ 'application.js' | asset_url }}' defer></script>
+
+    {{ content_for_header }}
+
+    {%- liquid
+      assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    %}
+
+    {% style %}
+      @font-face {
+        font-family: 'Inter';
+        src: url({{ 'inter400.woff2' | asset_url }}) format('woff2'), url({{ 'inter400.woff' | asset_url }}) format('woff');
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: 'Inter';
+        src: url({{ 'inter500.woff2' | asset_url }}) format('woff2'), url({{ 'inter500.woff' | asset_url }}) format('woff');
+        font-weight: 500;
+      }
+      @font-face {
+        font-family: 'Inter';
+        src: url({{ 'inter600.woff2' | asset_url }}) format('woff2'), url({{ 'inter600.woff' | asset_url }}) format('woff');
+        font-weight: 600;
+      }
+      @font-face {
+        font-family: 'GreatEscape';
+        src: url("{{ 'GreatEscape900.woff2' | asset_url }}") format('woff2');
+        font-weight: 900;
+      }
+    {% endstyle %}
+
+    {% style %}
+      {{ settings.type_body_font | font_face: font_display: 'swap' }}
+      {{ body_font_bold | font_face: font_display: 'swap' }}
+      {{ body_font_italic | font_face: font_display: 'swap' }}
+      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+      {{ settings.type_header_font | font_face: font_display: 'swap' }}
+
+      :root {
+        --font-body-family: "Inter", Sans-Serif;
+        --font-body-style: {{ settings.type_body_font.style }};
+        --font-body-weight: 400;
+
+        --font-heading-family: "Inter", Sans-Serif;
+        --font-heading-style: {{ settings.type_header_font.style }};
+        --font-heading-weight: 600;
+
+        --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
+        --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
+
+        --color-base-text: {{ settings.colors_text.red }}, {{ settings.colors_text.green }}, {{ settings.colors_text.blue }};
+        --color-base-background-1: {{ settings.colors_background_1.red }}, {{ settings.colors_background_1.green }}, {{ settings.colors_background_1.blue }};
+        --color-base-background-2: {{ settings.colors_background_2.red }}, {{ settings.colors_background_2.green }}, {{ settings.colors_background_2.blue }};
+        --color-base-background-3: {{ settings.colors_background_3.red }}, {{ settings.colors_background_3.green }}, {{ settings.colors_background_3.blue }};
+        --color-base-background-4: {{ settings.colors_background_4.red }}, {{ settings.colors_background_4.green }}, {{ settings.colors_background_4.blue }};
+        --color-base-background-5: {{ settings.colors_background_5.red }}, {{ settings.colors_background_5.green }}, {{ settings.colors_background_5.blue }};
+        --color-base-background-6: {{ settings.colors_background_6.red }}, {{ settings.colors_background_6.green }}, {{ settings.colors_background_6.blue }};
+        --color-base-solid-button-labels: {{ settings.colors_solid_button_labels.red }}, {{ settings.colors_solid_button_labels.green }}, {{ settings.colors_solid_button_labels.blue }};
+        --color-base-outline-button-labels: {{ settings.colors_outline_button_labels.red }}, {{ settings.colors_outline_button_labels.green }}, {{ settings.colors_outline_button_labels.blue }};
+        --color-base-accent-1: {{ settings.colors_accent_1.red }}, {{ settings.colors_accent_1.green }}, {{ settings.colors_accent_1.blue }};
+        --color-base-accent-2: {{ settings.colors_accent_2.red }}, {{ settings.colors_accent_2.green }}, {{ settings.colors_accent_2.blue }};
+        --color-base-accent-3: {{ settings.colors_accent_3.red }}, {{ settings.colors_accent_3.green }}, {{ settings.colors_accent_3.blue }};
+        --color-base-success: {{ settings.colors_success.red }}, {{ settings.colors_success.green }}, {{ settings.colors_success.blue }};
+        --color-base-error: {{ settings.colors_error.red }}, {{ settings.colors_error.green }}, {{ settings.colors_error.blue }};
+        --color-base-percent: {{ settings.sale_percent.red }}, {{ settings.sale_percent.green }}, {{ settings.sale_percent.blue }};
+
+        --page-width: {{ settings.page_width | divided_by: 10 }}rem;
+        --page-width-menu: {{ 2400 | divided_by: 10 }}rem;
+        --page-width-small: {{ 1180 | divided_by: 10 }}rem;
+        --page-width-margin: {% if settings.page_width == '1600' %}2{% else %}0{% endif %}rem;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+
+      html {
+        box-sizing: border-box;
+        font-size: calc(var(--font-body-scale) * 62.5%);
+        height: 100%;
+      }
+
+      body {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        grid-template-columns: 100%;
+        min-height: 100%;
+        margin: 0;
+        font-size: 1.5rem;
+        letter-spacing: 0;
+        line-height: calc(1 + 0.8 / var(--font-body-scale));
+        font-family: var(--font-body-family);
+        font-style: var(--font-body-style);
+        font-weight: var(--font-body-weight);
+      }
+
+      @media screen and (min-width: 750px) {
+        body {
+          font-size: 1.6rem;
+        }
+      }
+    {% endstyle %}
+
+    {{ 'layout-theme.css' | asset_url | stylesheet_tag }}
+    {{ 'swiper-bundle.css' | asset_url | stylesheet_tag }}
+
+    {% render 'abc-product-datalayer' %}
+  </head>
+
+  <body>
+    <div id='app' class='app'>
+      {% section 'header-bar' %}
+      {% section 'header' %}
+      {% section 'announcement' %}
+
+      <main class='main' role='main'>
+        {{ content_for_layout }}
+      </main>
+
+      {%- liquid
+        section 'message'
+        section 'footer'
+        section 'search'
+        section 'offset-left'
+        section 'offset-right'
+      %}
+    </div>
+    <!-- PF EDT START -->
+    <script type='text/javascript'>
+      {%- if content_for_header contains 'shopify-product-customizer' -%}
+          {%- if product -%}
+              {%- if product.first_available_variant -%}
+                  var pfProductId = {{ product.metafields.printful.is_synced | json }};
+                  var pfEdt = {{ shop.metafields.printful.is_edt_enabled | json }};
+                  var pfEdtTextColor = {{ shop.metafields.printful.edt_text_color | json }};
+                  var pfEdtBackgroundColor = {{ shop.metafields.printful.edt_background_color | json }};
+                  var pfEdtBorderColor = {{ shop.metafields.printful.edt_border_color | json }};
+                  var pfEdtUseDefaultStyling = {{ shop.metafields.printful.edt_default_style | json }};
+                  var pfEdtTextAlignment = {{ shop.metafields.printful.edt_text_alignment | json }};
+                  var pfEdtFlags = {
+                      US: "{{ 'US.svg' | asset_url }}",CA: "{{ 'CA.svg' | asset_url }}",ES: "{{ 'ES.svg' | asset_url }}",LV: "{{ 'LV.svg' | asset_url }}",GB: "{{ 'GB.svg' | asset_url }}",DE: "{{ 'DE.svg' | asset_url }}",FR: "{{ 'FR.svg' | asset_url }}",AU: "{{ 'AU.svg' | asset_url }}",JP: "{{ 'JP.svg' | asset_url }}",NZ: "{{ 'NZ.svg' | asset_url }}",IT: "{{ 'IT.svg' | asset_url }}",BR: "{{ 'BR.svg' | asset_url }}",KR: "{{ 'KR.svg' | asset_url }}",NL: "{{ 'NL.svg' | asset_url }}",GB: "{{ 'GB.svg' | asset_url }}",
+                  };
+              {%- else -%}
+                  var pfEdt = 0;
+              {%- endif -%}
+          {%- endif -%}
+      {%- endif -%}
+    </script>
+    <!-- PF EDT END -->
+  </body>
+</html>

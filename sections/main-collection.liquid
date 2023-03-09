@@ -1,0 +1,574 @@
+{{ 'section-main-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-collection-device-filter.css' | asset_url | stylesheet_tag }}
+{{ 'component-collection-desktop-filter.css' | asset_url | stylesheet_tag }}
+
+<div id='collection' class='collection'>
+  <nav class='collection-nav' :class="{ 'is-sticky': collectionNavStickyState }">
+    <div class='collection-nav_wrapper page-width-full' :style='collectionNavTopPosition'>
+      <template v-if='collection'>
+        <div class='collection-nav_title'>
+          {% render 'collection-breadcrumb-list' %}
+        </div>
+        <div class='collection-nav_filter'>
+          <div class='collection-nav_toggle' @click='toggleDesktopFilterState'>
+            {% render 'collection-filters-nav-toggle' %}
+          </div>
+          <div
+            class='collection-nav_dropdown'
+            @click='toggleDropDownSortByState'
+            :class='{ active: collections.sort.active }'
+          >
+            {% render 'collection-filters-nav-dropdown' %}
+          </div>
+        </div>
+      </template>
+    </div>
+  </nav>
+  <section v-if='!collection' class='desktop-loader'>
+    {% render 'collection-placeholder-desktop' %}
+  </section>
+  <section v-if='!collection' class='device-loader'>
+    {% render 'collection-placeholder-device' %}
+  </section>
+  <div class='collection-body'>
+    <div class='collection-body_wrapper page-width-full'>
+      <template v-if='deviceSize'>
+        <div class='collection-header'>
+          {% render 'collection-header-result' %}
+        </div>
+      </template>
+      <div class='collection-content'>
+        <template v-if='deviceSize'>
+          <div class='device-filter' :class="{ 'filter-hide': deviceModalState, 'fitler-show': !deviceModalState }">
+            {% render 'collection-device-filter' %}
+          </div>
+          <div class='device-modal' :class="{ 'modal-on': !deviceModalState }"></div>
+        </template>
+        <template v-if='!deviceSize'>
+          <div class='desktop-filter' :class='{ showing: filterSidebarState }' :style='sidebarMaxHeight'>
+            {% render 'collection-desktop-filter' %}
+          </div>
+        </template>
+        <div class='collection-grid'>
+          <div class='collection-results' :class="{ 'await': collections.sort.await }">
+            <template v-if='collection'>
+              <article class='product-article' v-for='product in collection.products' key='product.id'>
+                <template v-if='product.styles.length > 1'>
+                  <figure class='placeholder-gray'>
+                    <template v-if='product.image'>
+                      <img
+                        :srcset='product.image.srcset'
+                        :sizes='product.image.sizes'
+                        :src='product.image.src'
+                        class='featured-img'
+                        :width='product.image.width'
+                        :height='product.image.height'
+                        loading='lazy'
+                        :alt='product.image.alt'
+                      >
+                    </template>
+                    <template v-else>
+                      {{ 'image' | placeholder_svg_tag: 'featured-img' }}
+                    </template>
+                  </figure>
+                  <div class='product-article_info'>
+                    {% render 'collection-article-thumbs-prices',
+                      product: product,
+                      vendor: section.settings.show_vendor
+                    %}
+                  </div>
+                  <a :href='product.url' class='block-link'><span class='visually-hidden'>${ product.title }</span></a>
+                </template>
+                <template v-else>
+                  <a class='product-article_link' :href='product.url'>
+                    <figure class='placeholder-gray'>
+                      <template v-if='product.image'>
+                        <img
+                          :srcset='product.image.srcset'
+                          :sizes='product.image.sizes'
+                          :src='product.image.src'
+                          class='featured-img'
+                          :width='product.image.width'
+                          :height='product.image.height'
+                          loading='lazy'
+                          :alt='product.image.alt'
+                        >
+                      </template>
+                      <template v-else>
+                        {{ 'image' | placeholder_svg_tag: 'featured-img' }}
+                      </template>
+                    </figure>
+                    <div class='product-article_info'>
+                      {% render 'collection-article-prices', product: product, vendor: section.settings.show_vendor %}
+                    </div>
+                  </a>
+                </template>
+              </article>
+            </template>
+          </div>
+          <div class='collection-loader'>
+            <template v-if='collection && collection.current_page < collection.pages'>
+              <div class='load-more-spinner' :class="{ 'is-showing': spinnerLoadingState }">
+                <span class='visually-hidden'>{{ 'collections.spinner' | t }}</span>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#collection')) {
+      const mainCollection = Vue.createApp({
+        delimiters: ['${', '}'],
+        data() {
+          return {
+            collections: {
+              data: {
+                results: null,
+                originals: null,
+                filters: null,
+                sortby: null,
+                nextpage: 0,
+              },
+              header: {
+                minibar: null,
+                menubar: null,
+                announcement: null,
+                minibarH: 0,
+                menubarH: 0,
+                announcementH: 0,
+              },
+              storage: {
+                state: null,
+              },
+              navbar: {
+                navigation: null,
+                navigationH: 0,
+                switch: 0,
+                stick: 0,
+              },
+              sort: {
+                active: false,
+                await: false,
+                label: null,
+                selected: null,
+              },
+              filterBar: {
+                screenH: 0,
+                sidebarH: 0,
+                maxOffsetH: 0,
+                minOffsetH: 0,
+                topPos: 0,
+              },
+              filter: {
+                groups: [],
+                valuepairs: [],
+              },
+              loader: {
+                spinner: null,
+                loading: false,
+              },
+              observer: {
+                target: null,
+                connected: false,
+              },
+            },
+          }
+        },
+        methods: {
+          handleObserver() {
+            if (!this.collections.loader.spinner) return
+            this.collections.observer.target = new IntersectionObserver((entries) => {
+              const spinner = entries[0]
+              if (spinner.isIntersecting) {
+                this.getProductsBySelectedCollection()
+              }
+            })
+            this.collections.observer.connected = true
+            this.collections.observer.target.observe(this.collections.loader.spinner)
+          },
+          handleMouseOver(id, article) {
+            const index = this.collections.data.results.products.findIndex((product) => product.id === id)
+            this.collections.data.results.products[index].url = article.url
+            this.collections.data.results.products[index].title = article.title
+            this.collections.data.results.products[index].image = article.image
+            this.collections.data.results.products[index].price_varies = article.price_varies
+            this.collections.data.results.products[index].price_min = article.price_min
+            this.collections.data.results.products[index].price_max = article.price_max
+            this.collections.data.results.products[index].price_min_money = article.price_min_money
+            this.collections.data.results.products[index].price_max_money = article.price_max_money
+            this.collections.data.results.products[index].compare_at_price_varies = article.compare_at_price_varies
+            this.collections.data.results.products[index].compare_at_price_min = article.compare_at_price_min
+            this.collections.data.results.products[index].compare_at_price_min_money =
+              article.compare_at_price_min_money
+            this.collections.data.results.products[index].discount_in_percent = article.discount_in_percent
+          },
+          handleMouseLeave(id) {
+            const index = this.collections.data.originals.findIndex((product) => product.id === id)
+            this.collections.data.results.products[index].url = this.collections.data.originals[index].url
+            this.collections.data.results.products[index].title = this.collections.data.originals[index].title
+            this.collections.data.results.products[index].image = this.collections.data.originals[index].image
+            this.collections.data.results.products[index].price_varies =
+              this.collections.data.originals[index].price_varies
+            this.collections.data.results.products[index].price_min = this.collections.data.originals[index].price_min
+            this.collections.data.results.products[index].price_max = this.collections.data.originals[index].price_max
+            this.collections.data.results.products[index].price_min_money =
+              this.collections.data.originals[index].price_min_money
+            this.collections.data.results.products[index].price_max_money =
+              this.collections.data.originals[index].price_max_money
+            this.collections.data.results.products[index].compare_at_price_varies =
+              this.collections.data.originals[index].compare_at_price_varies
+            this.collections.data.results.products[index].compare_at_price_min =
+              this.collections.data.originals[index].compare_at_price_min
+            this.collections.data.results.products[index].compare_at_price_min_money =
+              this.collections.data.originals[index].compare_at_price_min_money
+            this.collections.data.results.products[index].discount_in_percent =
+              this.collections.data.originals[index].discount_in_percent
+          },
+          showDeviceFilterState() {
+            toggleDeviceFilterState.showFilter()
+          },
+          hideDeviceFilterState() {
+            toggleDeviceFilterState.hideFilter()
+          },
+          toggleDesktopFilterState() {
+            if (this.collections.storage.state === 'false') {
+              localStorage.setItem('filter_sidebar_state', 'true')
+              this.collections.storage.state = true
+            } else {
+              localStorage.setItem('filter_sidebar_state', 'false')
+              this.collections.storage.state = false
+            }
+            this.collections.sort.active = false
+          },
+          toggleDropDownSortByState() {
+            this.collections.sort.active = !this.collections.sort.active
+          },
+          handleGroupStartState() {
+            setTimeout(() => {
+              const groups = document.querySelectorAll('.desktop-results_group.open')
+              for (let i = 0; i < groups.length; i++) {
+                let group = groups[i].getElementsByClassName('desktop-results_items')
+                let clientH = group[0].clientHeight
+                groups[i].style.height = clientH + 54 + 'px'
+              }
+            }, 750)
+          },
+          handleFilterVisibleState(label) {
+            const index = this.collections.filter.groups.findIndex((group) => group[0] === label)
+            const group = document.body.querySelector('.desktop-results_group[data-label="' + label + '"]')
+            const clientH = group.querySelector('.desktop-results_items').clientHeight
+            if (index === -1) {
+              group.style.height = '54px'
+              group.classList.remove('open')
+              group.classList.add('closed')
+              this.collections.filter.groups.push([label, false])
+            } else {
+              // find lable1 index and toggle between true & false
+              for (let i = 0; i < this.collections.filter.groups.length; i++) {
+                if (this.collections.filter.groups[i][0] === label) {
+                  if (this.collections.filter.groups[i][1]) {
+                    group.style.height = '54px'
+                    group.classList.remove('open')
+                    group.classList.add('closed')
+                    this.collections.filter.groups[i][1] = false
+                  } else {
+                    group.style.height = clientH + 54 + 'px'
+                    group.classList.remove('closed')
+                    group.classList.add('open')
+                    this.collections.filter.groups[i][1] = true
+                  }
+                }
+              }
+            }
+          },
+          async getProductsBySelectedCollection() {
+            this.collections.loader.loading = true
+            // build url with handle, page, filters & sortby
+            let url = '/collections/{{ collection.handle }}?view=json'
+            if (this.collections.data.nextpage > 1) url += '&page=' + this.collections.data.nextpage
+            this.collections.filter.valuepairs.forEach((value) => (url += '&' + value[0] + '=' + value[1]))
+            if (this.collections.sort.selected) url += '&sort_by=' + this.collections.sort.selected
+            try {
+              const response = await axios.get(url)
+              const results = await response.data
+              if (this.collections.data.results === null) {
+                // when 'firstime' data loads, then 'save' corresponding results to their array's
+                this.collections.data.results = results
+                this.collections.data.originals = results.products.map((item) => ({ ...item }))
+                this.collections.data.filters = results.filters.map((item) => ({ ...item }))
+                this.collections.data.sortby = results.sortby.map((item) => ({ ...item }))
+              } else {
+                // when 'paginated' data loads, then 'update' corresponding results
+                const items = results.products.map((item) => ({ ...item }))
+                this.collections.data.results.title = results.title
+                this.collections.data.results.pages = Number(results.pages)
+                this.collections.data.results.current_page = Number(results.current_page)
+                this.collections.data.results.count = results.count
+                this.collections.data.results.products.push(...results.products)
+                this.collections.data.originals.push(...items)
+              }
+              this.collections.data.nextpage = Number(this.collections.data.results.current_page) + 1
+              this.collections.loader.loading = false
+              // disconnect observer when last results are loaded
+              if (this.collections.data.results.current_page >= this.collections.data.results.pages) {
+                this.collections.observer.connected = false
+                this.collections.observer.target.disconnect()
+              }
+            } catch (error) {
+              this.collections.sort.await = false
+            }
+          },
+          async filterProductsBySelectedPrice(param_min, value_min, param_max, value_max) {
+            this.collections.sort.await = true
+            const param1 = encodeURI(param_min)
+            const value1 = encodeURI(value_min)
+            const param2 = encodeURI(param_max)
+            const value2 = encodeURI(value_max)
+            const index1 = this.collections.filter.valuepairs.findIndex(
+              (filter) => filter[0] === param1 && filter[1] === value1
+            )
+            const index2 = this.collections.filter.valuepairs.findIndex(
+              (filter) => filter[0] === param1 && filter[1] === value1
+            )
+            if (index1 === -1) {
+              this.collections.filter.valuepairs.push([param1, value1])
+              this.collections.filter.valuepairs.push([param2, value2])
+            } else {
+              this.collections.filter.valuepairs.splice(index1, 1)
+              this.collections.filter.valuepairs.splice(index2, 1)
+            }
+            let url = '/collections/{{ collection.handle }}?view=json'
+            this.collections.filter.valuepairs.forEach((value) => (url += '&' + value[0] + '=' + value[1]))
+            if (this.collections.sort.selected) url += '&sort_by=' + this.collections.sort.selected
+            try {
+              const response = await axios.get(url)
+              const results = await response.data
+              // when data loads, clear and update results
+              this.collections.data.results = []
+              this.collections.data.results = results
+              this.collections.data.filters = []
+              this.collections.data.filters = results.filters.map((item) => ({ ...item }))
+              this.collections.data.results.title = results.title
+              this.collections.data.results.pages = results.pages
+              this.collections.data.results.current_page = results.current_page
+              this.collections.data.results.count = results.count
+              this.collections.data.originals = []
+              this.collections.data.originals = results.products.map((item) => ({ ...item }))
+              this.collections.data.nextpage = Number(this.collections.data.results.current_page) + 1
+              this.collections.sort.await = false
+              window.scroll({ top: 0, behavior: 'auto' })
+              // when observer is disconnected then connect it again
+              if (!this.collections.observer.connected) this.handleObserver()
+            } catch (error) {
+              this.collections.sort.await = false
+            }
+          },
+          async filterProductsBySelectedOption(param, value) {
+            this.collections.sort.await = true
+            const param1 = encodeURI(param)
+            const value1 = encodeURI(value)
+            const index = this.collections.filter.valuepairs.findIndex(
+              (filter) => filter[0] === param1 && filter[1] === value1
+            )
+            // push filter values to array or delete them
+            if (param === 'reset') {
+              this.collections.filter.valuepairs = []
+            } else {
+              if (index === -1) {
+                this.collections.filter.valuepairs.push([param1, value1])
+              } else {
+                this.collections.filter.valuepairs.splice(index, 1)
+              }
+            }
+            // build url with handle, filters & sortby
+            let url = '/collections/{{ collection.handle }}?view=json'
+            this.collections.filter.valuepairs.forEach((value) => (url += '&' + value[0] + '=' + value[1]))
+            if (this.collections.sort.selected) url += '&sort_by=' + this.collections.sort.selected
+            try {
+              const response = await axios.get(url)
+              const results = await response.data
+              // when data loads, clear and update results
+              this.collections.data.results = []
+              this.collections.data.results = results
+              this.collections.data.filters = []
+              this.collections.data.filters = results.filters.map((item) => ({ ...item }))
+              this.collections.data.results.title = results.title
+              this.collections.data.results.pages = results.pages
+              this.collections.data.results.current_page = results.current_page
+              this.collections.data.results.count = results.count
+              this.collections.data.originals = []
+              this.collections.data.originals = results.products.map((item) => ({ ...item }))
+              this.collections.data.nextpage = Number(this.collections.data.results.current_page) + 1
+              this.collections.sort.await = false
+              window.scroll({ top: 0, behavior: 'auto' })
+              // when observer is disconnected then connect it again
+              if (!this.collections.observer.connected) this.handleObserver()
+            } catch (error) {
+              this.collections.sort.await = false
+            }
+          },
+          async sortProductsBySelectedOption(label, selected) {
+            this.collections.sort.label = label
+            this.collections.sort.selected = selected
+            this.collections.sort.await = true
+            // build url with handle, filters & sortby
+            let url = '/collections/{{ collection.handle }}?view=json'
+            this.collections.filter.valuepairs.forEach((value) => (url += '&' + value[0] + '=' + value[1]))
+            url += '&sort_by=' + this.collections.sort.selected
+            try {
+              const response = await axios.get(url)
+              const results = await response.data
+              // when data loads, clear and update results
+              this.collections.data.results = []
+              this.collections.data.results = results
+              this.collections.data.results.title = results.title
+              this.collections.data.results.pages = results.pages
+              this.collections.data.results.current_page = results.current_page
+              this.collections.data.results.count = results.count
+              this.collections.data.originals = []
+              this.collections.data.originals = results.products.map((item) => ({ ...item }))
+              this.collections.data.nextpage = Number(this.collections.data.results.current_page) + 1
+              this.collections.sort.await = false
+              window.scroll({ top: 0, behavior: 'auto' })
+              // when observer is disconnected then connect it again
+              if (!this.collections.observer.connected) this.handleObserver()
+            } catch (error) {
+              this.collections.sort.await = false
+            }
+          },
+        },
+        computed: {
+          collection() {
+            return this.collections.data.results
+          },
+          filters() {
+            return this.collections.data.filters
+          },
+          deviceSize() {
+            if (dimension.windowWidth >= 990) {
+              this.hideDeviceFilterState()
+            }
+            return dimension.windowWidth < 990 ? true : false
+          },
+          filterSidebarState() {
+            this.collections.storage.state = localStorage.getItem('filter_sidebar_state')
+            return this.collections.storage.state === 'true' ? true : false
+          },
+          deviceModalState() {
+            return deviceModalState.hidden
+          },
+          activeFiltersAmount() {
+            let amount = 0
+            if (this.collections.data.filters) {
+              for (let i = 0; i < this.collections.data.filters.length; i++) {
+                let size = parseInt(this.collections.data.filters[i].size)
+                amount = size > 0 ? (amount += size) : amount
+              }
+            }
+            if (this.collections.data.results) {
+              // kind of hack!
+              if (this.collections.data.results.price_state == 'on') amount++
+            }
+            return amount
+          },
+          collectionNavStickyState() {
+            this.collections.navbar.switch =
+              20 +
+              this.collections.navbar.minibarH +
+              this.collections.navbar.menubarH +
+              this.collections.navbar.announcementH
+            return dimension.scrollY > this.collections.navbar.switch ? true : false
+          },
+          collectionNavTopPosition() {
+            if (dimension.scrollY > this.collections.navbar.switch && !dimension.headerHiddenState) {
+              this.collections.navbar.stick = this.collections.navbar.menubarH
+            } else {
+              this.collections.navbar.stick = 0
+            }
+            return 'top: ' + this.collections.navbar.stick + 'px'
+          },
+          sidebarMaxHeight() {
+            this.collections.filterBar.screenH = window.innerHeight
+            this.collections.navbar.minibarH =
+              this.collections.header.minibar != null ? this.collections.header.minibar.clientHeight : 0
+            this.collections.navbar.menubarH =
+              this.collections.header.menubar != null ? this.collections.header.menubar.clientHeight : 0
+            this.collections.navbar.announcementH =
+              this.collections.header.announcement != null ? this.collections.header.announcement.clientHeight : 0
+            this.collections.navbar.navigationH =
+              this.collections.navbar.navigation != null ? this.collections.navbar.navigation.clientHeight : 0
+            this.collections.filterBar.maxOffsetH =
+              this.collections.navbar.minibarH +
+              this.collections.navbar.menubarH +
+              this.collections.navbar.announcementH +
+              this.collections.navbar.navigationH
+            this.collections.filterBar.minOffsetH =
+              dimension.scrollY <= this.collections.filterBar.maxOffsetH
+                ? this.collections.filterBar.maxOffsetH - dimension.scrollY
+                : 0
+            this.collections.filterBar.sidebarH =
+              this.collections.filterBar.screenH - (this.collections.filterBar.minOffsetH + 2)
+            return 'max-height: ' + this.collections.filterBar.sidebarH + 'px'
+          },
+          sidebarTopPosition() {
+            if (dimension.scrollY > this.collections.navbar.switch && dimension.headerHiddenState) {
+              this.collections.filterBar.topPos = 50 - this.collections.filterBar.minOffsetH
+            } else if (dimension.scrollY > this.collections.navbar.switch && !dimension.headerHiddenState) {
+              this.collections.filterBar.topPos =
+                50 - this.collections.filterBar.minOffsetH + this.collections.navbar.stick
+            } else {
+              this.collections.filterBar.topPos = 0
+            }
+            return 'margin-top: ' + this.collections.filterBar.topPos + 'px'
+          },
+          spinnerLoadingState() {
+            return this.collections.loader.loading
+          },
+        },
+        mounted() {
+          this.collections.header.minibar = document.querySelector('.header-bar')
+          this.collections.header.menubar = document.querySelector('.header-menu-wrapper')
+          this.collections.header.announcement = document.querySelector('.announcement')
+          this.collections.navbar.navigation = document.querySelector('.collection-nav')
+          this.collections.loader.spinner = document.querySelector('.collection-loader')
+          // storage
+          if (!localStorage.getItem('filter_sidebar_state')) localStorage.setItem('filter_sidebar_state', 'true')
+          this.collections.storage.state = localStorage.getItem('filter_sidebar_state')
+          localStorage.setItem('filter_sidebar_state', localStorage.getItem('filter_sidebar_state'))
+          // observer
+          this.handleObserver()
+          // handle group height
+          this.handleGroupStartState()
+        },
+        created() {
+          this.getProductsBySelectedCollection()
+        },
+        beforeDestroy() {
+          this.collections.observer.target.disconnect()
+        },
+      }).mount('#collection')
+    }
+  })
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-collection.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main-collection.settings.title.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.main-collection.settings.show_vendor.label"
+    }
+  ]
+}
+{% endschema %}

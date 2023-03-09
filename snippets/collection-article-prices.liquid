@@ -1,0 +1,55 @@
+{% comment %}
+  Renders the product collection prices.
+
+  Accepts:
+  - product: {Object} Product object
+  - vendor {Boolean} shows vendor name
+
+  Usage:
+  {% render 'collection-article-prices', product: product, vendor: section.settings.show_vendor %}
+{% endcomment %}
+
+<div class="product-article_titles">
+  <div class="product-article_title">{%- if vendor -%}${ product.vendor }&nbsp;{%- endif -%}${ product.title }</div>
+  <div class="product-article_subtitle">${ product.type }</div>
+  <div class="product-article_amount">1 {{ 'collection.color.one' | t }}</div>
+</div>
+{% comment %}
+  "price_varies":  ${ product.price_varies }</br>
+  "price_min":  ${ product.price_min }</br>
+  "price_max":  ${ product.price_max }</br>
+  "price_min_money":  ${ product.price_min_money }</br>
+  "price_max_money":  ${ product.price_max_money }</br>
+  "compare_at_price_varies":  ${ product.compare_at_price_varies }</br>
+  "compare_at_price_min":  ${ product.compare_at_price_min }</br>
+  "compare_at_price_min_money":  ${ product.compare_at_price_min_money }</br>
+{% endcomment %}
+<div class="product-article_price">
+  <template v-if="product.price_varies == 'false' && product.compare_at_price_varies == 'false'">
+    <template v-if="Number(product.price_min) == Number(product.price_max) && Number(product.compare_at_price_min) == 0">
+      <span class="price-original">${ product.price_min_money }</span>
+    </template>
+    <template v-else-if="Number(product.price_min) == Number(product.price_max) && Number(product.compare_at_price_min) > 0">
+      <span class="price-reduced">${ product.price_min_money }</span><span class="price-compare">${ product.compare_at_price_min_money }</span>
+    </template>
+  </template>
+  <template v-else-if="product.price_varies == 'true' && product.compare_at_price_varies == 'false'">
+    <template v-if="Number(product.price_max) > Number(product.price_min) && Number(product.compare_at_price_min) == 0">
+      <span class="small">{{ 'products.product.price.from_price' | t }}</span><span class="price-original">${ product.price_min_money }</span>
+    </template>
+    <template v-else-if="Number(product.price_max) > Number(product.price_min) && Number(product.price_max) > Number(product.compare_at_price_min)">
+      <span class="small">{{ 'products.product.price.from_price' | t }}</span><span class="price-reduced">${ product.price_min_money }</span><span class="price-compare">${ product.compare_at_price_min_money }</span>
+    </template>
+    <template v-else>
+      <span class="price-reduced">${ product.price_min_money }</span><span class="price-compare">${ product.compare_at_price_min_money }</span>
+    </template>
+  </template>
+  <template v-else-if="product.price_varies == 'true' && product.compare_at_price_varies == 'true'">
+    <template v-if="Number(product.price_max) > Number(product.price_min) && Number(product.compare_at_price_min) > 0">
+      <span class="small">{{ 'products.product.price.from_price' | t }}</span><span class="price-reduced">${ product.price_min_money }</span><span class="price-compare">${ product.compare_at_price_min_money }</span>
+    </template>
+  </template>
+  <div class="product-article_discount" v-if="Number(product.discount_in_percent) > 0">
+    <span class="product-article_percent">${ product.discount_in_percent }{{ 'products.product.price.percent_off' | t }}</span>
+  </div>
+</div>

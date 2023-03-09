@@ -1,0 +1,71 @@
+{% comment %}
+    Renders the read more article card inside a swiper module.
+
+    Accepts:
+    - article_id: {Number} The article id
+    - blog_name: {String} The default blog name
+
+    Usage:
+    {% render 'article_id' blog: blog, article: article, show_image: section.settings.show_image %}
+{% endcomment %}
+
+{% if blog.articles.size > 1 %}
+  <div class="read-more">
+    <div class="read-more_wrapper page-width">
+      <div class="swiper article-swiper">
+
+        <div class ="read-more_header">
+          <h2 class="headline-2{% if section.settings.title == blank %} no-heading{% endif %}">{{ section.settings.title | escape }}</h2>
+          <nav class="read-more_nav">
+            <button class="carousel-btn prev-btn" aria-hidden="true" tabindex="-1">
+              {%- render 'icon-prev-btn' -%}
+              <span class="visually-hidden">{{ 'general.carousel.prev' | t }}</span>
+            </button>
+            <button class="carousel-btn next-btn" aria-hidden="true" tabindex="-1">
+              {%- render 'icon-next-btn' -%}
+              <span class="visually-hidden">{{ 'general.carousel.next' | t }}</span>
+            </button>
+          </nav>
+        </div>
+
+        <div class="swiper-wrapper">
+          {% assign max = section.settings.posts_to_show %}
+          {%- paginate blog.articles by max -%}
+            {%- for article in blog.articles -%}
+              {% unless article.id == article_id %}
+                <div class="swiper-slide">
+                  {%- render 'blog-card', article: article, image_height: section.settings.image_height, show_image: section.settings.show_image, show_date: section.settings.show_date, show_author: section.settings.show_author -%}
+                </div>
+              {% endunless %}
+            {%- endfor -%}
+          {%- endpaginate -%}
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const swiper = new Swiper(".article-swiper", {
+      slidesPerView: 1,
+      spaceBetween: 15,
+      loop: false,
+      navigation: {
+        nextEl: ".next-btn",
+        prevEl: ".prev-btn",
+      },
+      breakpoints: {
+        750: {
+          slidesPerView: 2,
+          spaceBetween: 15,
+        },
+        990: {
+          slidesPerView: 3,
+          spaceBetween: 15,
+        }
+      }
+    });
+  });
+</script>

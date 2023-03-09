@@ -1,0 +1,222 @@
+{{ 'section-offset-left.css' | asset_url | stylesheet_tag }}
+
+<div id="offset_left">
+  <div class="offset-left" :class="{ 'left-off': offsetLeftState, 'left-on': !offsetLeftState }">
+    <nav class="offset-nav">
+      {%- if section.settings.menu != blank -%}
+        {%- liquid
+          assign state_1_primary = 0
+          assign state_1_secondary = 0
+        -%}
+        <div data-id="{{ state_1_primary }}" class="offset-nav-panel" :class="{'hide-left': panel[0] === '0'}">
+          <button class="offset-close" @click="toggleOffsetStates">
+            {%- render 'icon-close' -%}
+            <span class="visually-hidden">{{ 'general.offset.menu.close' | t }}</span>
+          </button>
+          {%- if shop.customer_accounts_enabled -%}
+            {%- if customer -%}
+              <div class="offset-submenu offset-account">
+                <ul class="list-unstyled">
+                  <li>
+                    <a class="link link--offset" href="{{ routes.account_url }}">
+                      <span class="link--offset_icon">
+                        {% render 'icon-customer' %}
+                      </span>
+                      <div class="link--offset_label">{{ 'customer.welcome' | t }}, {{ customer.first_name }}</div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+          {%- for link in section.settings.menu.links -%}
+            {%- if link.links != blank -%}
+              <button class="offset-menu" @click="handleNextMenuPanelState('{{ state_1_primary }}', '{{ state_1_primary }}{{ state_1_secondary }}', '', '')">
+                <div class="offset-menu__label">{{ link.title | escape }}</div>
+                {%- render 'icon-chevron-right' -%}
+              </button>
+              {% assign state_1_secondary = state_1_secondary | plus: 1 %}
+            {%- else -%}
+              <div class="offset-link">
+                <a class="link offset-link__label" href="{{ link.url }}" tabindex="-1">{{ link.title | escape }}</a>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if shop.customer_accounts_enabled -%}
+            {%- if customer == nil -%}
+              <div class="offset-account">
+                <p class="offset-account__heading">{{ 'general.offset.menu.heading' | t }}</p>
+                <ul class="list-unstyled">
+                  <li class="offset-account__register"><a class="button" href="{{ routes.account_register_url }}">{{ 'general.offset.menu.register' | t }}</a></li>
+                  <li class="offset-account__signin"><a class="button inverted-btn" href="{{ routes.account_login_url }}">{{ 'general.offset.menu.signin' | t }}</a></li>
+                </ul>
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+          <div class="offset-submenu">
+            <ul class="list-unstyled">
+              {%- if shop.customer_accounts_enabled -%}
+                {%- if customer -%}
+                  <li>
+                    <a class="link link--offset" href="{{ routes.root_url }}pages/favorites">
+                      <span class="link--offset_icon">
+                        {% render 'icon-favorites' %}
+                      </span>
+                      <div class="link--offset_label">{{ 'general.offset.menu.favorites' | t }}</div>
+                    </a>
+                  </li>
+                {%- endif -%}
+              {%- endif -%}
+              <li>
+                <a class="link link--offset" href="{{ routes.cart_url }}">
+                  <span class="link--offset_icon">
+                    {% render 'icon-bagitem' %}
+                    <span class="link--offset_amount">
+                      <template v-if="cart">
+                        ${ cart.item_count }
+                      </template>
+                    </span>
+                  </span>
+                  <div class="link--offset_label">{{ 'general.offset.menu.bag' | t }}</div>
+                </a>
+              </li>
+              <li>
+                <a class="link link--offset" href="{{ routes.account_url }}/#orders">
+                  <span class="link--offset_icon">
+                    {% render 'icon-orders' %}
+                  </span>
+                  <div class="link--offset_label">{{ 'general.offset.menu.orders' | t }}</div>
+                </a>
+              </li>
+              <li>
+                <a class="link link--offset" href="{{ routes.root_url }}pages/faqs">
+                  <span class="link--offset_icon">
+                    {% render 'icon-help' %}
+                  </span>
+                  <div class="link--offset_label">{{ 'general.offset.menu.help' | t }}</div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        {% liquid
+          assign state_2_primary = 0
+          assign state_2_secondary = 0
+          assign state_2_ternary = 0
+        %}
+        {%- for link in section.settings.menu.links -%}
+          {%- if link.links != blank -%}
+            <div data-id="{{ state_2_primary }}{{ state_2_secondary }}" class="offset-nav-panel init" :class="{'fade-in': panel[1] === '{{ state_2_primary }}{{ state_2_secondary }}', 'hide-left': panel[3] === '{{ state_2_primary }}{{ state_2_secondary }}'}">
+              <button class="offset-prev" @click="showPrevMenuPanelState">
+                {%- render 'icon-chevron-left' -%}
+                <span class="offset-prev__label">{{ 'general.offset.menu.all' | t }}</span>
+              </button>
+              <div class="offset-prev__headline">{{ link.title | escape }}</div>
+              {%- for childlink in link.links -%}
+                {%- if childlink.links != blank -%}
+                  <button class="offset-menu secondary" @click="handleNextMenuPanelState('0', '0', '{{ state_1_primary }}{{ state_2_secondary }}{{ state_2_ternary }}', '{{ state_1_primary }}{{ state_2_secondary }}')">
+                    <span class="offset-menu__label">{{ childlink.title | escape }}</span>
+                    {%- render 'icon-chevron-right' -%}
+                  </button>
+                  {% assign state_2_ternary = state_2_ternary | plus: 1 %}
+                {%- else -%}
+                  <div class="offset-link secondary">
+                    <a class="link offset-link__label" href="{{ childlink.url }}" tabindex="-1">{{ childlink.title | escape }}</a>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            {%- liquid
+              assign state_2_secondary = state_2_secondary | plus: 1
+              assign state_2_ternary = 0
+            -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- liquid
+          assign state_3_primary = 0
+          assign state_3_secondary = 0
+          assign state_3_ternary = 0
+        -%}
+        {%- for link in section.settings.menu.links -%}
+          {%- if link.links != blank -%}
+            {%- for childlink in link.links -%}
+              {%- if childlink.links != blank -%}
+                <div data-id="{{ state_3_primary }}{{ state_3_secondary }}{{ state_3_ternary }}" class="offset-nav-panel init" :class="{'fade-in': panel[2] === '{{ state_3_primary }}{{ state_3_secondary }}{{ state_3_ternary }}'}">
+                  <button class="offset-prev" @click="showPrevMenuPanelState">
+                    {%- render 'icon-chevron-left' -%}
+                    <span class="offset-prev__label">{{ link.title | escape }}</span>
+                  </button>
+                  <div class="offset-prev__headline">{{ childlink.title | escape }}</div>
+                  {%- for grandchildlink in childlink.links -%}
+                    {%- if grandchildlink.links == blank -%}
+                      <div class="offset-link ternary">
+                        <a class="link offset-link__label" href="{{ grandchildlink.url }}" tabindex="-1">{{ grandchildlink.title | escape }}</a>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+                {% assign state_3_ternary = state_3_ternary | plus: 1 %}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- liquid
+              assign state_3_secondary = state_3_secondary | plus: 1
+              assign state_3_ternary = 0
+            -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </nav>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#offset_left')) {
+      const offsetLeft = Vue.createApp({
+        delimiters: ['${', '}'],
+        data() {
+          return {
+            cartData: store.state.cartState
+          }
+        },
+        methods: {
+          toggleOffsetStates() {
+            toggleOffsetStates.closeAll()
+            toggleOffsetStates.removeKeyDown()
+          },
+          handleNextMenuPanelState(primaryId, secondaryId, ternaryId, extraId ) {
+            store.state.panelState.unshift([primaryId, secondaryId, ternaryId, extraId])
+          },
+          showPrevMenuPanelState() {
+            store.state.panelState.shift()
+          }
+        },
+        computed: {
+          offsetLeftState() {
+            return offsetLeftState.hidden
+          },
+          panel() {
+            return store.state.panelState[0]
+          },
+          cart() {
+            return this.cartData[0]
+          }
+        }
+      }).mount('#offset_left')
+    }
+  })
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.offsetleft.name",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "footer",
+      "label": "Mobile Menu"
+    }
+  ]
+}
+{% endschema %}

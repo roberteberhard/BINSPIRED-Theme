@@ -1,0 +1,84 @@
+/* Message Boxes */
+
+.message_wrapper {
+  margin: 0px;
+}
+
+.message-boxes {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  padding: 5rem 0 4rem;
+}
+
+@media screen and (min-width: 640px) and (max-width: 989px) {
+  .message-boxes {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .message-boxes {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 7rem 0 6rem;
+  }
+}
+
+/* Message Box */
+
+.message-box {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 3.5rem;
+}
+
+@media screen and (min-width: 640px) and (max-width: 989px) {
+  .message-box {
+    width: calc(50% - 0.75rem);
+    margin-bottom: 2rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .message-box {
+    width: calc(25% - 1rem);
+    margin-bottom: 2rem;
+  }
+}
+
+.message-box_icon {
+  float: left;
+  width: 60px;
+  height: 48px;
+}
+
+.message-box_content {
+  display: inline-block;
+  width: calc(100% - 60px);
+  height: auto;
+  padding-right: 5px;
+}
+
+.message-box_icon .icon-message-svg {
+  width: 48px;
+  height: 48px;
+}
+
+.message-box .headline-4 {
+  margin: 0.5rem 0;
+  line-height: 1.25;
+}
+
+.message-box .headline-txt {
+  margin: 0;
+  font-size: calc(var(--font-heading-scale) * 1.4rem);
+  color: rgb(var(--color-foreground), 0.65);
+  font-weight: 400;
+  line-height: 1.25;
+}

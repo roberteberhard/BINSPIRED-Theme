@@ -1,0 +1,46 @@
+{{ 'section-main-policy.css' | asset_url | stylesheet_tag }}
+{{ 'section-header-policy.css' | asset_url | stylesheet_tag }}
+
+<div class='main-policy'>
+  <div class='main-policy_wrapper page-width'>
+    {% render 'header-policy', title: page.title, active: 'legal' %}
+  </div>
+  <div class='main-policy_content page-width'>
+    <div class='main-policy_block'>
+      <p>Binspired.com is brought to you by</p>
+      <p>
+        <strong>BINSPIRED</strong><br>
+        Schaffhauserstrasse 42<br>
+        8400 Winterthur<br>
+        Switzerland
+      </p>
+      <p>
+        Phone: +41 44 586 40 46<br>
+        Email: info@binspired.com
+      </p>
+      <p>Managing Director: Robert Eberhard</p>
+      <p>
+        This Legal Notice also incorporates the terms contained in the
+        <a class='link--primary' target='_self' href='{{ routes.root_url }}pages/terms-of-service'>Terms of Service</a>
+        and the
+        <a class='link--primary' target='_self' href='{{ routes.root_url }}pages/privacy-policy'>Privacy Policy</a>.
+      </p>
+    </div>
+    <div class='main-policy_block ending'>
+      <h2 class='headline-2'>Online Dispute Resolution</h2>
+      <p>
+        The European Commission offers a platform for Online Dispute Resolution (ODR platform), which you can access at
+        a
+        <a class='link--primary' target='_black' href='https://ec.europa.eu/consumers/odr/'
+          >https://ec.europa.eu/consumers/odr/</a
+        >.
+      </p>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page.legal.label"
+}
+{% endschema %}

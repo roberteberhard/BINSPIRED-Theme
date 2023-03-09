@@ -1,0 +1,124 @@
+.header-bar {
+  position: relative;
+  z-index: 6;
+  width: 100%;
+  height: 36px;
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+}
+
+.header-bar-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.header-bar-brands {
+  width: 33.33%;
+  height: 36px;
+  text-align: left;
+}
+
+.header-bar-anouncement {
+  width: 33.33%;
+  height: 36px;
+}
+
+.header-bar-navigation {
+  width: 33.33%;
+  height: 36px;
+  text-align: right;
+}
+
+.header-bar-list {
+  display: inline-block;
+  width: auto;
+  height: 36px;
+  padding-top: 2px;
+}
+
+.header-bar-list li {
+  float: left;
+  width: auto;
+  height: 36px;
+}
+.header-bar-list li .link-spacer {
+  margin: 0 1rem;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+}
+
+.header-bar-list li.dropdown-bar {
+  position: relative;
+  height: 100%;
+}
+
+.header-bar-list li.dropdown-bar.is-open .dropdown-bar_box {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.15s, visibility 0s, transform 0.15s ease;
+}
+
+.dropdown-bar_box {
+  position: absolute;
+  min-width: 200px;
+  right: -12px;
+  top: 33px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.15s, visibility 0s linear 0.15s, transform 0.15s ease;
+}
+
+.dropdown-bar_box .dropdown-menu {
+  resize: horizontal;
+  border-radius: 0 0 8px 8px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  background-color: rgb(var(--color-background));
+}
+
+.dropdown-bar_box .dropdown-menu nav {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  padding: 35px 20px 20px;
+}
+
+.dropdown-bar_box .dropdown-menu nav headline-4 {
+  margin-bottom: 20px;
+}
+
+.dropdown-bar_box .dropdown-menu nav .dropdown-menu_link {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(var(--color-foreground), 0.65);
+  font-weight: 500;
+  font-size: 1.4rem !important;
+  text-align: left;
+  text-decoration: none;
+  text-underline-offset: 0;
+  line-height: 1.5;
+  white-space: normal;
+  overflow-wrap: normal;
+  background: transparent;
+  letter-spacing: 0.01rem;
+}
+
+.dropdown-bar_box .dropdown-menu nav .dropdown-menu_link:hover {
+  color: rgba(var(--color-foreground), 1);
+}
+
+@media screen and (max-width: 989px) {
+  .header-bar {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .header-bar {
+    display: block;
+  }
+}

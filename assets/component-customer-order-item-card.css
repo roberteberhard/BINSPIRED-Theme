@@ -1,0 +1,203 @@
+.customer-order-item-card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  margin: 0 0 4rem;
+}
+
+.customer-order-item-card_content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+/* Order Product */
+
+.order-item_figure {
+  display: block;
+  width: calc(33.3333% - 1.2rem);
+  margin-right: 1.2rem;
+}
+
+.order-item_content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 66.6666%;
+}
+
+/* Order item product */
+.order-item_product {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100%;
+}
+
+.order-item_product .headline-6 {
+  display: block;
+  width: 100%;
+  margin: 0 0 0.25rem;
+}
+
+.order-item_product .headline-4 {
+  display: block;
+  width: 100%;
+  margin: 0 0 1rem;
+  font-size: calc(var(--font-heading-scale) * 1.6rem);
+  line-height: 1.25;
+}
+
+.order-item_product .item-meta {
+  width: 10rem;
+  margin: 0 0 0.35rem;
+  font-size: calc(var(--font-heading-scale) * 1.4rem);
+  line-height: 1.15;
+}
+
+.order-item_product .item-value {
+  width: calc(100% - 10rem);
+  margin: 0 0 0.35rem;
+  font-size: calc(var(--font-heading-scale) * 1.4rem);
+  line-height: 1.15;
+}
+
+.order-item_product .item-value .strong {
+  font-weight: 500;
+}
+
+.order-item_product .item-description {
+  width: 100%;
+  margin: 0.75rem 0 0;
+  font-size: calc(var(--font-heading-scale) * 1.4rem);
+  line-height: 1.15;
+}
+
+.order-item_product .item-description .strong {
+  font-weight: 500;
+}
+
+/* Order item fulfillment */
+.order-item_fulfillment {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  width: 100%;
+}
+
+.order-item_fulfillment .headline-4 {
+  display: block;
+  width: 100%;
+  margin: 1.75rem 0 1rem;
+  font-size: calc(var(--font-heading-scale) * 1.5rem);
+  line-height: 1.35;
+}
+
+.order-item_fulfillment .fulfilled {
+  display: block;
+  width: 100%;
+  margin: 0 0 0.35rem;
+  font-size: calc(var(--font-heading-scale) * 1.4rem);
+  line-height: 1.15;
+}
+
+.order-item_fulfillment .fulfilled .strong {
+  font-weight: 500;
+}
+
+.order-item_fulfillment .unfulfilled {
+  display: block;
+  width: 100%;
+  margin: 0 0 0.35rem;
+  font-size: calc(var(--font-heading-scale) * 1.4rem);
+  line-height: 1.15;
+}
+
+.order-item_fulfillment .button.small-btn {
+  margin: 1.25rem 0 0;
+}
+
+@media screen and (min-width: 480px) {
+  .order-item_figure {
+    width: 14rem;
+    margin-right: 1.5rem;
+  }
+  .order-item_content {
+    width: calc(100% - 15.5rem);
+  }
+  .order-item_product {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 640px) {
+  .order-item_product .item-meta {
+    margin: 0 0 0.5rem;
+    font-size: calc(var(--font-heading-scale) * 1.5rem);
+  }
+  .order-item_product .item-value {
+    margin: 0 0 0.5rem;
+    font-size: calc(var(--font-heading-scale) * 1.5rem);
+  }
+  .order-item_product .item-description {
+    font-size: calc(var(--font-heading-scale) * 1.5rem);
+  }
+  .order-item_fulfillment .fulfilled {
+    margin: 0 0 0.5rem;
+    font-size: calc(var(--font-heading-scale) * 1.5rem);
+  }
+  .order-item_fulfillment .unfulfilled {
+    margin: 0 0 0.5rem;
+    font-size: calc(var(--font-heading-scale) * 1.5rem);
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .order-item_figure {
+    width: 16.5rem;
+    margin-right: 2rem;
+  }
+  .order-item_content {
+    width: calc(100% - 18.5rem);
+  }
+  .order-item_product {
+    width: 100%;
+  }
+  .order-item_product .headline-6 {
+    margin: 0.25rem 0;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .order-item_figure {
+    width: 18rem;
+    margin-right: 2rem;
+  }
+  .order-item_content {
+    width: calc(100% - 20rem);
+  }
+  .order-item_product {
+    width: 60%;
+    padding-right: 2rem;
+  }
+  .order-item_product .headline-4 {
+    margin: 0 0 1.15rem;
+    font-size: calc(var(--font-heading-scale) * 1.8rem);
+  }
+  .order-item_fulfillment {
+    width: 40%;
+  }
+  .order-item_fulfillment .headline-4 {
+    margin: 0 0 1.25rem;
+  }
+  .order-item_fulfillment .headline-4.spc-vendor {
+    margin: 2.25rem 0 1.25rem;
+    font-size: calc(var(--font-heading-scale) * 1.6rem);
+  }
+}
+
+/* Order Product */

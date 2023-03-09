@@ -1,0 +1,121 @@
+{{ 'section-customer.css' | asset_url | stylesheet_tag }}
+
+<div id="register" class="customer">
+  <div class="customer-wrapper page-width">
+    <div class="customer-form">
+      {%- form 'create_customer', novalidate: 'novalidate' -%}
+        <h1 class="customer-header headline-1">
+          {{ 'customer.register.title' | t }}
+        </h1>
+        <p class="customer-form_heading">{{ 'customer.register.subtitle' | t }}</p>
+        {%- if form.errors -%}
+          <div class="error-section">
+            <ul>
+              {%- for field in form.errors -%}
+                <li>
+                  {%- if field == 'form' -%}
+                    {{ form.errors.messages[field] }}
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        <div class="field">
+          <input
+            type="text"
+            name="customer[first_name]"
+            id="RegisterForm-FirstName"
+            {% if form.first_name %}value="{{ form.first_name }}"{% endif %}
+            autocomplete="given-name"
+            placeholder="{{ 'customer.register.first_name' | t }}"
+          >
+          <label for="RegisterForm-FirstName">
+            {{ 'customer.register.first_name' | t }}
+          </label>
+        </div>
+
+        <div class="field">
+          <input
+            type="text"
+            name="customer[last_name]"
+            id="RegisterForm-LastName"
+            {% if form.last_name %}value="{{ form.last_name }}"{% endif %}
+            autocomplete="family-name"
+            placeholder="{{ 'customer.register.last_name' | t }}"
+          >
+          <label for="RegisterForm-LastName">
+            {{ 'customer.register.last_name' | t }}
+          </label>
+        </div>
+
+        <div class="field">
+          <input
+            type="email"
+            name="customer[email]"
+            {%- if form.errors contains 'email' -%}class="field-error" {%- endif -%}
+            id="RegisterForm-email"
+            {% if form.email %} value="{{ form.email }}"{% endif %}
+            spellcheck="false"
+            autocapitalize="off"
+            autocomplete="email"
+            aria-required="true"
+            {% if form.errors contains 'email' %}
+              aria-invalid="true"
+              aria-describedby="RegisterForm-email-error"
+            {% endif %}
+            placeholder="{{ 'customer.register.email' | t }}"
+          >
+          <label for="RegisterForm-email">
+            {{ 'customer.register.email' | t }}
+          </label>
+        </div>
+        {%- if form.errors contains 'email' -%}
+          <span id="RegisterForm-email-error" class="form-message_error">
+            {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.
+          </span>
+        {%- endif -%}
+        <div class="field">
+          <input
+            type="password"
+            name="customer[password]"
+            {%- if form.errors contains 'password' -%}class="field-error" {%- endif -%}
+            id="RegisterForm-password"
+            aria-required="true"
+            {% if form.errors contains 'password' %}
+              aria-invalid="true"
+              aria-describedby="RegisterForm-password-error"
+            {% endif %}
+            placeholder="{{ 'customer.register.password' | t }}"
+          >
+          <label for="RegisterForm-password">
+            {{ 'customer.register.password' | t }}
+          </label>
+          <span class="reveal-btn">
+            {% render 'icon-eye-open' %}
+            {% render 'icon-eye-closed' %}
+          </span>
+        </div>
+        {%- if form.errors contains 'password' -%}
+          <span id="RegisterForm-password-error" class="form-message_error">
+            {{ form.errors.translated_fields['password'] | capitalize }} {{ form.errors.messages['password'] }}.
+          </span>
+        {%- endif -%}
+        <div class="terms-section terms-privacy">
+          {{ 'customer.register.terms_html' | t: url: routes.root_url, terms: 'policies/terms-of-service', privacy: 'policies/privacy-policy' }}
+        </div>
+
+        <button class="button">
+          {{ 'customer.register.submit' | t }}
+        </button>
+
+        <div class="create-section">
+          {{ 'customer.register.login_html' | t: link: routes.account_login_url }}
+        </div>
+
+      {%- endform -%}
+    </div>
+
+  </div>
+</div>

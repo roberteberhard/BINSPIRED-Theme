@@ -1,0 +1,248 @@
+{
+  "sections": {
+    "hero-banner": {
+      "type": "hero-banner",
+      "settings": {
+        "heading": "A Week<br>in New York",
+        "sub_heading": "Show your love to NYC Art every day new.",
+        "button": "Shop",
+        "link": "",
+        "image_mobile": "",
+        "image_desktop": ""
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Iconic Art Prints",
+        "featured_collection": "featured-art-prints",
+        "featured_products_to_show": 12,
+        "featured_view": "View All",
+        "featured_link": "",
+        "featured_all": true,
+        "show_vendor": true
+      }
+    },
+    "teaser-banner": {
+      "type": "teaser-banner",
+      "settings": {
+        "title": "Featuring Robhisattwa",
+        "image_large": "",
+        "heading": "Mens Graphic Tees",
+        "button": "Shop",
+        "link": "shopify:\/\/collections\/robhisattwa",
+        "image_small_1": "",
+        "image_small_2": "",
+        "image_small_3": "",
+        "image_small_4": ""
+      }
+    },
+    "featured-sections": {
+      "type": "featured-sections",
+      "blocks": {
+        "headline-left": {
+          "type": "headline",
+          "settings": {
+            "title": "Urban Art Mugs",
+            "image_mobile": "",
+            "image_desktop": "",
+            "button": "Shop",
+            "url": ""
+          }
+        },
+        "headline-right": {
+          "type": "headline",
+          "settings": {
+            "title": "Stay Golden Mugs",
+            "image_mobile": "",
+            "image_desktop": "",
+            "button": "Shop",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "headline-left",
+        "headline-right"
+      ],
+      "settings": {
+        "title": "Essential Life Savers",
+        "view": "View All",
+        "link": "",
+        "show_view_all": true
+      }
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "title": "Must Have Cases",
+        "featured_products": "featured-cases",
+        "featured_products_to_show": 12,
+        "featured_view": "View All",
+        "featured_link": "",
+        "featured_all": true,
+        "show_vendor": true
+      }
+    },
+    "featured-categories": {
+      "type": "featured-categories",
+      "blocks": {
+        "featured-category-1": {
+          "type": "headline",
+          "settings": {
+            "title": "Latest Wall Art",
+            "image": "",
+            "button": "Shop",
+            "url": ""
+          }
+        },
+        "featured-category-3": {
+          "type": "headline",
+          "settings": {
+            "title": "Latest Tech",
+            "image": "",
+            "button": "Shop",
+            "url": ""
+          }
+        },
+        "featured-category-4": {
+          "type": "headline",
+          "settings": {
+            "title": "Latest Apparel",
+            "image": "",
+            "button": "Shop",
+            "url": ""
+          }
+        },
+        "featured-category-2": {
+          "type": "headline",
+          "settings": {
+            "title": "Latest Living",
+            "image": "",
+            "button": "Shop",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "featured-category-1",
+        "featured-category-3",
+        "featured-category-4",
+        "featured-category-2"
+      ],
+      "settings": {
+        "title": "Explore The Groove"
+      }
+    },
+    "featured-quotes": {
+      "type": "featured-quotes",
+      "settings": {
+        "title": "Every Day Quotes",
+        "featured_quotes": "featured-quotes-art-prints",
+        "featured_quotes_to_show": 12,
+        "featured_view": "View All",
+        "featured_link": "",
+        "featured_all": true,
+        "show_vendor": true
+      }
+    },
+    "featured-blog": {
+      "type": "featured-blog",
+      "disabled": true,
+      "settings": {
+        "title": "From the Journal",
+        "link": "View All",
+        "blog": "stories",
+        "post_limit": 3,
+        "show_view_all": true,
+        "show_date": true,
+        "show_author": false
+      }
+    },
+    "featured-affiliates": {
+      "type": "featured-affiliates",
+      "blocks": {
+        "featured-affiliates-1": {
+          "type": "headline",
+          "settings": {
+            "image": "",
+            "url": ""
+          }
+        },
+        "featured-affiliates-2": {
+          "type": "headline",
+          "settings": {
+            "image": "",
+            "url": ""
+          }
+        },
+        "featured-affiliates-3": {
+          "type": "headline",
+          "settings": {
+            "image": "",
+            "url": ""
+          }
+        },
+        "featured-affiliates-4": {
+          "type": "headline",
+          "settings": {
+            "image": "",
+            "url": ""
+          }
+        },
+        "featured-affiliates-5": {
+          "type": "headline",
+          "settings": {
+            "image": "",
+            "url": ""
+          }
+        },
+        "featured-affiliates-6": {
+          "type": "headline",
+          "settings": {
+            "image": "",
+            "url": ""
+          }
+        },
+        "featured-affiliates-7": {
+          "type": "headline",
+          "settings": {
+            "image": "",
+            "url": ""
+          }
+        },
+        "featured-affiliates-8": {
+          "type": "headline",
+          "settings": {
+            "image": "",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "featured-affiliates-1",
+        "featured-affiliates-2",
+        "featured-affiliates-3",
+        "featured-affiliates-4",
+        "featured-affiliates-5",
+        "featured-affiliates-6",
+        "featured-affiliates-7",
+        "featured-affiliates-8"
+      ],
+      "settings": {
+        "title": "The Power of Art"
+      }
+    }
+  },
+  "order": [
+    "hero-banner",
+    "featured-collection",
+    "teaser-banner",
+    "featured-sections",
+    "featured-products",
+    "featured-categories",
+    "featured-quotes",
+    "featured-blog",
+    "featured-affiliates"
+  ]
+}

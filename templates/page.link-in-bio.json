@@ -1,0 +1,33 @@
+{
+  "layout": "theme.bio",
+  "sections": {
+    "main": {
+      "type": "main-link-in-bio",
+      "blocks": {
+        "9cb0afe4-c908-4a6e-b250-ae10161b55fa": {
+          "type": "headline",
+          "settings": {
+            "title": "Follow us on Facebook",
+            "url": "https:\/\/facebook.com\/"
+          }
+        },
+        "12500f52-ec9d-4842-8beb-5fa141fd9282": {
+          "type": "headline",
+          "settings": {
+            "title": "Binspired's YouTube Channel",
+            "url": "https:\/\/www.youtube.com\/"
+          }
+        }
+      },
+      "block_order": [
+        "9cb0afe4-c908-4a6e-b250-ae10161b55fa",
+        "12500f52-ec9d-4842-8beb-5fa141fd9282"
+      ],
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,71 @@
+{% liquid
+  assign related_collection = product.metafields.product_info.related_collection
+%}
+
+<nav class='breadcrumbs' role='navigation' aria-label='breadcrumbs'>
+  <ol class='breadcrumbs__list'>
+    {% assign product_type = product.type | escape %}
+    <li class='breadcrumbs__item'>
+      <a class='breadcrumbs__link' href='{{ routes.collections_url }}/all' aria-current='page'>Products</a>
+    </li>
+    {% case product_type %}
+      {% when 'Art Print' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/wall-art' aria-current='page'>Wall Art</a>
+        </li>
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/art-prints' aria-current='page'>Art Prints</a>
+        </li>
+      {% when 'Coffee Mug' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/living' aria-current='page'>Living</a>
+        </li>
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/coffee-mugs' aria-current='page'
+            >Coffee Mugs</a
+          >
+        </li>
+      {% when 'Throw Pillow' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/living' aria-current='page'>Living</a>
+        </li>
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/throw-pillows' aria-current='page'
+            >Throw Pillows</a
+          >
+        </li>
+      {% when 'iPhone Case' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/tech' aria-current='page'>Tech</a>
+        </li>
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/iphone-cases' aria-current='page'
+            >iPhone Cases</a
+          >
+        </li>
+      {% when 'Samsung Galaxy Case' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/tech' aria-current='page'>Tech</a>
+        </li>
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/samsung-cases' aria-current='page'
+            >Samsung Cases</a
+          >
+        </li>
+      {% when 'Unisex T-Shirt' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/apparel' aria-current='page'>Apparel</a>
+        </li>
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/unisex-t-shirts' aria-current='page'
+            >Unisex T-Shirts</a
+          >
+        </li>
+    {% endcase %}
+    {% if related_collection %}
+      <li class='breadcrumbs__item'>
+        {{ product.metafields.product_info.related_collection | metafield_tag }}
+      </li>
+    {% endif %}
+  </ol>
+</nav>

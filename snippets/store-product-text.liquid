@@ -1,0 +1,3 @@
+<p class="product-options__text{% if block.settings.text_style == 'uppercase' %} caption-uppercase{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}" {{ block.shopify_attributes }}>
+  {{- block.settings.text -}}
+</p>

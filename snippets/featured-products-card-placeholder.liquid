@@ -1,0 +1,20 @@
+{% comment %}
+    Renders the Featured Products card placeholder
+
+    Accepts:
+    - card_count: {Number}
+
+    Usage:
+    {% render 'featured-products-card-placeholder', card_count: i %}
+{% endcomment %}
+
+{% assign counter = card_count | downcase %}
+{% assign placeholder_image = 'product-' | append: counter %}
+
+<div class="swiper-slide">
+  <a href="#">
+    <figure class="placeholder-gray">
+      {{ placeholder_image | placeholder_svg_tag: 'featured-img' }}
+    </figure>
+  </a>
+</div>

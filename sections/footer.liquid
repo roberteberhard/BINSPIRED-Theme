@@ -1,0 +1,392 @@
+{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+
+<footer id='footer' class='footer color-{{ section.settings.color_scheme }}'>
+  <div class='footer-top'>
+    <div class='footer-top-scroll'>
+      <div class='footer-top-scroll__click' @click='scrollToTop'>{%- render 'icon-arrow-top' -%}</div>
+    </div>
+    <div class='footer-top-wrapper page-width'>
+      <div class='footer-top-branding'>
+        <a href='/' class='link'>
+          {%- render 'icon-binspired-label' -%}
+        </a>
+      </div>
+      <div class='footer-top-sharing'>
+        {%- if section.settings.show_social -%}
+          <ul class='footer-top-social list-unstyled' role='list'>
+            {%- if settings.social_twitter_link != blank -%}
+              <li class='footer-top-social__item'>
+                <a
+                  href='{{ settings.social_twitter_link }}'
+                  class='footer-top-social__item-link'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  {%- render 'icon-twitter' -%}
+                  <span class='visually-hidden'>{{ 'general.social.links.twitter' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_facebook_link != blank -%}
+              <li class='footer-top-social__item'>
+                <a
+                  href='{{ settings.social_facebook_link }}'
+                  class='footer-top-social__item-link'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  {%- render 'icon-facebook' -%}
+                  <span class='visually-hidden'>{{ 'general.social.links.facebook' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_pinterest_link != blank -%}
+              <li class='footer-top-social__item'>
+                <a
+                  href='{{ settings.social_pinterest_link }}'
+                  class='footer-top-social__item-link'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  {%- render 'icon-pinterest' -%}
+                  <span class='visually-hidden'>{{ 'general.social.links.pinterest' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_instagram_link != blank -%}
+              <li class='footer-top-social__item'>
+                <a
+                  href='{{ settings.social_instagram_link }}'
+                  class='footer-top-social__item-link'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  {%- render 'icon-instagram' -%}
+                  <span class='visually-hidden'>{{ 'general.social.links.instagram' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_tiktok_link != blank -%}
+              <li class='footer-top-social__item'>
+                <a
+                  href='{{ settings.social_tiktok_link }}'
+                  class='footer-top-social__item-link'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  {%- render 'icon-tiktok' -%}
+                  <span class='visually-hidden'>{{ 'general.social.links.tiktok' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_tumblr_link != blank -%}
+              <li class='footer-top-social__item'>
+                <a
+                  href='{{ settings.social_tumblr_link }}'
+                  class='footer-top-social__item-link'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  {%- render 'icon-tumblr' -%}
+                  <span class='visually-hidden'>{{ 'general.social.links.tumblr' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_snapchat_link != blank -%}
+              <li class='footer-top-social__item'>
+                <a
+                  href='{{ settings.social_snapchat_link }}'
+                  class='footer-top-social__item-link'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  {%- render 'icon-snapchat' -%}
+                  <span class='visually-hidden'>{{ 'general.social.links.snapchat' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_youtube_link != blank -%}
+              <li class='footer-top-social__item'>
+                <a
+                  href='{{ settings.social_youtube_link }}'
+                  class='footer-top-social__item-link'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  {%- render 'icon-youtube' -%}
+                  <span class='visually-hidden'>{{ 'general.social.links.youtube' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if settings.social_vimeo_link != blank -%}
+              <li class='footer-top-social__item'>
+                <a
+                  href='{{ settings.social_vimeo_link }}'
+                  class='footer-top-social__item-link'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  {%- render 'icon-vimeo' -%}
+                  <span class='visually-hidden'>{{ 'general.social.links.vimeo' | t }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+  <div class='footer-middle'>
+    {%- if section.blocks.size > 0 -%}
+      <div class='footer-middle-wrapper'>
+        <div class='footer-middle-blocks'>
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'link_list' -%}
+                {%- if block.settings.menu != blank and block.settings.heading != blank -%}
+                  <template v-if='deviceSize'>
+                    {%- liquid
+                      assign index = forloop.index0
+                      assign size = block.settings.menu.links.size
+                    -%}
+                    <div
+                      data-id='{{ index }}'
+                      class='footer-middle-blocks_device'
+                      :class="{ 'active': active === {{ index }}}"
+                    >
+                      {%- if block.settings.heading != blank -%}
+                        <h3
+                          @click='handleDeviceMenuClick({{ index }}, {{ size }})'
+                          class='footer-middle-blocks_device-headline'
+                        >
+                          {{- block.settings.heading | escape -}}
+                        </h3>
+                      {%- endif -%}
+                      <ul class='footer-middle-blocks_device-listing'>
+                        {%- for link in block.settings.menu.links -%}
+                          <li>
+                            <a href='{{ link.url }}' class='link link--footer'>{{ link.title }}</a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div class='footer-middle-block_menu'>
+                      {%- if block.settings.heading != blank -%}
+                        <h3 class='footer-middle-block_menu-heading'>
+                          {{- block.settings.heading | escape -}}
+                        </h3>
+                      {%- endif -%}
+                      <ul class='footer-middle-block_menu-listing'>
+                        {%- for link in block.settings.menu.links -%}
+                          <li>
+                            <a href='{{ link.url }}' class='link link--footer'>{{ link.title }}</a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  </template>
+                {%- endif -%}
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+  <div class='footer-bottom'>
+    <div class='footer-bottom-wrapper page-width'>
+      <div class='footer-bottom-methods'>
+        <div class='footer_method__payment'>
+          <span class='footer_method__small-gray'>Payment methods we accept:</span>
+          <div class='footer_method__icons'>
+            <div class='footer_method__icon'>
+              {%- render 'icon-mastercard' -%}
+            </div>
+            <div class='footer_method__icon'>
+              {%- render 'icon-amexco' -%}
+            </div>
+            <div class='footer_method__icon'>
+              {%- render 'icon-visa' -%}
+            </div>
+            <div class='footer_method__icon'>
+              {%- render 'icon-paypal' -%}
+            </div>
+            <div class='footer_method__icon'>
+              {%- render 'icon-google-pay' -%}
+            </div>
+            <div class='footer_method__icon'>
+              {%- render 'icon-shop-pay' -%}
+            </div>
+            <div class='footer_method__icon'>
+              {%- render 'icon-pay' -%}
+            </div>
+          </div>
+        </div>
+        <div class='footer_method__delivery'>
+          <span class='footer_method__small-gray'>We deliver with:</span>
+          <div class='footer_method__icons'>
+            <div class='footer_method__icon'>
+              {%- render 'icon-dpd' -%}
+            </div>
+            <div class='footer_method__icon'>
+              {%- render 'icon-fedex' -%}
+            </div>
+            <div class='footer_method__icon'>
+              {%- render 'icon-dhl' -%}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='footer-bottom-corporate'>
+        <ul class='footer-corporate__policy'>
+          <li>
+            <a class='link link--terms' href='{{ routes.root_url }}pages/privacy-policy'>
+              {{- 'templates.footer.policies.privacy' | t -}}
+            </a>
+          </li>
+          <li class='footer-corporate__policy-spacer'>•</li>
+          <li>
+            <a class='link link--terms' href='{{ routes.root_url }}pages/terms-of-service'>
+              {{- 'templates.footer.policies.terms' | t -}}
+            </a>
+          </li>
+          <li class='footer-corporate__policy-spacer'>•</li>
+          <li>
+            <a class='link link--terms' href='{{ routes.root_url }}pages/legal-notice'>
+              {{- 'templates.footer.policies.legal' | t -}}
+            </a>
+          </li>
+        </ul>
+        <div class='footer-corporate__date'>
+          <p class='footer-corporate__rights'>
+            © {{ 'now' | date: '%Y' }}
+            {{ 'templates.footer.rights.description' | t }} Made by
+          </p>
+          <a href='https://roberteberhard.com' class='madeby' target='_blank'>
+            {%- render 'icon-re' -%}
+            <span class='visually-hidden'>Robert Eberhard</span></a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#footer')) {
+      const headerCart = Vue.createApp({
+        delimiters: ['${', '}'],
+        data() {
+          return {
+            spacer: 42,
+            blocks: [],
+            active: null,
+          }
+        },
+        methods: {
+          handleDeviceMenuClick(id, size) {
+            this.active = this.active === id ? null : id
+            this.blocks[id] = this.active === id ? 38 * (size + 1) + 30 : this.spacer
+            // add correct size to selected block & resize all other blocks to 42px
+            for (let i = 0; i < this.blocks.length; i++) {
+              let block = document.body.querySelector('.footer-middle-blocks_device[data-id="' + i + '"]')
+              if (i === id) {
+                block.style.height = this.blocks[id] + 'px'
+              } else {
+                block.style.height = this.spacer + 'px'
+              }
+            }
+          },
+          scrollToTop() {
+            smoothScrollTo(0, 0, 600)
+          },
+        },
+        computed: {
+          deviceSize() {
+            if (dimension.windowWidth >= 750) {
+              this.blocks = []
+              this.active = null
+            }
+            return dimension.windowWidth < 750 ? true : false
+          },
+        },
+      }).mount('#footer')
+    }
+  })
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.footer.name",
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "t:sections.footer.blocks.link_list.name",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Quick links",
+          "label": "t:sections.footer.blocks.link_list.settings.heading.label",
+          "info": "t:sections.footer.blocks.link_list.settings.heading.info"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "default": "footer",
+          "label": "t:sections.footer.blocks.link_list.settings.menu.label",
+          "info": "t:sections.footer.blocks.link_list.settings.menu.info"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "background-1",
+          "label": "t:sections.footer.settings.color_scheme.options__1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.footer.settings.color_scheme.options__2.label"
+        },
+        {
+          "value": "background-3",
+          "label": "t:sections.footer.settings.color_scheme.options__3.label"
+        },
+        {
+          "value": "background-4",
+          "label": "t:sections.footer.settings.color_scheme.options__4.label"
+        },
+        {
+          "value": "background-5",
+          "label": "t:sections.footer.settings.color_scheme.options__5.label"
+        },
+        {
+          "value": "background-6",
+          "label": "t:sections.footer.settings.color_scheme.options__6.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.footer.settings.color_scheme.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__2.content",
+      "info": "t:sections.footer.settings.header__2.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "default": false,
+      "label": "t:sections.footer.settings.show_social.label"
+    }
+  ]
+}
+{% endschema %}

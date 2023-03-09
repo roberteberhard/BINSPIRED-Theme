@@ -1,0 +1,42 @@
+{% comment %}
+    Renders the Featured section card
+
+    Accepts:
+    - featured_card: {Object} Block Liquid object
+    - featured_count: {Number} Block object count index
+
+    Usage:
+    {% render 'featured-sections-card', featured_card: block.settings, featured_count: forloop.index %}
+{% endcomment %}
+
+<article class="featured-sections_article">
+  <figure class="placeholder-gray">
+    {%- if featured_card.image_mobile != blank and featured_card.image_desktop != blank -%}
+      <picture>
+        <source media="(min-width: 960px)" srcset="{{ featured_card.image_desktop | image_url: width: 1152 }}">
+        <source srcset="{{ featured_card.image_mobile | image_url: width: 732 }}">
+        <img
+          src="{{ featured_card.image_desktop | image_url: width: 1152 }}"
+          class="featured-img"
+          loading="lazy"
+          alt="{{ featured_card.image_desktop.alt | escape }}"
+          width="{{ featured_card.image_desktop.width }}"
+          height="{{ featured_card.image_desktop.height }}"
+        >
+      </picture>
+      <figcaption>
+        <div class="featured-sections_caption">
+          <h4 class="headline-2">{{ featured_card.title | escape }}</h4>
+          <a href="{{ featured_card.url }}" class="button white-btn">{{ featured_card.button }}</a>
+        </div>
+      </figcaption>
+      <a href="{{ featured_card.url }}" class="block-link"><span class="visually-hidden">{{ featured_card.title | escape }}</span></a>
+    {%- else -%}
+      <picture>
+        {% assign counter = featured_count | downcase %}
+        {% assign placeholder_image = 'collection-' | append: counter %}
+        {{ placeholder_image | placeholder_svg_tag: 'featured-img' }}
+      </picture>
+    {%- endif -%}
+  </figure>
+</article>

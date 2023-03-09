@@ -1,0 +1,162 @@
+{{ "section-customer-account.css" | asset_url | stylesheet_tag }}
+{{ "component-customer-account-card.css" | asset_url | stylesheet_tag }}
+
+<div class="customer">
+  <div class="customer-wrapper page-width">
+    <div id="orders">
+
+      <header class="member-header">
+        <div class="member-title">
+          <h1 class="member-title_order headline-1">{{ "customer.orders.title" | t }}</h1>
+        </div>
+
+        <div class="member-nav">
+          <a role="option" target="_self" tabindex="-1" class="member-nav_link m-profile" href="{{ routes.account_url }}">{{ "customer.account.menu.profile" | t }}</a>
+          <a role="option" target="_self" tabindex="-1" class="member-nav_link m-order active" href="{{ routes.account_url }}/#orders">{{ "customer.account.menu.order" | t }}</a>
+          <a role="option" target="_self" tabindex="-1" class="member-nav_link m-favorite" href="{{ routes.root_url }}pages/favorites">{{ "customer.account.menu.favorite" | t }}</a>
+          <a role="option" target="_self" tabindex="-1" class="member-nav_link m-address" href="{{ routes.account_addresses_url }}">{{ "customer.account.menu.address" | t }}</a>
+        </div>
+        <div class="member-end">&nbsp;</div>
+      </header>
+
+      <section class="orders-section">
+        {% assign number_of_orders = customer.orders | size %} {%- if number_of_orders > 0 -%} {%- for order in customer.orders -%}
+        <article class="orders-section_article">
+          {% render 'customer-order-card', order_card: order %}
+        </article>
+        {%- endfor -%} {%- else -%}
+        <h2 class="headline-3">{{ "customer.orders.none" | t }}</h2>
+        {%- endif -%}
+      </section>
+    </div>
+
+    <div id="profile">
+      <header class="member-header">
+        <div class="member-title">
+          <h1 class="member-title_profile headline-1">{{ "customer.account.menu.profile" | t }}</h1>
+        </div>
+        <div class="member-nav">
+          <a role="option" target="_self" tabindex="-1" class="member-nav_link m-profile active" href="{{ routes.account_url }}">{{ "customer.account.menu.profile" | t }}</a>
+          <a role="option" target="_self" tabindex="-1" class="member-nav_link m-order" href="{{ routes.account_url }}/#orders">{{ "customer.account.menu.order" | t }}</a>
+          <a role="option" target="_self" tabindex="-1" class="member-nav_link m-favorite" href="{{ routes.root_url }}pages/favorites">{{ "customer.account.menu.favorite" | t }}</a>
+          <a role="option" target="_self" tabindex="-1" class="member-nav_link m-address" href="{{ routes.account_url }}/addresses">{{ "customer.account.menu.address" | t }}</a>
+        </div>
+        <div class="member-end">&nbsp;</div>
+      </header>
+
+      <section class="profile-section">
+        <div class="profile-avatar">
+            {%- render 'icon-user' -%}
+          <span class="visually-hidden">{{ "general.header.menu.profile" | t }}</span>
+        </div>
+        <div class="subheader">
+          <h2 class="headline-2">{{ customer.name }}</h2>
+          <p class="headline-heading">Binspired Member</p>
+          {% comment %} <p class="headline-heading">Binspired Member Since</p> {% endcomment %}
+        </div>
+      </section>
+
+      <section class="order-section">
+        <div class="swiper orderSwiper">
+          {% assign number_of_orders = customer.orders | size %}
+          <div class="order-section_header">
+            <div>
+              <h2 class="headline-2">{{ "customer.orders.title" | t }}</h2>
+              {%- if number_of_orders > 0 -%}<span class="view-spacer">|</span><a class="link--text" href="{{ routes.account_url }}/#orders">View All</a>{%- endif -%}
+            </div>
+            <nav class="order-section_nav">
+              <button class="carousel-btn prev-btn" aria-hidden="true" tabindex="-1">
+                {%- render 'icon-prev-btn' -%}
+                <span class="visually-hidden">{{ "general.carousel.prev" | t }}</span>
+              </button>
+              <button class="carousel-btn next-btn" aria-hidden="true" tabindex="-1">
+                {%- render 'icon-next-btn' -%}
+                <span class="visually-hidden">{{ "general.carousel.next" | t }}</span>
+              </button>
+            </nav>
+          </div>
+          <div class="swiper-wrapper">
+            {% paginate customer.orders by 8 %} {%- if number_of_orders > 0 -%} {%- for order in customer.orders -%} {% render 'customer-order-card', order_card: order %} {%- endfor -%} {%- else -%}
+            <p class="empty-section">{{ "customer.orders.none" | t }}</p>
+            {%- endif -%} {% endpaginate %}
+          </div>
+        </div>
+      </section>
+
+      <section class="favorites-section">
+        <div class="swiper favoritesSwiper">
+          <div class="favorites-section_header">
+            <div>
+              <h2 class="headline-2">{{ "customer.favorites.title" | t }}</h2>
+              <span class="view-spacer">|</span><a class="link--text" href="{{ routes.account_url }}/#orders">View All</a>
+            </div>
+            <nav class="favorites-section_nav">
+              <button class="carousel-btn prev-btn" aria-hidden="true" tabindex="-1">
+                {%- render 'icon-prev-btn' -%}
+                <span class="visually-hidden">{{ "general.carousel.prev" | t }}</span>
+              </button>
+              <button class="carousel-btn next-btn" aria-hidden="true" tabindex="-1">
+                {%- render 'icon-next-btn' -%}
+                <span class="visually-hidden">{{ "general.carousel.next" | t }}</span>
+              </button>
+            </nav>
+          </div>
+          <div class="swiper-wrapper">
+            <p class="empty-section">{{ "customer.favorites.none" | t }}</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const orderSwiper = new Swiper(".orderSwiper", {
+      slidesPerView: 1,
+      spaceBetween: 15,
+      loop: false,
+      navigation: {
+        nextEl: ".next-btn",
+        prevEl: ".prev-btn"
+      },
+      breakpoints: {
+        480: {
+          slidesPerView: 2,
+          spaceBetween: 15
+        },
+        750: {
+          slidesPerView: 3,
+          spaceBetween: 15
+        },
+        990: {
+          slidesPerView: 4,
+          spaceBetween: 15
+        }
+      }
+    });
+    const favoritesSwiper = new Swiper(".favoritesSwiper", {
+      slidesPerView: 1,
+      spaceBetween: 15,
+      loop: false,
+      navigation: {
+        nextEl: ".next-btn",
+        prevEl: ".prev-btn"
+      },
+      breakpoints: {
+        480: {
+          slidesPerView: 2,
+          spaceBetween: 15
+        },
+        750: {
+          slidesPerView: 3,
+          spaceBetween: 15
+        },
+        990: {
+          slidesPerView: 4,
+          spaceBetween: 15
+        }
+      }
+    });
+  });
+</script>

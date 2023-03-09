@@ -1,0 +1,88 @@
+<h1 class='headline-1'>
+  {% liquid
+    assign main_category = collection.metafields.collection_info.main_category.value
+    assign sub_category = collection.metafields.collection_info.sub_category.value
+  %}
+  <ol class='breadcrumbs__list'>
+    <li class='breadcrumbs__item'>
+      <a class='breadcrumbs__link' href='{{ routes.collections_url }}/all' aria-current='page'>Products</a>
+    </li>
+    {% case main_category %}
+      {% when 'Wall Art' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/wall-art' aria-current='page'>
+            {{- main_category -}}
+          </a>
+        </li>
+      {% when 'Living' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/living' aria-current='page'>
+            {{- main_category -}}
+          </a>
+        </li>
+      {% when 'Tech' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/tech' aria-current='page'>
+            {{- main_category -}}
+          </a>
+        </li>
+      {% when 'Apparel' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/apparel' aria-current='page'>
+            {{- main_category -}}
+          </a>
+        </li>
+      {% when 'Jewelry' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/gewelry' aria-current='page'>
+            {{- main_category -}}
+          </a>
+        </li>
+      {% when 'Collections' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}' aria-current='page'>
+            {{- main_category -}}
+          </a>
+        </li>
+    {% endcase %}
+    {% case sub_category %}
+      {% when 'Art Prints' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/art-prints' aria-current='page'>
+            {{- sub_category -}}
+          </a>
+        </li>
+      {% when 'Throw Pillows' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/throw-pillows' aria-current='page'>
+            {{- sub_category -}}
+          </a>
+        </li>
+      {% when 'Coffee Mugs' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/coffee-mugs' aria-current='page'>
+            {{- sub_category -}}
+          </a>
+        </li>
+      {% when 'iPhone Cases' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/iphone-cases' aria-current='page'>
+            {{- sub_category -}}
+          </a>
+        </li>
+      {% when 'Samsung Cases' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/samsung-cases' aria-current='page'>
+            {{- sub_category -}}
+          </a>
+        </li>
+      {% when 'Unisex T-Shirts' %}
+        <li class='breadcrumbs__item'>
+          <a class='breadcrumbs__link' href='{{ routes.collections_url }}/unisex-t-shirt' aria-current='page'>
+            {{- sub_category -}}
+          </a>
+        </li>
+    {% endcase %}
+  </ol>
+  ${ collection.title } <span class='max-number'>(${ collection.count })</span>
+</h1>

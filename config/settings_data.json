@@ -1,0 +1,196 @@
+{
+  "current": {
+    "colors_accent_1": "#171717",
+    "colors_accent_2": "#ebf4f9",
+    "colors_accent_3": "#686868",
+    "colors_text": "#171717",
+    "colors_outline_button_labels": "#171717",
+    "colors_background_2": "#f5f5f5",
+    "colors_background_3": "#eeebe5",
+    "colors_background_4": "#f5f5f5",
+    "colors_background_5": "#ebf4f9",
+    "colors_background_6": "#FCF7A4",
+    "type_header_font": "sans-serif",
+    "heading_scale": 100,
+    "type_body_font": "sans-serif",
+    "body_scale": 100,
+    "show_on_homepage": true,
+    "show_on_searchpage": true,
+    "show_on_cartpage": true,
+    "social_twitter_link": "https:\/\/twitter.com\/binspired_by",
+    "social_facebook_link": "https:\/\/www.facebook.com\/binspired.by",
+    "social_pinterest_link": "https:\/\/www.pinterest.com\/binspired_by",
+    "social_instagram_link": "https:\/\/www.instagram.com\/binspired.by",
+    "social_tiktok_link": "https:\/\/tiktok.com\/@binspiredshop",
+    "social_tumblr_link": "",
+    "favicon": "shopify:\/\/shop_images\/original-binspired-round-dark-1024.png",
+    "currency_code_enabled": false,
+    "products_per_page": 24,
+    "checkout_header_image": "shopify:\/\/shop_images\/Binspired_checkout_banner.jpg",
+    "checkout_logo_image": "shopify:\/\/shop_images\/Binspired_Logo_Black.png",
+    "checkout_sidebar_background_color": "#fafafa",
+    "checkout_heading_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+    "checkout_accent_color": "#171717",
+    "checkout_button_color": "#171717",
+    "checkout_error_color": "#e92d45",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "color_scheme": "background-1",
+          "menu": "main-menu",
+          "show_line_separator": true,
+          "enable_sticky_header": true
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "footer-about": {
+            "type": "link_list",
+            "settings": {
+              "heading": "About",
+              "menu": "footer"
+            }
+          },
+          "footer-shop": {
+            "type": "link_list",
+            "settings": {
+              "heading": "Shop",
+              "menu": "footer-collections"
+            }
+          },
+          "footer-featured": {
+            "type": "link_list",
+            "settings": {
+              "heading": "Featured",
+              "menu": "footer-themes"
+            }
+          },
+          "footer-help": {
+            "type": "link_list",
+            "settings": {
+              "heading": "Help",
+              "menu": "footer-help"
+            }
+          }
+        },
+        "block_order": [
+          "footer-about",
+          "footer-shop",
+          "footer-featured",
+          "footer-help"
+        ],
+        "settings": {
+          "color_scheme": "background-1",
+          "show_social": true
+        }
+      },
+      "header-bar": {
+        "type": "header-bar",
+        "settings": {
+          "color_scheme": "background-1"
+        }
+      },
+      "offset-left": {
+        "type": "offset-left",
+        "settings": {
+          "menu": "mobile-menu"
+        }
+      },
+      "offset-right": {
+        "type": "offset-right",
+        "blocks": {
+          "offset-right-wall-art": {
+            "type": "category",
+            "settings": {
+              "text": "Wall Art",
+              "image": "shopify:\/\/shop_images\/Binspired_All_Wall_Art.jpg",
+              "link": "shopify:\/\/collections\/wall-art"
+            }
+          },
+          "offset-right-living": {
+            "type": "category",
+            "settings": {
+              "text": "Living",
+              "image": "shopify:\/\/shop_images\/Binspired_All_Living.jpg",
+              "link": "shopify:\/\/collections\/living"
+            }
+          },
+          "offset-right-tech": {
+            "type": "category",
+            "settings": {
+              "text": "Tech",
+              "image": "shopify:\/\/shop_images\/Binspired_All_Tech.jpg",
+              "link": "shopify:\/\/collections\/tech"
+            }
+          },
+          "offset-right-apparel": {
+            "type": "category",
+            "settings": {
+              "text": "Apparel",
+              "image": "shopify:\/\/shop_images\/Binspired_All_Apparel.jpg",
+              "link": "shopify:\/\/collections\/apparel"
+            }
+          }
+        },
+        "block_order": [
+          "offset-right-wall-art",
+          "offset-right-living",
+          "offset-right-tech",
+          "offset-right-apparel"
+        ],
+        "settings": {
+          "title": "There are no items in your bag.",
+          "subtitle": "Start your BINSPIRED journey here...",
+          "show_vendor": false
+        }
+      },
+      "announcement": {
+        "type": "announcement",
+        "blocks": {
+          "announcement-0": {
+            "type": "announcement",
+            "settings": {
+              "text": "Free worldwide shipping on all orders",
+              "link": ""
+            }
+          },
+          "announcement-1": {
+            "type": "announcement",
+            "settings": {
+              "text": "New iPhone 14 Cases Are Here! <span class=\"strong\">SHOP NOW<\/span>",
+              "link": "shopify:\/\/collections\/iphone-cases"
+            }
+          }
+        },
+        "block_order": [
+          "announcement-0",
+          "announcement-1"
+        ],
+        "settings": {
+          "color_scheme": "background-2"
+        }
+      },
+      "message": {
+        "type": "message",
+        "settings": {
+          "color_scheme": "background-2"
+        }
+      },
+      "search": {
+        "type": "search",
+        "settings": {
+          "color_scheme": "background-4"
+        }
+      }
+    },
+    "content_for_index": [
+
+    ]
+  },
+  "presets": {
+    "Default": {
+    }
+  }
+}

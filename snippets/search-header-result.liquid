@@ -1,0 +1,9 @@
+<div class="search-results-header__result ">
+  <span v-if="result" class="result-amount">${ result.count } {{ 'collection.results' | t }}</span>
+</div>
+<div class="search-results-header__filter">
+  <button v-if="result" class="button inverted-btn" @click="showDeviceFilterState">
+    <span class="filter-text">{{ 'collection.device_filter.filter' | t }}</span>
+    {%- render 'icon-filter' -%}
+  </button>
+</div>

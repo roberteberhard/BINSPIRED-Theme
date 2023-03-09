@@ -1,0 +1,18 @@
+{{ 'section-main-about.css' | asset_url | stylesheet_tag }}
+
+<div class='main-about'>
+  <div class='main-about_wrapper page-width'>
+    <header class='about-header'>
+      <div class='about-title'>
+        <h1 class='headline-1'>{{ page.title | escape }}</h1>
+      </div>
+    </header>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page.about.label",
+  "tag": "section"
+}
+{% endschema %}

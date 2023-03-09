@@ -1,0 +1,148 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-about",
+      "disabled": true,
+      "settings": {
+      }
+    },
+    "image-banner": {
+      "type": "image-banner",
+      "settings": {
+        "heading": "",
+        "sub_heading": "",
+        "image_mobile": "shopify:\/\/shop_images\/Be_Inspired_Every_Day_Mobile.jpg",
+        "image_desktop": "shopify:\/\/shop_images\/Be_Inspired_Every_Day_Binspired.jpg"
+      }
+    },
+    "1651932526b4b2a32f": {
+      "type": "image-with-text",
+      "blocks": {
+        "1651932526e9773361-0": {
+          "type": "heading",
+          "settings": {
+            "heading": "Unique Design"
+          }
+        },
+        "1651932526e9773361-1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>You feel free, independent and you want to transport your personality outside the mainstream? BINSPIRED believes in creativity and delivers products with a unique design that creates an everyday environment for your personal style. Our products underline your individual taste and make a design statement like a message to the world.<\/p>"
+          }
+        },
+        "1651932526e9773361-2": {
+          "type": "button",
+          "settings": {
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "1651932526e9773361-0",
+        "1651932526e9773361-1",
+        "1651932526e9773361-2"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/Binspired-Be-Inspired.jpg",
+        "layout": "text_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "center",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "founder-quote": {
+      "type": "founder-quote",
+      "settings": {
+        "tagline": "With our products we want to underline your unique personality. Because your life is your message to the world.",
+        "signature": "Robert Eberhard, BINSPIRED Founder"
+      }
+    },
+    "1651932532f029d91c": {
+      "type": "image-with-text",
+      "blocks": {
+        "1651932532012913f2-0": {
+          "type": "heading",
+          "settings": {
+            "heading": "Our Story"
+          }
+        },
+        "1651932532012913f2-1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>BINSPIRED is a young Swiss brand with a passion for everyday modern art around the world. In 2021 BINSPIRED started creating first designs - in 2022 we went live. Our story is short and simple: the mission is to bring our artworks to products, making them unique for your environment. They include styles from the surroundings and reflect various art themes, such as street art.<\/p>"
+          }
+        },
+        "1651932532012913f2-2": {
+          "type": "button",
+          "settings": {
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "1651932532012913f2-0",
+        "1651932532012913f2-1",
+        "1651932532012913f2-2"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/Binspired-Our-Story.jpg",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "center",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "16519325378b0c4041": {
+      "type": "image-with-text",
+      "blocks": {
+        "1651932537dd3312f7-0": {
+          "type": "heading",
+          "settings": {
+            "heading": "Your Favourites"
+          }
+        },
+        "1651932537dd3312f7-1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>BINSPIRED works with selected manufacturing partners in the USA and Europe. Our products are authentic and handmade artworks that are worth becoming your favourite pieces. We’re using the latest printing techniques, environmentally friendly inks and high quality materials. The products are custom made and individually printed when you order it.<\/p>"
+          }
+        },
+        "1651932537dd3312f7-2": {
+          "type": "button",
+          "settings": {
+            "button_label": "Explore",
+            "button_link": "shopify:\/\/collections"
+          }
+        }
+      },
+      "block_order": [
+        "1651932537dd3312f7-0",
+        "1651932537dd3312f7-1",
+        "1651932537dd3312f7-2"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/Binspired-Our-Products.jpg",
+        "layout": "text_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "center",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image-banner",
+    "1651932526b4b2a32f",
+    "founder-quote",
+    "1651932532f029d91c",
+    "16519325378b0c4041"
+  ]
+}

@@ -1,0 +1,208 @@
+.teaser-banner_wrapper {
+  padding-bottom: 5rem;
+}
+
+@media screen and (min-width: 750px) {
+  .teaser-banner_wrapper {
+    padding-bottom: 7rem;
+  }
+}
+
+/* Header */
+
+.teaser-banner_header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  height: 5rem;
+  margin-bottom: 1.4rem;
+}
+
+.teaser-banner_header .headline-2 {
+  margin-top: 5px;
+}
+
+/* Content */
+
+.teaser-banner_content {
+  position: relative;
+  height: 69.6rem;
+}
+
+.teaser-banner_large {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 32rem;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-color: rgb(var(--color-base-background-4));
+}
+
+.teaser-banner_large figcaption {
+  box-sizing: border-box;
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  word-wrap: break-word;
+  width: calc(100% - 60px);
+  height: calc(100% - 48px);
+}
+
+.teaser-banner_large .block-link {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+}
+
+@media screen and (min-width: 640px) {
+  .teaser-banner_large figcaption {
+    top: calc(66.66667% - 36px);
+    left: 36px;
+    width: 75%;
+    height: 33.33333%;
+  }
+}
+
+.teaser-banner_small {
+  position: absolute;
+  z-index: 0;
+  width: calc(50% - 0.4rem);
+  height: 18rem;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-color: rgb(var(--color-base-background-4));
+}
+
+.teaser-banner_small .block-link {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+}
+
+.teaser-banner_small.pos-1 {
+  top: 32.8rem;
+  left: 0;
+}
+
+.teaser-banner_small.pos-2 {
+  top: 32.8rem;
+  left: calc(50% + 0.4rem);
+}
+
+.teaser-banner_small.pos-3 {
+  top: 51.6rem;
+  left: 0;
+}
+
+.teaser-banner_small.pos-4 {
+  top: 51.6rem;
+  left: calc(50% + 0.4rem);
+}
+
+@media screen and (min-width: 560px) {
+  .teaser-banner_content {
+    height: 85rem;
+  }
+  .teaser-banner_large {
+    height: 40rem;
+  }
+  .teaser-banner_small.pos-1,
+  .teaser-banner_small.pos-2 {
+    top: 41.5rem;
+    width: calc(50% - 0.75rem);
+    height: 21rem;
+  }
+  .teaser-banner_small.pos-3,
+  .teaser-banner_small.pos-4 {
+    top: 64rem;
+    width: calc(50% - 0.75rem);
+    height: 21rem;
+  }
+  .teaser-banner_small.pos-2,
+  .teaser-banner_small.pos-4 {
+    left: calc(50% + 0.75rem);
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .teaser-banner_content {
+    height: 44rem;
+  }
+  .teaser-banner_large {
+    width: calc(50% - 0.75rem);
+    height: 44rem;
+  }
+  .teaser-banner_small.pos-1 {
+    top: 0;
+    left: calc(50% + 0.75rem);
+    width: calc(25% - 0.875rem);
+    height: calc(22rem - 0.5rem);
+  }
+  .teaser-banner_small.pos-2 {
+    top: 0;
+    left: calc(75% + 0.875rem);
+    width: calc(25% - 0.875rem);
+    height: calc(22rem - 0.5rem);
+  }
+  .teaser-banner_small.pos-3 {
+    top: 22.5rem;
+    left: calc(50% + 0.75rem);
+    width: calc(25% - 0.875rem);
+    height: calc(22rem - 0.5rem);
+  }
+  .teaser-banner_small.pos-4 {
+    top: 22.5rem;
+    left: calc(75% + 0.875rem);
+    width: calc(25% - 0.875rem);
+    height: calc(22rem - 0.5rem);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .teaser-banner_content {
+    height: 46rem;
+  }
+  .teaser-banner_large {
+    height: 46rem;
+  }
+  .teaser-banner_small.pos-1 {
+    height: calc(23rem - 0.5rem);
+  }
+  .teaser-banner_small.pos-2 {
+    height: calc(23rem - 0.5rem);
+  }
+  .teaser-banner_small.pos-3 {
+    top: 23.5rem;
+    height: calc(23rem - 0.5rem);
+  }
+  .teaser-banner_small.pos-4 {
+    top: 23.5rem;
+    height: calc(23rem - 0.5rem);
+  }
+}
+
+.teaser-banner_img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}

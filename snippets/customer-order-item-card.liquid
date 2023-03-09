@@ -1,0 +1,104 @@
+{% comment %}
+  Renders the Customer oder item card
+
+  Accepts:
+  - product_item: {Object} Order line_item Liquid object
+
+  Usage: {% render 'customer-order-item-card', product_item: line_item %}
+{% endcomment %}
+
+<article class="customer-order-item-card">
+  <div class="customer-order-item-card_content">
+    <figure class="order-item_figure">
+      <picture class="placeholder-gray">
+        {%- if product_item.image != blank -%}
+          {%- if product_item.url != blank -%}
+            <a href="{{ product_item.url }}">
+              <img src="{{ product_item.image | image_url: width: 480 }}"
+                class="featured-img"
+                width="100"
+                height="100"
+                alt="{{ product_item.image.alt }}"
+                loading="lazy"
+              />
+            </a>
+          {%- else -%}
+            <img src="{{ product_item.image | image_url: width: 480 }}" 
+              class="featured-img"
+              width="100"
+              height="100"
+              alt="{{ product_item.image.alt }}"
+              loading="lazy"
+            />
+          {%- endif -%}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'featured-img' }}
+        {%- endif -%}
+      </picture>
+    </figure>
+    <div class="order-item_content">
+      <div class="order-item_product">
+        <p class="headline-6 text--light margin-0">
+          {{ product_item.product.vendor }}
+        </p>
+        <h4 class="headline-4">
+          {{ product_item.title | link_to: product_item.product.url | replace: '<a', '<a class="link--text"' }}
+        </h4>
+        {% comment %} 
+        TODO:schaue bei shopify ordr item noch einfügen, original, final price
+        {% endcomment %}
+        <p class="item-meta">
+          {{ 'customer.order.price' | t }}
+        </p>
+        <p class="item-value">
+          <span class="strong">{{ product_item.final_price | money }}</span>
+        </p>
+        {%- if product_item.sku != blank -%}
+          <p class="item-meta">
+            {{ 'customer.order.sku' | t }}
+          </p>
+          <p class="item-value">
+            <span class="strong">{{ product_item.sku }}</span>
+          </p>
+        {%- endif -%}
+        <p class="item-meta">
+          {{ 'customer.order.quantity' | t }}
+        </p>
+        <p class="item-value">
+          <span class="strong">{{ product_item.quantity }}</span>
+        </p>
+        {% comment %}
+        TODO: schaue bei shopify ordr item noch einfügen, original, final price
+        {% endcomment %}
+        <p class="item-meta">
+          {{ 'customer.order.total' | t }}
+        </p>
+        <p class="item-value">
+          <span class="strong">{{ product_item.original_line_price | money }}</span>
+        </p>
+        <p class="item-description">
+          {{ product_item.product.description | truncatewords: 15 }}
+        </p>
+      </div>
+      <div class="order-item_fulfillment">
+        <p class="headline-4{% if product_item.product.vendor %} spc-vendor{% endif %}">
+          {{ 'customer.order.fulfillment_status' | t }}
+        </p>
+        {%- if product_item.successfully_fulfilled_quantity > 0 -%}
+          {%- assign created_at = product_item.fulfillment.created_at | time_tag: format: 'date' -%}
+          {% if product_item.successfully_fulfilled_quantity > 1 %}
+            <p class="fulfilled">{{ 'customer.order.fulfilled_quantities_html' | t: count: product_item.successfully_fulfilled_quantity }}</p>
+          {% else %}
+            <p class="fulfilled">{{ 'customer.order.fulfilled_quantity_html' | t: count: product_item.successfully_fulfilled_quantity }}</p>
+          {% endif %}
+          <p class="fulfilled">{{ 'customer.order.fulfilled_at_html' | t: date: created_at }}</p>
+          <p class="fulfilled">{{ 'customer.order.tracking_company' | t }} <span class="strong">{{ product_item.fulfillment.tracking_company }}</span></p>
+          <p class="fulfilled">{{ 'customer.order.tracking_number' | t }} <span class="strong">{{ product_item.fulfillment.tracking_number }}</span></p>
+          <a target="_blank" href="{{ product_item.fulfillment.tracking_url }}" class="button small-btn">{{ 'customer.order.track_shipment' | t }}</a>
+        {% else %}
+          <p class="unfulfilled text--light">{{ 'customer.order.unfulfilled' | t }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</article>

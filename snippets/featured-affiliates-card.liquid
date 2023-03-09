@@ -1,0 +1,28 @@
+{% comment %}
+    Renders the featured affiliates card
+
+    Accepts:
+    - affiliate_card: {Object} Product Liquid object
+
+    Usage:
+    {% render 'featured-categories-card', affiliate_card: block %}
+{% endcomment %}
+
+<article class="affiliates-card">
+  <a href="{{ affiliate_card.url | default: '#' }}" class="affiliates-card_link" target="blank" rel="noopener noreferrer">
+    <picture class="affiliate_card_picture placeholder-gray">
+      {%- if affiliate_card.image -%}
+        <img
+          src="{{ affiliate_card.image.src | image_url: width: 640 }}"
+          class="affiliates-card_img"
+          width="{{ affiliate_card.image.width }}"
+          height="{{ affiliate_card.image.height }}"
+          alt="{{ affiliate_card.image.alt | escape }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'affiliates-card_img' }}
+      {%- endif -%}
+    </picture>
+  </a>
+</article>

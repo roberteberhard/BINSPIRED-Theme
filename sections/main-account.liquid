@@ -1,0 +1,46 @@
+{{ 'section-main-help.css' | asset_url | stylesheet_tag }}
+{{ 'section-header-help.css' | asset_url | stylesheet_tag }}
+
+<div class="main-help">
+  <div class="main-help_wrapper page-width">
+    {% render 'header-help', title: page.title, active: 'account' %}
+  </div>
+  <div class="main-help_content page-width">
+    <div class="main-help_body odd">
+      <div id="createaccount" class="main-help_body-block">
+        <h2 class="headline-2">How do I create an account?</h2>
+        <p>Via the main menu you can create your own customer account. This way you can view all information and data about your orders at any time.</p>
+        <p>Click on "Register" in the upper right corner of the main menu and fill in the required fields (if you are using a mobile device, you will find it in the menu that opens with the hamburger button) or simply by clicking <a class="link--primary" target="_self" href="{{ routes.root_url }}account/register">here</a>.</p>
+        <p>After successful registration you will receive a confirmation email. You now have access to your customer account!</p>
+      </div>
+      <div id="forgotpassword" class="main-help_body-block">
+        <h2 class="headline-2">What if I forgot my password?</h2>
+        <p>You have forgotten your password? That's not a problem. You can request a new password by clicking on the "Sign In" button and then on the "Forgot your password?" link or simply by clicking <a class="link--primary" target="_self" href="{{ routes.root_url }}account/login#recover">here</a>. You will then receive an email with a link to create a new password.</p>
+        <p>Having trouble logging in to your account? This does not necessarily mean that you have forgotten your password. Check if you ordered as a guest and did not create an account.</p>
+      </div>
+    </div>
+    <div class="main-help_body even">
+      <div id="dataprotection" class="main-help_body-block">
+        <h2 class="headline-2">What about data protection?</h2>
+        <p>Don't worry, data protection is important to us. Your data will be treated confidentially and will not be shared with third parties.</p>
+      </div>
+      <div id="deleteaccount" class="main-help_body-block">
+        <h2 class="headline-2">How can I delete my customer account?</h2>
+        <p>To cancel your account with us, just <a class="link--primary" target="_self" href="{{ routes.root_url }}pages/contact">contact us</a> and we will take care of everything. It hurts us to let you go, but we hope you will return to <a class="link--primary" target="_self" href="{{ routes.root_url }}">Binspired</a> soon.</p>
+      </div>
+      <div id="unsubscribe" class="main-help_body-block">
+        <h2 class="headline-2">How can I unsubscribe from the newsletter?</h2>
+        <p>This makes us really sad, but we'll let you go. Just scroll to the bottom of the newsletter and click on "If you no longer wish to receive these emails, click here" or "Unsubscribe".</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page.account.label",
+  "settings": [
+
+  ]
+}
+{% endschema %}

@@ -1,0 +1,110 @@
+.image-with-text_wrapper {
+  padding-bottom: 7rem !important;
+}
+
+@media screen and (min-width: 750px) {
+  .image-with-text_wrapper {
+    padding-bottom: 11rem !important;
+  }
+}
+
+.image-with-text_grid {
+  display: flex;
+  flex-direction: column;
+}
+
+/* *************** */
+/* Media           */
+/* *************** */
+
+.image-with-text_media {
+  margin: 0 0 3rem;
+}
+
+/* *************** */
+/* Text            */
+/* *************** */
+.image-with-text_text .headline-2 {
+  margin: 0 0 1.75rem;
+  font-size: calc(var(--font-heading-scale) * 2.4rem);
+}
+
+.image-with-text_text .image-with-text_tagline p {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+.image-with-text_text .button {
+  margin-top: 2.5rem;
+}
+
+@media screen and (max-width: 749px) {
+  .image-with-text_grid .image-with-text_text.mobile-left {
+    text-align: left;
+  }
+  .image-with-text_grid .image-with-text_text.mobile-center {
+    text-align: center;
+  }
+  .image-with-text_grid .image-with-text_text.mobile-right {
+    text-align: right;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  /* Normal */
+  .image-with-text_grid {
+    flex-direction: row;
+    width: 100%;
+  }
+  .image-with-text_grid.pos-top {
+    align-items: flex-start;
+  }
+  .image-with-text_grid.pos-middle {
+    align-items: center;
+  }
+  .image-with-text_grid.pos-bottom {
+    align-items: flex-end;
+  }
+  .image-with-text_text .headline-2 {
+    font-size: calc(var(--font-heading-scale) * 2.8rem);
+  }
+  .image-with-text_grid .image-with-text_media {
+    width: calc(50% + 10px);
+    margin: 0;
+  }
+  .image-with-text_grid .image-with-text_text {
+    width: calc(50% - 10px);
+    margin: 0;
+    padding-right: 2%;
+    padding-left: 4%;
+  }
+  .image-with-text_grid .image-with-text_text.desktop-left {
+    text-align: left;
+  }
+  .image-with-text_grid .image-with-text_text.desktop-center {
+    text-align: center;
+  }
+  .image-with-text_grid .image-with-text_text.desktop-right {
+    text-align: right;
+  }
+  /* Reverse */
+  .image-with-text_grid.reverse {
+    flex-direction: row-reverse;
+  }
+  .image-with-text_grid.reverse .image-with-text_text {
+    padding-right: 4%;
+    padding-left: 2%;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .image-with-text_grid .image-with-text_text {
+    padding-right: 4%;
+    padding-left: 8%;
+  }
+  .image-with-text_grid.reverse .image-with-text_text {
+    padding-right: 8%;
+    padding-left: 4%;
+  }
+}

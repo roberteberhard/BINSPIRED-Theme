@@ -1,0 +1,106 @@
+{{ 'section-main-help.css' | asset_url | stylesheet_tag }}
+{{ 'section-header-help.css' | asset_url | stylesheet_tag }}
+
+<div class="main-help">
+  <div class="main-help_wrapper page-width">
+    {% render 'header-help', title: page.title, active: 'faqs' %}
+  </div>
+  <div class="main-help_content page-faqs page-width">
+    <div class="main-help_body odd first">
+      <div class="main-help_body-block">
+        <h2 class="headline-2">Ordering</h2>
+        <ul class="link-list">
+          <li><a class="link--text" href="{{ routes.root_url }}pages/ordering#howto">How can I place an order on the website?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/ordering#noconfirmation">I have not received an order confirmation!</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/ordering#cancelorder">Can I edit/cancel my order after I have placed it?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/ordering#orderstatus">How can I view the status of my order?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/ordering#findinvoice">Where can I find the invoice for my order?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/ordering#trackorder">How can I track my order?</a></li>
+        </ul>
+      </div>
+      <div class="main-help_body-block">
+        <h2 class="headline-2">Shipping</h2>
+        <ul class="link-list">
+          <li><a class="link--text" href="{{ routes.root_url }}pages/shipping#howlong">How long will it take to manufacture?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/shipping#shipto">Where do you ship?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/shipping#shipfrom">Where will my order ship from?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/shipping#shippingtime">How long does shipping take?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/shipping#customfees">What are the customs fees for international orders?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/shipping#poboxes">Do you deliver to P.O. boxes?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/shipping#trackorder">How can I track my order?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/shipping#orderarrived">My order should have arrived by now, but I still don't have it. What should I do?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/shipping#whattodo">My order was shipped with only some of my items, what should I do?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/shipping#damagedproduct">I received a wrong/damaged product, what should I do?</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-help_body even second">
+      <div class="main-help_body-block">
+        <h2 class="headline-2">Returns</h2>
+        <ul class="link-list">
+          <li><a class="link--text" href="{{ routes.root_url }}pages/returns#returnorder">How can I return my order?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/returns#exchangeproduct">How can I exchange a product?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/returns#incorrectproduct"></a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/returns#returnproduct">Do I need to return the damaged product I received?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/returns#payreturn">Do I have to pay for the return shipping?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/returns#receiverefund">When will I receive my refund?</a></li>
+        </ul>
+      </div>
+      <div class="main-help_body-block">
+        <h2 class="headline-2">Payment</h2>
+        <ul class="link-list">
+          <li><a class="link--text" href="{{ routes.root_url }}pages/payment#currency">In which currency are the products listed?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/payment#byinvoice">Can I pay by invoice?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/payment#methods">What payment methods are accepted?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/payment#declined">Why was the payment with my credit card declined?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/payment#confirmations">Will I receive a confirmation after the payment?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/payment#invoice">When and how will I receive my invoice?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/payment#fees">What are the customs fees for international orders?</a></li>
+        </ul>
+      </div>
+      <div class="main-help_body-block">
+        <h2 class="headline-2">Promotions</h2>
+        <ul class="link-list">
+          <li><a class="link--text" href="{{ routes.root_url }}pages/promotions#entercode">Where do I enter my promo code?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/promotions#promocode">What can I do if the promo code does not work?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/promotions#promotional">Can I use more than one promo code for one order?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/promotions#forgotcode">I placed an order but forgot to enter the promo code, what should I do?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/promotions#newsletter">I signed up for the newsletter but I did not receive my 15% code. What can I do?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/promotions#gifts">Do you offer the possibility to order gifts?</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-help_body odd third">
+      <div class="main-help_body-block">
+        <h2 class="headline-2">Size Guide</h2>
+        <ul class="link-list">
+          <li><a class="link--text" href="{{ routes.root_url }}pages/size-guide#print">Art Print</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/size-guide#mug">Coffee Mug</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/size-guide#pillow">Throw Pillow</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/size-guide#galaxy">Samsung Galaxy Case</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/size-guide#iphone">iPhone Case</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/size-guide#tshirt">Unisex T-Shirt</a></li>
+        </ul>
+      </div>
+      <div class="main-help_body-block">
+        <h2 class="headline-2">Account</h2>
+        <ul class="link-list">
+          <li><a class="link--text" href="{{ routes.root_url }}pages/account#createaccount">How do I create an account?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/account#forgotpassword">What if I forgot my password?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/account#dataprotection">What about data protection?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/account#deleteaccount">How can I delete my customer account?</a></li>
+          <li><a class="link--text" href="{{ routes.root_url }}pages/account#unsubscribe">How can I unsubscribe from the newsletter?</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page.faqs.label",
+  "settings": [
+
+  ]
+}
+{% endschema %}

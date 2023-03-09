@@ -1,0 +1,15 @@
+<div class="nav-dropdown_row">
+  <span class="nav-dropdown_row-text">{{ 'collection.sort_by' | t }}</span>
+  <span v-if="results.sort.selected" class="nav-dropdown_row-text">: <span class="text--light">${ results.sort.label }</span></span>
+  <span class="nav-dropdown_row-chevron"></span>
+</div>
+<div class="nav-dropdown_list">
+  <template v-for="(sortby, index) in results.data.sortby" :key="index">
+    <div v-if="sortby.value == results.sort.selected" class="nav-dropdown_list-item selected">
+      ${ sortby.name }
+    </div>
+    <div v-else class="nav-dropdown_list-item" @click="sortProductsBySelectedOption(sortby.name, sortby.value)">
+      ${ sortby.name }
+    </div>
+  </template>
+</div>

@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-shipping",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

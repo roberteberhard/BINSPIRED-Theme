@@ -1,0 +1,48 @@
+/* Addresses */
+
+.customer-addresses {
+  padding: 1rem 0 7rem;
+}
+
+@media screen and (min-width: 750px) {
+  .customer-addresses {
+    padding: 2rem 0 10rem;
+  }
+}
+
+.customer-addresses .headline-2 {
+  margin: 0 0 2rem;
+}
+
+
+/* Adresses Items */
+
+.customer-addresses_items {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  margin: 0;
+}
+
+@media screen and (min-width: 480px) {
+  .customer-addresses_items {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: calc(100% + 1.5rem);
+    margin: 0 -0.75rem;
+  }
+}
+
+
+/* Addresses Empty */
+
+.customer-addresses_empty p {
+  margin: 0 0 4rem;
+  line-height: 1.5;
+}
+
+@media screen and (min-width: 480px) {
+  .customer-addresses_empty {
+    padding: 0 0.75rem;
+  }
+}

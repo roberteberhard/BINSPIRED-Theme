@@ -1,0 +1,206 @@
+{{ 'section-search.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign currency_code = ''
+  assign currency_symbol = cart.currency.symbol
+  if settings.currency_code_enabled == true
+    assign currency_code = ' ' | append: cart.currency.iso_code
+  endif
+  assign placeholder_image = 'product-1'
+-%}
+
+<section id="search">
+  <div class="search-app" :class="[ searchAppState ]">
+    <div class="search-app-header" :class="{ 'has-sticky': headerStickyState }">
+      <div class="search-app-header-wrapper page-width-large">
+        <div class="search-app-header-box">
+          <div class="search-app-header-box__logo">
+            <a href="{{ routes.root_url }}" title="{{ 'general.header.menu.homepage' | t }}">
+              {%- render 'icon-logo' -%}
+              <span class="visually-hidden">{{ 'general.header.menu.homepage' | t }}</span>
+            </a>
+          </div>
+          <div class="search-app-header-box__group">
+            <form action="{{ routes.search_url }}" method="get" role="search">
+              <button class="search-app-header-box__group--glass" aria-hidden="true">
+                {%- render 'icon-search' -%}
+                <span class="visually-hidden">{{ 'general.offset.menu.close' | t }}</span>
+              </button>
+              <input type="text" name="q" v-model="searchTerm" @keyup="handleTypingLogic(searchTerm)" class="search-app-header-box__group--term" placeholder="Search" maxlength="64" />
+              <input type="hidden" name="options[prefix]" value="last">
+            </div>
+          </form>
+          <div class="search-app-header-box__close" aria-hidden="true" @click="toggleSearchAppState">
+            {%- render 'icon-close' -%}
+            <span class="visually-hidden">{{ 'general.offset.menu.close' | t }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="search-app-content">
+      <div class="search-app-content-wrapper page-width">
+        <div class="search-app-heading" v-if="items.length == 0 && !loading">
+          <div class="search-app-heading-suggest">
+            <span class="headline-4">{{ 'general.search.popular' | t }}</span>
+            <ul class="search-app-suggestions">
+              <li><a href="{{ routes.root_url }}search?q=Mug" tabindex="0" rel="nofollow">Mug</a></li>
+              <li><a href="{{ routes.root_url }}search?q=Pop Art" tabindex="0" rel="nofollow">Pop Art</a></li>
+              <li><a href="{{ routes.root_url }}search?q=iPhone" tabindex="0" rel="nofollow">iPhone</a></li>
+              <li><a href="{{ routes.root_url }}search?q=Prints" tabindex="0" rel="nofollow">Prints</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="search-app-heading" v-else>
+          <div class="search-app-heading-block">
+            <span class="headline-4">{{ 'general.search.suggestion' | t }}</span><a class="link--text" :href=`{{ routes.root_url }}search?q=${searchTerm}` v-if="viewAll">View All</a>
+          </div>
+        </div>
+        <div class="search-app-spinner" v-if="loading">
+          <span class="visually-hidden">{{ 'collections.spinner' | t }}</span>
+        </div>
+        <div class="search-app-results" v-else >
+          <article class="search-app-article" v-for="item in items">
+            <a :href="item.url">
+              <figure v-if="item.image" class="placeholder-gray">
+                <img :src="item.image" :alt="item.title" class="featured-img" width="800" height="800" loading="lazy">
+              </figure>
+              <figure v-else="" class="placeholder-gray">
+                {{ placeholder_image | placeholder_svg_tag: 'featured-img' }}
+              </figure>
+              <div class="search-app-article__info">
+                <div class="search-app-article__info--title" role="link" v-html="item.title"></div>
+                <div class="search-app-article__info--subtitle" role="link" v-html="item.type"></div>
+                <div class="search-app-article__info--price" role="link"><span class="small">${ handleFromState(item.price_max, item.price_min) }</span>{{ currency_symbol }}${ item.price }{{ currency_code }}</div>
+              </div>
+            </a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="search-modal" :class="[ searchAppState ]" @click="toggleSearchAppState"></div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#search')) {
+      const appSearch = Vue.createApp({
+        delimiters: ['${', '}'],
+        data() {
+          return {
+            items: [],
+            searchTerm: '',
+            previousTerm: '',
+            searchTimeout: undefined,
+            loading: false,
+            viewAll: false
+          }
+        },
+        methods: {
+          showSpinner() {
+            this.loading = true
+          },
+          hideSpinner() {
+            this.loading = false
+          },
+          resetSearch() {
+            this.items = [],
+            this.searchTerm = '',
+            this.previousTerm = '',
+            this.loading = false,
+            this.viewAll = false
+          },
+          handleFromState(max, min) {
+            const result = max != min ? 'from ' : ''
+            return result
+          },
+          handleTypingLogic(searchValue) {
+            this.searchTerm = searchValue
+            if(this.searchTerm != this.previousTerm) {
+              clearTimeout(this.searchTimeout)
+              this.previousTerm = this.searchTerm
+              this.searchTimeout = setTimeout(this.getSearchResults, 250)
+            }
+          },
+          async getSearchResults() {
+            const typingNum = this.searchTerm.length
+            if( typingNum > 1 ) {
+              this.showSpinner()
+              const url = window.Shopify.routes.root + `search/suggest.json?q=${encodeURIComponent(this.searchTerm)}&${encodeURIComponent('resources[type]')}=product&${encodeURIComponent('resources[limit]')}=7&section_id=predictive-search`
+              try {
+                const response = await axios.get(url)
+                const results = await response.data;
+                const products = results.resources.results.products
+                this.items = []
+                this.viewAll = false
+                if(products.length > 0) {
+                  this.items = products.slice(0, 6);
+                  this.viewAll = products.length > 6 ? true : false;
+                }
+                this.hideSpinner()
+              } catch (error) {
+                this.hideSpinner()
+              }
+            } else {
+              this.items = []
+            }
+          },
+          toggleSearchAppState() {
+            toggleSearchAppState.hideSearch()
+            toggleSearchAppState.removeKeyDown()
+          }
+        },
+        computed: {
+          searchAppState() {
+            this.resetSearch()
+            return searchAppState.modal
+          },
+          headerStickyState() {
+            return dimension.headerStickyState
+          },
+        }
+      }).mount('#search')
+    }
+  })
+</script>
+
+
+{% schema %}
+{
+  "name": "t:sections.message.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "background-1",
+          "label": "t:sections.message.settings.color_scheme.options__1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.message.settings.color_scheme.options__2.label"
+        },
+        {
+          "value": "background-3",
+          "label": "t:sections.message.settings.color_scheme.options__3.label"
+        },
+        {
+          "value": "background-4",
+          "label": "t:sections.message.settings.color_scheme.options__4.label"
+        },
+        {
+          "value": "background-5",
+          "label": "t:sections.message.settings.color_scheme.options__5.label"
+        },
+        {
+          "value": "background-6",
+          "label": "t:sections.message.settings.color_scheme.options__6.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.message.settings.color_scheme.label"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,29 @@
+{% comment %}
+    Renders the related designs card
+
+    Accepts:
+    - item: {Object} Product Liquid object (optional)
+
+    Usage:
+    {% render 'related-designs-card', item: item %}
+{% endcomment %}
+
+<div class="related-designs-card swiper-slide">
+  <a href="{{ item.url | default: '#' }}">
+    <picture class="placeholder-gray">
+      {%- if item.images[0] -%}
+        <img
+          src="{{ item.images[0] | image_url: width: 480 }}"
+          class="featured-img"
+          width="200"
+          height="200"
+          alt="{{ item.images[0].alt | escape }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'featured-img' }}
+      {%- endif -%}
+    </picture>
+    <div class="related-designs-card_title" >{{ item.type | escape }}</div>
+  </a>
+</div>

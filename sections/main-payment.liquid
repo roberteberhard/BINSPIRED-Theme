@@ -1,0 +1,65 @@
+{{ 'section-main-help.css' | asset_url | stylesheet_tag }}
+{{ 'section-header-help.css' | asset_url | stylesheet_tag }}
+
+<div class="main-help">
+  <div class="main-help_wrapper page-width">
+    {% render 'header-help', title: page.title, active: 'payment' %}
+  </div>
+  <div class="main-help_content page-width">
+    <div class="main-help_body odd">
+      <div id="currency" class="main-help_body-block">
+        <h2 class="headline-2">In which currency are the products listed?</h2>
+        <p>All our products are listed in US Dollars.</p>
+      </div>
+      <div id="byinvoice" class="main-help_body-block">
+        <h2 class="headline-2">Can I pay by invoice?</h2>
+        <p>No, unfortunately it is not possible to choose invoice as a payment method.</p>
+      </div>
+      <div id="methods" class="main-help_body-block">
+        <h2 class="headline-2">What payment methods are accepted?</h2>
+        <p>Depending on which country you are from, you have the choice between one of the following payment methods:</p>
+        <p>
+          Pay Pal, Apple Pay, Credit card, in general
+          <ul class="payment-list">
+            <li>VISA</li>
+            <li>VISA Debit</li>
+            <li>MasterCard</li>
+            <li>Discover</li>
+            <li>JCB</li>
+            <li>American Express</li>
+          </ul>
+        </p>
+      </div>
+      <div id="declined" class="main-help_body-block">
+        <h2 class="headline-2">Why was the payment with my credit card declined?</h2>
+        <p>There can be several reasons why a credit card payment is declined. For example, a typo, invalid card, lack of verification or a technical error on our website.</p>
+        <p>Alternatively, you can try to make the payment using the following payment method: PayPal</p>
+      </div>
+    </div>
+    <div class="main-help_body even">
+      <div id="confirmations" class="main-help_body-block">
+        <h2 class="headline-2">Will I receive a confirmation after the payment?</h2>
+        <p>If you have chosen PayPal or credit card as your payment method, the order will be completed only after you have successfully gone through the payment process. A payment confirmation will be displayed immediately in your browser when the whole process is completed.</p>
+      </div>
+      <div id="invoice" class="main-help_body-block">
+        <h2 class="headline-2">When and how will I receive my invoice?</h2>
+        <p>You will receive an invoice by email once all ordered items have been shipped.</p>
+      </div>
+      <div id="fees" class="main-help_body-block">
+        <h2 class="headline-2">What are the customs fees for international orders?</h2>
+        <p>Good question! International orders may be subject to an additional customs and tax fee. This fee is beyond our control and will be charged by your local customs office. Customs regulations vary greatly from country to country.</p>
+        <p>Please check directly with your local customs office to see if they charge duties and taxes on your purchases.</p>
+        <p>We are not responsible for any additional fees that may be incurred after completing a purchase on <a class="link--primary" target="_self" href="{{ routes.root_url }}">binspired.com</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page.payment.label",
+  "settings": [
+
+  ]
+}
+{% endschema %}

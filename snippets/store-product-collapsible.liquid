@@ -1,0 +1,13 @@
+<div class='product-options__collapsible' {{ block.shopify_attributes }}>
+  <details id='Details-{{ block.id }}-{{ section.id }}'>
+    <summary>
+      <div class='product-options__summary'>
+        <h4 class='product-options__summary-title'>{{ heading }}</h4>
+      </div>
+    </summary>
+    <div class='product-options__content' id='ProductAccordion-{{ block.id }}-{{ section.id }}'>
+      {{ content }}
+      {{ page_content }}
+    </div>
+  </details>
+</div>

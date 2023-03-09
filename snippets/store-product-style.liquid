@@ -1,0 +1,17 @@
+<div class="product-options__style">
+  <ul>
+    <li>
+      {%- for color in product.metafields.product_info.product_colour.value -%}
+        {%- if forloop.first -%}{{ 'products.product.color_shown' | t }}{%- endif -%}
+        {{- color -}}
+        {%- unless forloop.last -%}/{%- endunless -%}
+      {%- endfor -%}
+    </li>
+    {% if product.metafields.product_info.product_style %}
+      <li>{{ 'products.product.style' | t }}{{ product.metafields.product_info.product_style }}</li>
+    {% endif %}
+    {% if product.type contains 'Art Print' %}
+      <li>{{ 'products.product.no_frame' | t }}</li>
+    {% endif %}
+  </ul>
+</div>

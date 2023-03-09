@@ -1,0 +1,50 @@
+{%- liquid
+  assign price_min_money = product_card.price_min | money
+  assign price_max_money = product_card.price_max | money
+  assign compare_at_price_min_money = product_card.compare_at_price_min | money
+  if settings.currency_code_enabled
+    assign price_min_money = product_card.price_min | money_with_currency
+    assign price_max_money = product_card.price_max | money_with_currency
+    assign compare_at_price_min_money = product_card.compare_at_price_min | money_with_currency
+  endif
+-%}
+
+<div class="recommendations-grid">
+  <div class="recommendations-info">
+    <div class="recommendations-info__title" role="link">{%- if product_vendor -%}{{ product_card.vendor | escape }}&nbsp;{%- endif -%}{{ product_card.title | escape }}</div>
+    <div class="recommendations-info__subtitle" role="link">{{ product_card.type | escape }}</div>
+  </div>
+  {% comment %}
+    "price_varies":  {{ product_card.price_varies }}</br>
+    "price_min":  {{ product_card.price_min }}</br>
+    "price_max":  {{ product_card.price_max }}</br>
+    "price_min_money":  {{ price_min_money }}</br>
+    "price_max_money":  {{ price_max_money }}</br>
+    "compare_at_price_varies":  {{ product_card.compare_at_price_varies }}</br>
+    "compare_at_price_min":  {{ product_card.compare_at_price_min }}</br>
+    "compare_at_price_min_money":  {{ compare_at_price_min_money }}</br>
+  {% endcomment %}
+  <div class="recommendations_price">
+    {% if product_card.price_varies == false and product_card.compare_at_price_varies == false %}
+      {% if product_card.price_min >= product_card.price_max and product_card.compare_at_price_min == 0 %}
+        <span class="recommendations_price__original">{{ price_min_money }}</span>
+      {% elsif product_card.price_min >= product_card.price_max and product_card.compare_at_price_min > 0 %}
+        <span class="recommendations_price__reduced">{{ price_min_money }}</span><span class="recommendations_price__compare">{{ compare_at_price_min_money }}</span>
+      {% endif %}
+    {% elsif product_card.price_varies == true and product_card.compare_at_price_varies == false %}
+      {% if product_card.price_max > product_card.price_min and product_card.compare_at_price_min == 0 %}
+        <span class="recommendations_price__small">{{ 'products.product.price.from_price' | t }}</span><span class="recommendations_price__original">{{ price_min_money }}</span>
+      {% elsif product_card.price_max > product_card.price_min and product_card.price_max > product_card.compare_at_price_min %}
+        <span class="recommendations_price__small">{{ 'products.product.price.from_price' | t }}</span><span class="recommendations_price__reduced">{{ price_min_money }}</span><span class="recommendations_price__compare">{{ compare_at_price_min_money }}</span>
+      {% else %}
+        <span class="recommendations_price__reduced">{{ price_min_money }}</span><span class="recommendations_price__compare">{{ compare_at_price_min_money }}</span>
+      {% endif %}
+    {% elsif product_card.price_varies == true and product_card.compare_at_price_varies == true %}
+      {% if product_card.price_max > product_card.price_min and product_card.compare_at_price_min > 0 %}
+        <span class="recommendations_price__small">{{ 'products.product.price.from_price' | t }}</span><span class="recommendations_price__reduced">{{ price_min_money }}</span><span class="recommendations_price__compare">{{ compare_at_price_min_money }}</span>
+      {% elsif product_card.price_max > product_card.price_min and product_card.compare_at_price_min == 0 %}
+        <span class="recommendations_price__reduced">{{ price_min_money }}</span><span class="recommendations_price__compare">{{ price_max_money }}</span>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>

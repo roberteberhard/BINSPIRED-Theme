@@ -1,0 +1,127 @@
+{{ 'component-teaser-banner.css' | asset_url | stylesheet_tag }}
+
+<div class="teaser-banner_wrapper page-width">
+  <div class="teaser-banner_header">
+    <h2 class="headline-2{% if section.settings.title == blank %} no-heading{% endif %}">{{ section.settings.title | escape }}</h2>
+  </div>
+  <div class="teaser-banner_content">
+    <figure>
+      {%- if section.settings.image_large != blank -%}
+        {% assign image_large = section.settings.image_large | image_url: width: 1152 %}
+        <div class="teaser-banner_large" style="background-image:url('{{ image_large }}')" width="100%" heigth="100%" alt="">
+          <figcaption>
+            <div class="featured-categories_caption">
+              <h4 class="headline-2">{{ section.settings.heading }}</h4>
+              <a href="{{ section.settings.link }}" class="button white-btn">{{ section.settings.button }}</a>
+            </div>
+          </figcaption>
+          <a href="{{ section.settings.link }}" class="block-link"><span class="visually-hidden">{{ section.settings.heading | escape }}</span></a>
+        </div>
+      {%- else -%}
+        {{ 'collection-1' | placeholder_svg_tag: 'teaser-banner_large' }}
+      {%- endif -%}
+    </figure>
+    <figure>
+      {%- if section.settings.image_small_1 != blank -%}
+        {% assign image_small_1 = section.settings.image_small_1 | image_url: width: 780 %}
+        <div class="teaser-banner_small pos-1" style="background-image:url('{{ image_small_1 }}')" width="100%" heigth="100%" alt="">
+          <a href="{{ section.settings.link }}" class="block-link"><span class="visually-hidden">{{ section.settings.image_small_1.alt | escape }}</span></a>
+        </div>
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'teaser-banner_small pos-1' }}
+      {%- endif -%}
+    </figure>
+    <figure>
+      {%- if section.settings.image_small_2 != blank -%}
+        {% assign image_small_2 = section.settings.image_small_2 | image_url: width: 780 %}
+        <div class="teaser-banner_small pos-2" style="background-image:url('{{ image_small_2 }}')" width="100%" heigth="100%" alt="">
+          <a href="{{ section.settings.link }}" class="block-link"><span class="visually-hidden">{{ section.settings.image_small_2.alt | escape }}</span></a>
+        </div>
+      {%- else -%}
+        {{ 'product-2' | placeholder_svg_tag: 'teaser-banner_small pos-2' }}
+      {%- endif -%}
+    </figure>
+    <figure>
+      {%- if section.settings.image_small_3 != blank -%}
+        {% assign image_small_3 = section.settings.image_small_3 | image_url: width: 780 %}
+        <div class="teaser-banner_small pos-3" style="background-image:url('{{ image_small_3 }}')" width="100%" heigth="100%" alt="">
+          <a href="{{ section.settings.link }}" class="block-link"><span class="visually-hidden">{{ section.settings.image_small_3.alt | escape }}</span></a>
+        </div>
+      {%- else -%}
+        {{ 'product-3' | placeholder_svg_tag: 'teaser-banner_small pos-3' }}
+      {%- endif -%}
+    </figure>
+    <figure>
+      {%- if section.settings.image_small_4 != blank -%}
+        {% assign image_small_4 = section.settings.image_small_4 | image_url: width: 780 %}
+        <div class="teaser-banner_small pos-4" style="background-image:url('{{ image_small_4 }}')" width="100%" heigth="100%" alt="">
+          <a href="{{ section.settings.link }}" class="block-link"><span class="visually-hidden">{{ section.settings.image_small_4.alt | escape }}</span></a>
+        </div>
+      {%- else -%}
+        {{ 'product-4' | placeholder_svg_tag: 'teaser-banner_small pos-4' }}
+      {%- endif -%}
+    </figure>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.teaser-banner.name",
+  "tag": "section",
+  "class": "teaser-banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Featured Sections",
+      "label": "t:sections.teaser-banner.settings.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_large",
+      "label": "t:sections.teaser-banner.settings.image.label"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.teaser-banner.settings.label"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "default": "Shop",
+      "label": "t:sections.teaser-banner.settings.button.label"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:sections.teaser-banner.settings.link.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_small_1",
+      "label": "t:sections.teaser-banner.settings.image_1.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_small_2",
+      "label": "t:sections.teaser-banner.settings.image_2.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_small_3",
+      "label": "t:sections.teaser-banner.settings.image_3.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_small_4",
+      "label": "t:sections.teaser-banner.settings.image_4.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.teaser-banner.presets.name"
+    }
+  ]
+}
+{% endschema %}

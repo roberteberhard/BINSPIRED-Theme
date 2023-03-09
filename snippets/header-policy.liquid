@@ -1,0 +1,23 @@
+{% comment %}
+    Renders the pages header policy navigation
+
+    Accepts:
+    - title: {String} Shows the title of the current page
+    - active: {String} The active navigation value. Show the navigation link as active!
+
+    Usage:
+    {% render 'header-policy', title: page.title, active: 'contact' %}
+{% endcomment %}
+
+
+<header class="header-policy">
+  <div class="policy-title">
+    <h1 class="headline-1">{{ title | escape }}</h1>
+  </div>
+  <div class="policy-nav">
+    <a role="option" target="_self" tabindex="-1" class="policy-nav_link {% if active == 'privacy' %}active{%- endif %}" href="{{ routes.root_url }}pages/privacy-policy">{{ 'general.policy.link.privacy' | t }}</a>
+    <a role="option" target="_self" tabindex="-1" class="policy-nav_link {% if active == 'terms' %}active{%- endif %}" href="{{ routes.root_url }}pages/terms-of-service">{{ 'general.policy.link.terms' | t }}</a>
+    <a role="option" target="_self" tabindex="-1" class="policy-nav_link {% if active == 'legal' %}active{%- endif %}" href="{{ routes.root_url }}pages/legal-notice">{{ 'general.policy.link.legal' | t }}</a>
+  </div>
+  <div class="policy-end">&nbsp;</div>
+</header>

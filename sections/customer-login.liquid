@@ -1,0 +1,92 @@
+{{ "section-customer.css" | asset_url | stylesheet_tag }}
+
+<div class="customer">
+  <div class="customer-wrapper page-width">
+    <div id="recover" class="customer-form">
+      {%- form 'recover_customer_password' -%}
+      <h1 tabindex="-1" class="customer-header headline-1">
+        {{ "customer.recover_password.title" | t }}
+      </h1>
+      <p class="customer-form_heading">{{ "customer.recover_password.subtext" | t }}</p>
+      {%- if form.errors -%}
+      <div class="error-section">
+        {{ form.errors.messages["form"] }}
+      </div>
+      {%- endif -%} {% assign recover_success = form.posted_successfully? %}
+      <div class="field">
+        <input type="email" value="" name="email" id="RecoverEmail" autocorrect="off" autocapitalize="off" autocomplete="email" {% if form.errors %} aria-invalid="true" aria-describedby="RecoverEmail-email-error" autofocus {% endif %} placeholder="{{ 'customer.login.email' | t }}" />
+        <label for="RecoverEmail">
+          {{ "customer.login.email" | t }}
+        </label>
+      </div>
+      <div class="recover-password">
+        <button type="submit" class="button">
+          {{ "customer.recover_password.submit" | t }}
+        </button>
+        <div class="create-section">
+          {{ "customer.recover_password.cancel_html" | t: link: "#login" }}
+        </div>
+      </div>
+      {%- endform -%}
+    </div>
+
+    <div id="login" class="customer-form">
+      {%- form 'customer_login', novalidate: 'novalidate' -%}
+      <h1 tabindex="-1" class="customer-header headline-1">
+        {{ "customer.login.title" | t }}
+      </h1>
+      <p class="customer-form_heading">{{ "customer.login.subtitle" | t }}</p>
+      {%- if recover_success == true -%}
+      <p class="customer-form_success" tabindex="-1" autofocus>{{ "customer.recover_password.success" | t }}</p>
+      {%- endif -%} {%- if form.errors -%}
+      <div class="error-section">
+        {{ form.errors | default_errors }}
+      </div>
+      {%- endif -%}
+      <div class="field">
+        <input type="email" class="field-email" name="customer[email]" id="CustomerEmail" {%- if form.errors contains 'form' -%}class="field-error" {%- endif -%} autocomplete="email" autocorrect="off" autocapitalize="off" {% if form.errors contains 'form' %} aria-invalid="true" {% endif %} placeholder="{{ "customer.login.email" | t }}" >
+        <label for="CustomerEmail">
+          {{ "customer.login.email" | t }}
+        </label>
+      </div>
+      {%- if form.password_needed -%}
+      <div class="field">
+        <input type="password" class="field-password"  value="" name="customer[password]" {%- if form.errors contains 'form' -%}class="field-error" {%- endif -%} id="CustomerPassword" autocomplete="current-password" {% if form.errors contains 'form' %} aria-invalid="true" {% endif %} placeholder="{{ "customer.login.password" | t }}" >
+        <label for="CustomerPassword">
+          {{ "customer.login.password" | t }}
+        </label>
+         <span class="reveal-btn"> {% render 'icon-eye-open' %} {% render 'icon-eye-closed' %} </span>
+        </div>
+      {%- endif -%} {%- if form.password_needed -%}
+      <div class="forgot-section">
+        <a class="link--primary" href="#recover">
+          {{ "customer.login.forgot_password" | t }}
+        </a>
+      </div>
+      {%- endif -%}
+      <div class="terms-section">
+        {{ 'customer.login.terms_html' | t: url: routes.root_url, terms: 'policies/terms-of-service', privacy: 'policies/privacy-policy' }}
+      </div>
+      <button type="submit" class="button">
+        {{ "customer.login.submit" | t }}
+      </button>
+      <div class="create-section">
+        <a class="link--text" href="{{ routes.account_register_url }}">
+          {{ "customer.login.create_account" | t }}
+        </a>
+      </div>
+      {%- endform -%}
+    </div>
+
+    {% if shop.checkout.guest_login %}
+    <div id="login" class="customer-form">
+      <h2 tabindex="-1" class="guest-title headline-2">{{ "customer.login.guest_title" | t }}</h2>
+      {%- form 'guest_login', novalidate: 'novalidate' -%}
+      <button type="submit" class="button">
+        {{ "customer.login.guest_continue" | t }}
+      </button>
+      {%- endform -%}
+    </div>
+    {% endif %}
+  </div>
+</div>

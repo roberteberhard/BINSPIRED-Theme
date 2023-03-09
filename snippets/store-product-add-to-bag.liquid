@@ -1,0 +1,48 @@
+{% if product.available %}
+
+  {%- liquid assign currency_symbol = cart.currency.symbol -%}
+
+  <div class="product-options__buying">
+    <div id="addToBagButton">
+      <div ref="addToBag">
+        <template v-if="storeVariantId == ''">
+          <button disabled class="button large-btn full-width" type="submit" name="add">{{ 'products.product.select_a' | t }}${storeVariantStyle}</button>
+        </template>
+        <template v-else>
+          <template v-if="storeButtonLoader == true">
+            <button class="button large-btn full-width">
+              <div class="load-more-spinner">
+                <span class="visually-hidden">{{ 'collections.spinner' | t }}</span>
+              </div>
+            </button>
+          </template>
+          <template v-else-if="storeButtonLoader == false">
+            <button v-if="storeVariantPrice && storeVariantCompare == ''" @click="storeAddToBag" class="button large-btn full-width" type="submit" name="add">{{ 'products.product.add_to_bag' | t }}{{ currency_symbol }}${storeVariantPrice}</button>
+            <button v-else-if="storeVariantPrice && storeVariantCompare" @click="storeAddToBag" class="button large-btn full-width" type="submit" name="add">{{ 'products.product.add_to_bag' | t }}{{ currency_symbol }}${storeVariantPrice} {{ currency_symbol }}<span class="compare--price">${storeVariantCompare}</span></button>
+          </template>
+        </template>
+      </div>
+      <template v-if="mobileSizeState && mobileButtonState">
+        <div class="product-options__buying-mobile">
+          <template v-if="storeVariantId == ''">
+            <button @click="storeScrollToVariant" class="button product-mobile-btn" type="submit" name="add">{{ 'products.product.select_a' | t }}${storeVariantStyle}</button>
+          </template>
+          <template v-else>
+            <template v-if="storeButtonLoader == true">
+              <button class="button product-mobile-btn">
+                <div class="load-more-spinner">
+                  <span class="visually-hidden">{{ 'collections.spinner' | t }}</span>
+                </div>
+              </button>
+            </template>
+            <template v-else-if="storeButtonLoader == false">
+              <button v-if="storeVariantPrice && storeVariantCompare == ''" @click="storeAddToBag" class="button product-mobile-btn" type="submit" name="add">{{ 'products.product.add_to_bag' | t }}{{ currency_symbol }}${storeVariantPrice}</button>
+              <button v-else-if="storeVariantPrice && storeVariantCompare" @click="storeAddToBag" class="button product-mobile-btn" type="submit" name="add">{{ 'products.product.add_to_bag' | t }}{{ currency_symbol }}${storeVariantPrice} {{ currency_symbol }}<span class="compare--price">${storeVariantCompare}</span></button>
+            </template>
+          </template>
+        </div>
+      </template>
+    </div>
+  </div>
+{% endif %}
+

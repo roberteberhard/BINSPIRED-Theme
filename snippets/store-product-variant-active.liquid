@@ -1,0 +1,29 @@
+{% comment %}
+  Renders the product variant row
+
+  Accepts:
+  - title: {String} Shows the title of the current variant
+  - position: {Number} Shows the position of the current variant
+  - grid: {String} Takes the grid amount class for the buttons
+
+  Usage:
+  {% render 'store-product-variant-active', title: 'Select Style', position: '1', grid: 'x2' %}
+{% endcomment %}
+
+<div class="product-variant__row variant-style">
+  <div class="product-variant__header">
+    <span class="product-variant__header--size">{{ title }}</span>
+  </div>
+  <div class="product-variant__buttons {{ grid }}" role="group">
+    <template v-for="(value, index) in option.values" :key="index">
+      <button class="product-variant__buttons--btn" :class="{ 'selected': value === selected[i] }" role="productitemcheckbox" type="button"
+        @click="
+          selected[i] = value;
+          form.selections[i] = value;
+          [addStoreVariantId()]
+        ">
+        <span class="product-variant__buttons--label">${ value }</span>
+      </button>
+    </template>
+  </div>
+</div>

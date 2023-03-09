@@ -1,0 +1,59 @@
+{{ 'section-featured-affiliates.css' | asset_url | stylesheet_tag }}
+
+<div class="featured-affiliates_wrapper page-width">
+    <div class ="featured-affiliates_header">
+      <h2 class="headline-2{% if section.settings.title == blank %} no-heading{% endif %}">{{ section.settings.title | escape }}</h2>
+    </div>
+    <div class="featured-affiliates_content">
+      {%- liquid
+        if section.blocks.size > 0
+          for block in section.blocks
+            render 'featured-affiliates-card', affiliate_card: block.settings
+          endfor
+        else
+          for i in (1..3)
+            render 'featured-affiliates-card-placeholder', featured_count: i
+          endfor
+        endif
+      -%}
+    </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.featured-affilates.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Featured Affiliates",
+      "label": "t:sections.featured-affilates.settings.title.label"
+    }
+  ],
+  "max_blocks": 8,
+  "blocks": [
+    {
+      "type": "headline",
+      "name": "t:sections.featured-affilates.blocks.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.featured-affilates.blocks.settings.image.label"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "t:sections.featured-affilates.blocks.settings.url.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured-affilates.presets.name"
+    }
+  ]
+}
+{% endschema %}

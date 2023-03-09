@@ -1,0 +1,85 @@
+{{ 'section-message.css' | asset_url | stylesheet_tag }}
+
+<section class="message_wrapper color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    <div class="message-boxes">
+      <div class="message-box">
+        <span class="message-box_icon">
+          {%- render 'icon-message-one' -%}
+        </span>
+        <div class="message-box_content">
+          <p class="headline-4">Inspiring artwork</p>
+          <p class="headline-txt">We believe in creativity and want to inspire every day.</p>
+        </div>
+      </div>
+      <div class="message-box">
+        <span class="message-box_icon">
+          {%- render 'icon-message-two' -%}
+        </span>
+        <div class="message-box_content">
+          <p class="headline-4">Made just for you</p>
+          <p class="headline-txt">Our products are printed individually at the time of order.</p>
+        </div>
+      </div>
+      <div class="message-box">
+        <span class="message-box_icon">
+          {%- render 'icon-message-three' -%}
+        </span>
+        <div class="message-box_content">
+          <p class="headline-4">Worldwide shipping</p>
+          <p class="headline-txt">Free and fast worldwide shipping on all orders.</p>
+        </div>
+      </div>
+      <div class="message-box">
+        <span class="message-box_icon">
+          {%- render 'icon-message-four' -%}
+        </span>
+        <div class="message-box_content">
+          <p class="headline-4">Safe payments</p>
+          <p class="headline-txt">100% secure payment with 256-bit SSL Encryption.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+{
+  "name": "t:sections.message.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "background-1",
+          "label": "t:sections.message.settings.color_scheme.options__1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.message.settings.color_scheme.options__2.label"
+        },
+        {
+          "value": "background-3",
+          "label": "t:sections.message.settings.color_scheme.options__3.label"
+        },
+        {
+          "value": "background-4",
+          "label": "t:sections.message.settings.color_scheme.options__4.label"
+        },
+        {
+          "value": "background-5",
+          "label": "t:sections.message.settings.color_scheme.options__5.label"
+        },
+        {
+          "value": "background-6",
+          "label": "t:sections.message.settings.color_scheme.options__6.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.message.settings.color_scheme.label"
+    }
+  ]
+}
+{% endschema %}

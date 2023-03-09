@@ -1,0 +1,47 @@
+.main-policy_content {
+  padding-bottom: 2rem;
+}
+
+@media screen and (min-width: 750px) {
+  .main-policy_content {
+    padding-bottom: 5rem;
+  }
+}
+
+.main-policy_block {
+  padding-bottom: 3rem;
+}
+
+.main-policy_block.ending {
+  padding-bottom: 6rem;
+}
+
+.main-policy_block p {
+  line-height: 1.65;
+}
+
+.main-policy_block ul {
+  padding: 0 0 0 20px;
+}
+
+.main-policy_block ul li {
+  line-height: 1.65;
+}
+
+.main-policy_block .inline-space {
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.main-policy_block .top-space {
+  margin-top: 25px;
+}
+
+.main-policy_block .link--primary {
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.main-policy_block table {
+  width: 100%;
+}

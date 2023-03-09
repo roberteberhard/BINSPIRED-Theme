@@ -1,0 +1,30 @@
+{{ 'section-main-404.css' | asset_url | stylesheet_tag }}
+
+<div class="main-404">
+  <div class="main-404-wrapper page-width">
+    <div class="main-404-content center">
+      <p class="headline-3 margin-0">{{ section.settings.title }}</p >
+      <p class="headline-3 margin-0">{{ section.settings.subtitle }}</p>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Template 404",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "We can't find the page you are looking for.",
+      "label": "t:sections.404.settings.title.label"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "default": "Sorry for the inconvenience.",
+      "label": "t:sections.404.settings.subtitle.label"
+    }
+  ]
+}
+{% endschema %}

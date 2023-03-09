@@ -1,0 +1,63 @@
+/* Featured Affiliates */
+.featured-affiliates_wrapper {
+  padding-bottom: 9rem;
+}
+
+@media screen and (min-width: 750px) {
+  .featured-affiliates_wrapper {
+    padding-bottom: 11rem;
+  }
+}
+
+.featured-affiliates_header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  height: 5rem;
+  margin-bottom: 1.4rem;
+}
+
+.featured-affiliates_header .headline-2 {
+  margin-top: 5px;
+}
+
+.featured-affiliates_content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+  width: 100%;
+}
+
+/* Card Image */
+
+.affiliates-card_link {
+  display: block;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.affiliate_card_picture {
+  overflow: hidden;
+}
+
+.affiliates-card_img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  transition: filter var(--duration-medium) ease;
+}
+
+.affiliates-card_link:hover .affiliates-card_img {
+  filter: brightness(85%);
+}
+
+@media screen and (min-width: 750px) {
+  .featured-affiliates_content {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}

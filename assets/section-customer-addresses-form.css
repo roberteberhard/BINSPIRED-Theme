@@ -1,0 +1,358 @@
+.add-address,
+.edit-address {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  background-color: hsla(0, 0%, 7%, 0.36);
+  transition: opacity 0.3s, visibility 0s linear 0.3s;
+}
+
+@media screen and (min-width: 640px) {
+  .add-address,
+  .edit-address {
+    justify-content: center;
+  }
+}
+
+.add-address[aria-modal-expanded='true'],
+.edit-address[aria-modal-expanded='true'] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s;
+}
+
+.address-modal {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 30rem;
+  max-height: calc(100% - 12rem);
+  border-radius: 2rem 2rem 0px 0px;
+  background-color: rgb(var(--color-background));
+  transition: transform var(--duration-medium) ease 0ms;
+}
+
+.add-address[aria-modal-expanded='true'] .address-modal,
+.edit-address[aria-modal-expanded='true'] .address-modal {
+  transform: translateY(0px);
+}
+
+.add-address[aria-modal-expanded='false'] .address-modal,
+.edit-address[aria-modal-expanded='false'] .address-modal {
+  transform: translateY(100%);
+}
+
+@media screen and (min-width: 640px) {
+  .address-modal {
+    border-radius: 20px;
+    max-width: 560px;
+    max-height: calc(100% - 120px);
+  }
+}
+
+.address-modal_scroll {
+  display: flex;
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+  min-height: 22rem;
+  max-height: calc(100vh - 23.5rem);
+  margin: 1.5rem 0 0 0;
+  padding: 0 2.4rem;
+}
+
+.address-modal_scroll::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 4rem;
+  z-index: 1;
+  background: linear-gradient(
+    rgb(255, 255, 255) 0%,
+    rgb(255, 255, 255) 33%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.address-modal_bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+  height: 10rem;
+  padding: 1.5rem 2.4rem 0 2.4rem;
+}
+
+.address-modal_bottom:before {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 8.5rem;
+  left: 0px;
+  width: 100%;
+  height: 4rem;
+  background: linear-gradient(
+    to top,
+    rgb(255, 255, 255) 0%,
+    rgb(255, 255, 255) 33%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.address-modal_body {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 4rem;
+}
+
+.address-modal_body--close {
+  cursor: pointer;
+  position: sticky;
+  top: 15px;
+  z-index: 1;
+  float: right;
+  overflow: hidden;
+  align-items: center;
+  display: inline-flex;
+  padding: 8px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background-color: rgba(var(--color-base-background-2));
+}
+
+.address-modal_body--close:hover {
+  outline: none;
+  background-color: rgba(var(--color-base-background-2));
+}
+
+.address-modal_body--header {
+  margin: 2rem 0;
+}
+
+@media screen and (min-width: 640px) {
+  .address-modal_scroll {
+    padding: 0 4.2rem;
+    max-height: calc(100vh - 22rem);
+  }
+  .address-modal_bottom {
+    height: 8.5rem;
+    padding: 1.5rem 4.2rem 0 4.2rem;
+  }
+  .address-modal_bottom:before {
+    bottom: 7.5rem;
+  }
+}
+
+/* *************** */
+/*   Form Fields   */
+/* *************** */
+
+.address-modal .field {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 56px;
+  margin-bottom: 2.5rem;
+  border: 0px;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+.address-modal .field .select-arrow {
+  position: absolute;
+  top: 16px;
+  right: 12px;
+  z-index: -1;
+}
+
+.address-modal .field label {
+  pointer-events: none;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  color: rgba(var(--color-foreground), 0.55);
+  font-size: calc(var(--font-heading-scale) * 1.6rem);
+  line-height: 1.5;
+  background-color: rgb(var(--color-background));
+  transition: top var(--duration-short) ease, left var(--duration-short) ease,
+    font-size var(--duration-short) ease;
+}
+
+.address-modal .field input:-webkit-autofill ~ label,
+.address-modal .field input:focus ~ label,
+.address-modal .field input:not(:placeholder-shown) ~ label,
+.address-modal .field select.field-select:-webkit-autofill ~ label,
+.address-modal .field select.field-select:focus ~ label,
+.address-modal .field select.field-select:not(:placeholder-shown) ~ label {
+  top: -9px;
+  left: 11px;
+  padding: 0 5px;
+  color: rgba(var(--color-foreground), 0.55);
+  font-size: calc(var(--font-heading-scale) * 1.2rem);
+  background-color: rgb(var(--color-background));
+}
+
+.address-modal .field input[type='text']:-webkit-autofill,
+.address-modal .field input[type='text']:-webkit-focus,
+.address-modal .field input[type='text']:not(:placeholder-shown),
+.address-modal .field input[type='tel']:-webkit-autofill,
+.address-modal .field input[type='tel']:-webkit-focus,
+.address-modal .field input[type='tel']:not(:placeholder-shown),
+.address-modal .field input[type='email']:-webkit-autofill,
+.address-modal .field input[type='email']:-webkit-focus,
+.address-modal .field input[type='email']:not(:placeholder-shown),
+.address-modal .field input[type='password']:-webkit-autofill,
+.address-modal .field input[type='password']:-webkit-focus,
+.address-modal .field input[type='password']:not(:placeholder-shown),
+.address-modal .field input[type='select']:-webkit-autofill,
+.address-modal .field input[type='select']:-webkit-focus,
+.address-modal .field input[type='select']:not(:placeholder-shown),
+.address-modal .field select.field-select:-webkit-autofill,
+.address-modal .field select.field-select:-webkit-focus,
+.address-modal .field select.field-select:not(:placeholder-shown) {
+  outline: transparent;
+  border: 1px solid rgba(var(--color-foreground), 1);
+}
+
+.address-modal .field input[type='text']:hover,
+.address-modal .field input[type='tel']:hover,
+.address-modal .field input[type='email']:hover,
+.address-modal .field input[type='password']:hover,
+.address-modal .field select.field-select:hover {
+  outline: transparent;
+  border: 1px solid rgba(var(--color-foreground), 1);
+}
+
+.address-modal .field input[type='text']:focus,
+.address-modal .field input[type='tel']:focus,
+.address-modal .field input[type='email']:focus,
+.address-modal .field input[type='password']:focus,
+.address-modal .field select.field-select:focus {
+  outline: transparent;
+  border: 1px solid rgba(var(--color-foreground), 1);
+}
+
+.address-modal .field input[type='text']:focus ~ label,
+.address-modal .field input[type='tel']:focus ~ label,
+.address-modal .field input[type='email']:focus ~ label,
+.address-modal .field input[type='password']:focus ~ label,
+.address-modal .field select.field-select:focus ~ label {
+  color: rgba(var(--color-foreground), 1);
+}
+.address-modal .field input[type='text'].field-error,
+.address-modal .field input[type='tel'].field-error,
+.address-modal .field input[type='email'].field-error,
+.address-modal .field input[type='password'].field-error,
+.address-modal .field select.field-select.field-error {
+  border: 1px solid rgb(var(--color-base-error));
+}
+
+/* ************* */
+/*   Check Box   */
+/* ************* */
+
+.field-checkbox {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+}
+
+.field-checkbox input[type='checkbox'] {
+  position: absolute;
+  opacity: 0;
+  z-index: 2;
+  height: 24px;
+  width: 24px;
+  margin: 0px;
+}
+
+.field-checkbox input[type='checkbox'] ~ .checkbox-box {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  height: 20px;
+  width: 20px;
+  pointer-events: none;
+  border: 1.5px solid rgb(204, 204, 204);
+  border-radius: 6px;
+  background: transparent;
+}
+
+.field-checkbox input[type='checkbox'] ~ .checkbox-box.circle {
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.field-checkbox input[type='checkbox']:not(:hover) ~ .checkbox-box.circle,
+.field-checkbox input[type='checkbox']:not(:focus) ~ .checkbox-box.circle {
+  box-shadow: none;
+  transition: box-shadow 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.field-checkbox
+  input[type='checkbox']:hover:not(:disabled)
+  ~ .checkbox-box.circle,
+.field-checkbox
+  input[type='checkbox']:focus:not(:disabled)
+  ~ .checkbox-box.circle {
+  border: 0px;
+  opacity: 1;
+  background-color: rgba(var(--color-base-background-2));
+  box-shadow: rgba(var(--color-base-background-2)) 0px 0px 0px 12px;
+  transition: box-shadow, 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.field-checkbox input[type='checkbox'] ~ .checkbox-box-icon-container {
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  height: 24px;
+  transition: opacity var(--duration-default) ease;
+}
+
+.field-checkbox input[type='checkbox']:checked ~ .checkbox-box-icon-container {
+  opacity: 1;
+  transition: opacity var(--duration-default) ease;
+}
+
+.field-checkbox
+  input[type='checkbox']:checked
+  ~ .checkbox-box-icon-container
+  svg
+  .checkicon-fill {
+  fill: rgba(var(--color-button));
+}
+
+.field-checkbox
+  input[type='checkbox']:checked
+  ~ .checkbox-box-icon-container
+  svg
+  .checkicon-check {
+  stroke: rgb(255, 255, 255);
+}
+
+.field-checkbox label {
+  font-size: calc(var(--font-heading-scale) * 1.6rem);
+  line-height: 1.5;
+  user-select: none;
+  margin-inline-start: 12px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}

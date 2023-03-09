@@ -1,0 +1,45 @@
+{{ 'section-main-link-in-bio.css' | asset_url | stylesheet_tag }}
+
+<div class="link-in-bio_wrapper page-width">
+  <div class="link-in-bio_logo">
+    <a href="{{ routes.root_url }}" title="{{ 'general.header.menu.homepage' | t }}">
+      {%- render 'icon-logo' -%}
+      <span class="visually-hidden">{{ 'general.header.menu.homepage' | t }}</span>
+    </a>
+  </div>
+  <div class="link-in-bio_content">
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        {% render 'link-in-bio-card', link_card: block.settings %}
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.link_in_bio.name",
+  "tag": "section",
+  "class": "link-in-bio",
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "headline",
+      "name": "Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Click me!",
+          "label": "t:sections.link_in_bio.blocks.settings.title.label"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "t:sections.link_in_bio.blocks.settings.url.label"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

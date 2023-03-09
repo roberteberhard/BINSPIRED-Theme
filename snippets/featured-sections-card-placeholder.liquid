@@ -1,0 +1,18 @@
+{% comment %}
+    Renders the Featured sections card placeholder
+
+    Accepts:
+    - featured_count: {Number}
+
+    Usage:
+    {% render 'featured-sections-card-placeholder', featured_count: i %}
+{% endcomment %}
+
+{% assign counter = featured_count | downcase %}
+{% assign placeholder_image = 'collection-' | append: counter %}
+
+<article class="featured-sections_article">
+  <figure class="placeholder-gray">
+    {{ placeholder_image | placeholder_svg_tag: 'featured-img' }}
+  </figure>
+</article>

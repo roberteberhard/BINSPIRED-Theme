@@ -1,0 +1,300 @@
+{{ 'section-main-cart.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign currency_symbol = cart.currency.symbol
+  assign currency_code = ' ' | append: cart.currency.iso_code
+-%}
+
+<div class="cart" id="cart">
+  <div class="cart-wrapper page-width">
+    <div class="cart-row">
+      <div class="cart-overview">
+
+        <!-- Header -->
+        <div class="cart-header">
+          <h1 class="headline-3" itemprop="headline">
+            {{ 'sections.cart.title' | t }}
+          </h1>
+          <template v-if="cart">
+            <template v-if="cart.item_count > 1">
+              <div class="cart-header_subtotal">
+                <span class="text--light weight-400">${ cart.item_count } {{ 'sections.cart.items_count' | t }}</span> <span class="text--light weight-400 text--spacer">|</span><span class="weight-400"> {{ currency_symbol }}${ money(cart.total_price) }</span>
+              </div>
+            </template>
+            <template v-else>
+              <div class="cart-header_subtotal">
+                <span class="text--light weight-400">${ cart.item_count } {{ 'sections.cart.item_count' | t }}</span> <span class="text--light weight-400 text--spacer">|</span><span class="weight-400"> {{ currency_symbol }}${ money(cart.total_price) }</span>
+              </div>
+            </template>
+          </template>
+          <template v-else>
+            <div class="cart-header_loader">
+              <div class="cart-header_loader-spinner">
+                <span class="visually-hidden">{{ 'sections.cart.spinner' | t }}</span>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Content -->
+        <template v-if="cart">
+          <template v-if="cart.items.length > 0">
+            <div class="cart-content">
+              <div class="cart-items">
+                <template v-for="item in cart.items" :key="item.id">
+                  <div class="cart-item">
+                    <div class="cart-figure" v-if="item.image">
+                      <figure class="placeholder-gray">
+                        <a :href="item.url" tabindex="-1">
+                          <img
+                            :src="item.image"
+                            class="featured-img"
+                            width="150"
+                            height="150"
+                            :alt="item.image.alt"
+                            loading="lazy"
+                          />
+                        </a>
+                      </figure>
+                    </div>
+                    <div class="cart-figure" v-else>
+                      <figure class="placeholder-gray">
+                        <a :href="item.url" tabindex="-1">
+                          {{ 'product-1' | placeholder_svg_tag: 'featured-img' }}
+                        </a>
+                      </figure>
+                    </div>
+                    <div class="cart-details">
+                      <div class="cart-data">
+                        <template v-if="item.original_line_price != item.final_line_price">
+                          <div class="cart-data_60 discounted">
+                            <a :href="item.url" class="link--text"><p class="headline-5">{%- if section.settings.show_vendor -%}${ item.vendor }&nbsp;{%- endif -%}${ item.product_title }</p></a>
+                            <p class="headline-4 text--light weight-400 margin-0"><template v-if="item.product_type">${ item.product_type }</template><template v-if="item.variant_title"> / ${ item.variant_title }</template></p>
+                          </div>
+                          <div class="cart-data_40 discounted">
+                            <span class="reduced-price">
+                              {{ currency_symbol }}${ money(item.original_line_price) }
+                            </span>
+                            <span class="compare-price">
+                              {{ currency_symbol }}${ money(item.final_line_price) }
+                            </span>
+                          </div>
+                        </template>
+                        <template v-else>
+                          <div class="cart-data_60">
+                            <a :href="item.url" class="link--text"><p class="headline-5">{%- if section.settings.show_vendor -%}${ item.vendor }&nbsp;{%- endif -%}${ item.product_title }</p></a>
+                            <p class="headline-4 text--light weight-400 margin-0"><template v-if="item.product_type">${ item.product_type }</template><template v-if="item.variant_title"> / ${ item.variant_title }</template></p>
+                          </div>
+                          <div class="cart-data_40">
+                            <span class="original-price">
+                              {{ currency_symbol }}${ money(item.original_line_price) }
+                            </span>
+                          </div>
+                        </template>
+                      </div>
+                      <div class="cart-actions">
+                        <div class="cart-actions_quantity">
+                          <input type="text" readonly v-model="item.quantity">
+                          <button class="cart-actions_quantity__button" @click="decrement(item)">-</button>
+                          <button class="cart-actions_quantity__button" @click="increment(item)">+</button>
+                        </div>
+                        <div class="cart-actions_favorite icon--action" data-favorite="signin" title="{{ 'sections.cart.favorites.add' | t }}">
+                          {%- render 'icon-favorites' -%}
+                          <span class="visually-hidden">{{ 'sections.cart.favorites.add' | t }}</span>
+                        </div>
+                        <div class="cart-actions_remove icon--action" @click="remove(item)" title="{{ 'sections.cart.favorites.remove' | t }}">
+                          {%- render 'icon-trash' -%}
+                          <span class="visually-hidden">{{ 'sections.cart.favorites.remove' | t }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </template>
+          <template v-else>
+            <div class="cart-content">
+              <p class="cart-content_empty text--info">{{ 'sections.cart.empty_bag' | t }}</p>
+            </div>
+          </template>
+        </template>
+      </div>
+
+      <!-- Summary -->
+      <template v-if="cart && cart.items.length > 0">
+        <aside class="cart-summary">
+          <h3 class="headline-3">{{ 'sections.cart.summary.title' | t }}</h3>
+          <div class="cart-summary_row">
+            <div class="cart-summary_row-75">
+              <p class="subtotal">{{ 'sections.cart.subtotal' | t }}</p>
+            </div>
+            <div class="cart-summary_row-25">
+              <p class="subtotal-value">{{ currency_symbol }}${ money(cart.original_total_price) }</p>
+            </div>
+          </div>
+          {%- if cart.cart_level_discount_applications.size > 0 -%}
+            <div class="cart-summary_row" v-for="discount in cart.cart_level_discount_applications" :key="discount.key">
+              <div class="cart-summary_row-75">
+                <p class="discount">{{ 'general.offset.bag.footer.discount' | t }}<span class="discount-title">{%- render 'icon-product-tag' -%}${ discount.title }</span></p>
+              </div>
+              <div class="cart-summary_row-25">
+                <p class="discount-value text--light">-{{ currency_symbol }}${ money(discount.total_allocated_amount) }</p>
+              </div>
+            </div>
+          {%- endif -%}
+          {%- if cart.taxes_included == false -%}
+            <div class="cart-summary_row">
+              <div class="cart-summary_row-75">
+                <p class="shipping">{{ 'sections.cart.summary.estimated_tax' | t }}</p>
+              </div>
+              <div class="cart-summary_row-25">
+                <p class="shipping-value">—</p>
+              </div>
+            </div>
+          {%- endif -%}
+          <div class="cart-summary_row">
+            <div class="cart-summary_row-75">
+              <p class="shipping">{{ 'sections.cart.summary.estimated_shipping' | t }}</p>
+            </div>
+            <div class="cart-summary_row-25">
+              <p class="shipping-value">—</p>
+            </div>
+          </div>
+          <div class="cart-summary_row">
+            <small class="tax-note">
+              {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
+                {{ 'sections.cart.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+              {%- elsif cart.taxes_included -%}
+                {{ 'sections.cart.taxes_included_but_shipping_at_checkout' | t }}
+              {%- elsif shop.shipping_policy.body != blank -%}
+                {{ 'sections.cart.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+              {%- else -%}
+                {{ 'sections.cart.taxes_and_shipping_at_checkout' | t }}
+              {%- endif -%}
+            </small>
+          </div>
+          <div class="cart-summary_row total">
+            <div class="cart-summary_row-50">
+              <p class="total">{{ 'sections.cart.total' | t }}</p>
+            </div>
+            <div class="cart-summary_row-50">
+              <p class=" total-price">{{ currency_symbol }}${ money(cart.total_price) }{{ currency_code }}</p>
+            </div>
+          </div>
+          <!-- Checkout -->
+          <div class="cart-summary_row">
+            <div class="cart-summary-total-grid">
+              <a href="/checkout" class="button large-btn full-width">{{ 'sections.cart.checkout' | t }}</a>
+            </div>
+          </div>
+          {% comment %}
+            {%- if additional_checkout_buttons -%}
+            <div class="cart-summary_row checkou">
+              {{ content_for_additional_checkout_buttons }}
+            </div>
+            {%- endif -%}
+          {% endcomment %}
+        </aside>
+      </template>
+
+      <!-- Favorites -->
+      {%- if shop.customer_accounts_enabled -%}
+        <div class="cart-favorites">
+          <h3 class="headline-3">{{ 'sections.cart.favorites.title' | t }}</h3>
+          {%- if customer -%}
+            {% assign num_favorites = 0 %}
+            {%- if num_favorites > 0 -%}
+              <div class="cart-favorites_wrapper">
+                --> show customer favorites hier
+              </div>
+            {%- else -%}
+              <p class="text--info">{{ 'sections.cart.favorites.unsaved_favorites' | t }}</p>
+            {%- endif -%}
+          {%- else -%}
+            <p class="text--info">{{ 'sections.cart.favorites.show_favorites' | t }} <a href="{{ routes.account_register_url }}" class="link--primary">{{ 'sections.cart.favorites.register' | t }} </a> {{ 'sections.cart.favorites.or' | t }} <a href="{{ routes.account_login_url }}" class="link--primary">{{ 'sections.cart.favorites.sign_in' | t }}</a></p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#cart')) {
+      const offsetRight = Vue.createApp({
+        delimiters: ['${', '}'],
+        data() {
+          return {
+            cartData: store.state.cartState
+          }
+        },
+        methods: {
+          decrement(item) {
+            const data = {
+              "id": item.key,
+              "quantity": item.quantity - 1
+            }
+            axios.post('/cart/change.js', data)
+              .then(response => {
+                store.getCart()
+              })
+              .catch(error => console.log(error))
+          },
+          increment(item) {
+            const data = {
+              "id": item.key,
+              "quantity": item.quantity + 1
+            }
+            axios.post('/cart/change.js', data)
+              .then(response => {
+                store.getCart()
+              })
+              .catch(error => console.log(error))
+          },
+          remove(item) {
+            const data = {
+              "id": item.key,
+              "quantity": 0
+            }
+            axios.post('/cart/change.js', data)
+              .then(response => {
+                store.getCart()
+              })
+              .catch(error => console.log(error))
+          },
+          money(value) {
+            if (!value) return 0
+            return (value/100).toFixed(2)
+          }
+        },
+        computed: {
+          cart() {
+            return this.cartData[0]
+          }
+        }
+      }).mount('#cart')
+    }
+  })
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-cart.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main-cart.settings.title.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.main-cart.settings.show_vendor.label"
+    }
+  ]
+}
+{% endschema %}
+
+

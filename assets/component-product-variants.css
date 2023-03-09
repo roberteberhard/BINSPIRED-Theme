@@ -1,0 +1,96 @@
+.product-variant__row {
+  margin-bottom: 40px;
+}
+.product-variant__row.variant-style {
+  margin-bottom: 35px;
+}
+
+.product-variant__header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  margin-top: 35px;
+  margin-bottom: 10px;
+}
+
+.product-variant__grid {
+  width: 100%;
+}
+
+@media screen and (min-width: 990px) {
+  .product-variant__header {
+    margin-top: 0px;
+  }
+}
+
+.product-variant__header--size {
+  color: rgba(var(--color-foreground));
+  font-weight: 500;
+  line-height: 1.166667;
+}
+
+.product-variant__header--link {
+  color: rgb(var(--color-foreground), 0.55);
+  font-weight: 500;
+  line-height: 1.166667;
+  transition: color var(--duration-default) ease;
+}
+
+.product-variant__header--link:hover {
+  color: rgb(var(--color-foreground), 1);
+}
+
+.product-variant__buttons {
+  display: grid;
+  grid-gap: 5px;
+}
+
+.product-variant__buttons.x1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.product-variant__buttons.x2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.product-variant__buttons.x3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.product-variant__buttons--btn {
+  display: flex;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  border-radius: 5px;
+  border: 1px solid rgba(var(--color-button), 0.1);
+  transition: border-color var(--duration-default) ease;
+}
+
+.product-variant__buttons--btn.selected {
+  border: 1px solid rgba(var(--color-button), 1);
+}
+
+.product-variant__buttons--btn:hover {
+  border: 1px solid rgba(var(--color-button), 1);
+}
+
+.product-variant__buttons--btn.disabled {
+  pointer-events: none;
+  border: 1px solid rgba(var(--color-button), 0.1);
+  background-color: rgb(var(--color-base-background-4));
+}
+
+.product-variant__buttons--label {
+  display: block;
+  padding: 0;
+  color: rgba(var(--color-foreground));
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.product-variant__buttons--btn.disabled .product-variant__buttons--label {
+  color: #ddd;
+}

@@ -1,0 +1,114 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "06174d7e-e2e4-4f1d-ba21-5a19c00eba21": {
+          "type": "breadcrumbs",
+          "settings": {
+          }
+        },
+        "eef75c74-628b-47d3-8bb2-baa24524a0fe": {
+          "type": "title",
+          "settings": {
+          }
+        },
+        "c091f5cc-e7d9-4d57-8f79-495a311b2485": {
+          "type": "price",
+          "settings": {
+          }
+        },
+        "d147b18d-54d8-483e-9df9-a35fedd6d74b": {
+          "type": "product_related",
+          "settings": {
+          }
+        },
+        "98d140a2-450d-49dc-9519-c04c0f135207": {
+          "type": "variant_picker",
+          "settings": {
+          }
+        },
+        "b2b9af42-dd53-433f-8ae0-f9b5abcdad0c": {
+          "type": "buy_buttons",
+          "settings": {
+          }
+        },
+        "95be6f29-e74f-482b-bd49-9b5884865061": {
+          "type": "description",
+          "settings": {
+          }
+        },
+        "1b6631de-7a0b-4575-8997-e632bdf25216": {
+          "type": "style",
+          "settings": {
+          }
+        },
+        "f2011bbe-80cd-4086-a337-0822a248d33e": {
+          "type": "collapsible_tab",
+          "settings": {
+            "collapsible_heading": "Product Details",
+            "collapsible_content": "<p>{{ product.metafields.product_info.product_detail.value }}<\/p>",
+            "page": ""
+          }
+        },
+        "577fe1c5-19fa-4bb1-9d84-dbb76b6f042b": {
+          "type": "collapsible_tab",
+          "settings": {
+            "collapsible_heading": "Free Shipping & Returns",
+            "collapsible_content": "<p>{{ product.metafields.product_info.product_shipping.value }}<\/p>",
+            "page": ""
+          }
+        },
+        "a83e71f0-8e7a-4896-9406-9fd91050e11d": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<p class=\"questions-section\">If you have any questions, please visit our <a href=\"https:\/\/binspired.com\/pages\/faqs\">Help Center<\/a> or send us an email at <a href=\"mailto:help@binspired.com\">help@binspired.com<\/a>.<\/p>"
+          }
+        },
+        "9fbb85f2-5f2d-4646-838c-c7e25f78ba75": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "06174d7e-e2e4-4f1d-ba21-5a19c00eba21",
+        "eef75c74-628b-47d3-8bb2-baa24524a0fe",
+        "c091f5cc-e7d9-4d57-8f79-495a311b2485",
+        "d147b18d-54d8-483e-9df9-a35fedd6d74b",
+        "98d140a2-450d-49dc-9519-c04c0f135207",
+        "b2b9af42-dd53-433f-8ae0-f9b5abcdad0c",
+        "95be6f29-e74f-482b-bd49-9b5884865061",
+        "1b6631de-7a0b-4575-8997-e632bdf25216",
+        "f2011bbe-80cd-4086-a337-0822a248d33e",
+        "577fe1c5-19fa-4bb1-9d84-dbb76b6f042b",
+        "a83e71f0-8e7a-4896-9406-9fd91050e11d",
+        "9fbb85f2-5f2d-4646-838c-c7e25f78ba75"
+      ],
+      "settings": {
+        "product_vendor": true
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "product_recommendations_title": "You Might Also Like",
+        "product_recommendations_to_show": 10,
+        "show_vendor": true
+      }
+    },
+    "related-designs": {
+      "type": "related-designs",
+      "settings": {
+        "related_designs_title": "Also Available As",
+        "related_designs_to_show": 18
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product-recommendations",
+    "related-designs"
+  ]
+}

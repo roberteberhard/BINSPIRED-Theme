@@ -1,0 +1,32 @@
+<div class="product-options__share">
+  <div class="share-details">
+    <summary class="share-summary">
+      {% render 'icon-share' %}
+      {{ share_label }}
+    </summary>
+    <div class="share-button">
+      <div class="field">
+        <span class="share-button__message hidden" role="status">
+          {{ 'general.share.success_message' | t }}
+        </span>
+        <input
+          type="text"
+          class="field__input"
+          id="url"
+          value="{{ product.selected_variant.url | default: product.url | prepend: request.origin }}"
+          placeholder="{{ 'general.share.share_url' | t }}"
+          readonly
+        >
+        <label class="field__label" for="url">{{ 'general.share.share_url' | t }}</label>
+      </div>
+      <button class="share-button__close hidden">
+        {% render 'icon-close' %}
+        <span class="visually-hidden">{{ 'general.share.close' | t }}</span>
+      </button>
+      <button class="share-button__copy">
+        {% render 'icon-clipboard' %}
+        <span class="visually-hidden">{{ 'general.share.copy_to_clipboard' | t }}</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,138 @@
+{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+{{ 'component-blog-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-pagination.css' | asset_url | stylesheet_tag }}
+
+<div id="journal" class="blog">
+  <div class="blog-wrapper page-width">
+    <div class="blog-header">
+      {% if current_tags %}
+        <h1 class="headline-1">{{ blog.title | escape | link_to: blog.url }}</h1><span class="blog-header_spacer">/</span><span class="blog-header_tag">{{ current_tags.first }}</span>
+      {% else %}
+        <h1 class="headline-1">{{ blog.title | escape }}</h1>
+      {% endif %}
+    </div>
+    {%- paginate blog.articles by section.settings.number_blog_posts -%}
+      <div class="blog-articles" data-next-url="{{ paginate.next.url }}" role="list">
+        {%- for article in blog.articles -%}
+          {%- render 'blog-card', article: article, image_height: section.settings.image_height, show_image: section.settings.show_image, show_date: section.settings.show_date, show_author: section.settings.show_author -%}
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}
+        <div class="blog-loader">
+          <div class="blog-loader_spinner" :class="{ 'is-showing': loadMoreSpinnerState }">
+            <span class="visually-hidden">{{ 'collections.spinner' | t }}</span>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#journal')) {
+      const collections = Vue.createApp({
+        delimiters: ['${', '}'],
+        data() {
+          return {
+            posts_on_page: null,
+            spinner_on_page: null,
+            next_url: '',
+            load_more_spinner: false,
+            postsObserver: null,
+          }
+        },
+        methods: {
+          async loadMorePosts() {
+            this.load_more_spinner = true;
+            try {
+              const response = await axios.get(this.next_url)
+              const data = await response.data;
+              const parser = new DOMParser();
+              const htmlDocument = parser.parseFromString(data, "text/html");
+              // add new posts
+              const posts = htmlDocument.documentElement.querySelector(".blog-articles");
+              const articles = posts.querySelectorAll('article');
+              for (var i = 0; i < articles.length; i++) {
+                this.posts_on_page.appendChild(articles[i])
+              }
+              this.load_more_spinner = false;
+              this.next_url = posts.dataset.nextUrl;
+              if( !this.next_url ) {
+                this.postsObserver.disconnect();
+              }
+            } catch (error) {
+              console.log(error)
+            }
+          }
+        },
+        computed: {
+          loadMoreSpinnerState() {
+            return this.load_more_spinner
+          }
+        },
+        mounted() {
+          this.posts_on_page = this.$el.querySelector(".blog-articles")
+          this.spinner_on_page = this.$el.querySelector(".blog-loader")
+          this.next_url = this.posts_on_page.dataset.nextUrl
+          if( !this.spinner_on_page ) return
+          this.postsObserver = new IntersectionObserver(entries => {
+            const spinner = entries[0]
+            if (spinner.isIntersecting) {
+              this.loadMorePosts()
+            }
+          })
+          this.postsObserver.observe(this.spinner_on_page)
+        },
+        beforeDestroy() {
+          this.postsObserver.disconnect();
+        }
+      }).mount('#journal');
+    }
+  });
+  </script>
+
+{% schema %}
+{
+  "name": "t:sections.main-blog.name",
+  "tag": "section",
+  "class": "spaced-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main-blog.settings.header.content"
+    },
+    {
+      "type": "range",
+      "id": "number_blog_posts",
+      "step": 1,
+      "min": 1,
+      "max": 36,
+      "label": "t:sections.main-blog.settings.number_blog_posts.label",
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": false,
+      "label": "t:sections.main-blog.settings.show_author.label"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.main-blog.settings.paragraph.content"
+    }
+  ]
+}
+{% endschema %}

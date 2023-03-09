@@ -1,0 +1,104 @@
+{{ 'section-main-help.css' | asset_url | stylesheet_tag }}
+{{ 'section-header-help.css' | asset_url | stylesheet_tag }}
+
+<div class="main-help">
+  <div class="main-help_wrapper page-width">
+    {% render 'header-help', title: page.title, active: 'shipping' %}
+  </div>
+  <div class="main-help_content page-width">
+    <div class="main-help_body odd">
+      <div id="howlong" class="main-help_body-block">
+        <h2 class="headline-2">How long will it take to manufacture?</h2>
+        <p>We print and fulfill all of our Binspired products on demand once you place an order. Please allow 2-5 business days for your item to be created.</p>
+      </div>
+      <div id="shipto" class="main-help_body-block">
+        <h2 class="headline-2">Where do you ship?</h2>
+        <p>
+          We ship all our products worldwide except:
+          <ul class="shipping-list">
+            <li>Crimea, Luhansk, and Donetsk regions in Ukraine</li>
+            <li>Russia</li>
+            <li>Belarus</li>
+            <li>Ecuador</li>
+            <li>Cuba</li>
+            <li>Iran</li>
+            <li>Syria</li>
+            <li>North Korea</li>
+          </ul>
+        </p>
+        <p>This list may change periodically.</p>
+        <p>There are also some countries that we are currently unable to ship to due to courier restrictions during the pandemic.</p>
+      </div>
+      <div id="shipfrom" class="main-help_body-block">
+        <h2 class="headline-2">Where will my order ship from?</h2>
+        <p>We work with selected manufacturing partners in the USA, UK, Canada, Europe, Japan and Australia. Depending on where you are located, your orders will be printed and shipped from the facility that can do it most efficiently!</p>
+      </div>
+      <div id="shippingtime" class="main-help_body-block">
+        <h2 class="headline-2">How long does shipping take?</h2>
+        <p>Your estimated order arrival date = order fulfilment time + shipping time.</p>
+        <p>1. Fulfilment: Once you place your order, we will immediately send it to our production team who will have your order ready to ship within 2-5 business days.</p>
+        <p>2. Shipping: Usually, it takes 3-7 days to fulfill an order, after which it's shipped out. The shipping time depends on your location, but can be estimated as follows:</p>
+        <p>
+          USA: 5–8 business days<br>
+          UK: 4-6 business days<br>
+          Canada: 7–10 business days<br>
+          Europe: 5-8 business days<br>
+          Japan: 5-11 business days<br>
+          Australia: 2-14 business days<br>
+          International: 10-20 business days<br>
+        </p>
+        <p>[Covid-19]​ Our fulfillment times may be longer than usual and may continue to lengthen until things return to normal. We are seeing delays in our supply chain, including distributors and carriers, as the entire industry struggles with challenges.</p>
+        <p>Once your order has been processed, you will receive a shipping confirmation email with a tracking number.</p>
+      </div>
+      <div id="customfees" class="main-help_body-block">
+        <h2 class="headline-2">What are the customs fees for international orders?</h2>
+        <p>Good question! International orders may be subject to an additional customs and tax fee. This fee is beyond our control and will be charged by your local customs office. Customs regulations vary greatly from country to country.</p>
+        <p>Please check directly with your local customs office to see if they charge duties and taxes on your purchases.</p>
+        <p>We are not responsible for any additional fees that may be incurred after completing a purchase on <a class="link--primary" target="_self" href="{{ routes.root_url }}">binspired.com</a>.</p>
+      </div>
+    </div>
+    <div class="main-help_body even">
+      <div id="poboxes" class="main-help_body-block">
+        <h2 class="headline-2">Do you deliver to P.O. boxes?</h2>
+        <p>Normally, only national postal carriers, such as the US Postal Service or Canada Post, can deliver orders to PO boxes. Many of our packages are too large to be accepted by national postal carriers. Therefore, we use commercial companies such as FedEx to deliver these products that cannot deliver to PO Boxes.</p>
+        <p>We recommend that you use a physical address instead of a PO Box address to ensure smooth delivery.</p>
+      </div>
+      <div id="trackorder" class="main-help_body-block">
+        <h2 class="headline-2">How can I track my order?</h2>
+        <p>Once your order has been shipped, you will receive a shipping confirmation. In it you will find a link to the shipping company's website where you can track your order. Please note that our delivery times are based on business days, so do not include weekends.</p>
+        <p>Keep in mind that it can take up to 24-48 hours after receiving the shipping confirmation for the tracking to be updated.</p>
+      </div>
+      <div id="orderarrived" class="main-help_body-block">
+        <h2 class="headline-2">My order should have arrived by now, but I still don't have it. What should I do?</h2>
+        <p>Before you contact us, please help us by doing the following:</p>
+        <ul class="shipping-list">
+          <li>Checking your shipping confirmation email for errors in the shipping address</li>
+          <li>Check with your local post office to see if they have your package</li>
+          <li>Check with your neighbors to see if the courier left the package with them</li>
+        </ul>
+        <p>If the shipping address was correct and the package was not left with the post office or a neighbor, <a class="link--primary" target="_self" href="{{ routes.root_url }}pages/contact">contact us</a> with your order number.</p>
+        <p>If you provide an address that is deemed insufficient by the courier service, the shipment will be returned to our facility. You will be liable for reshipment costs once we have confirmed an updated address.</p>
+        <p> Shipments that are not picked up will be returned to our facility and you will be liable for the cost of reshipping to you.</p>
+      </div>
+      <div id="whattodo" class="main-help_body-block">
+        <h2 class="headline-2">My order was shipped with only some of my items, what should I do?</h2>
+        <p>We may have shipped your order in separate packages. Please check your email to see if some of your items arrived separately. You will receive a separate shipping confirmation for each package.</p>
+        <p>If an item is missing, please keep the original packaging and <a class="link--primary" target="_self" href="{{ routes.root_url }}pages/contact">contact us</a> for further assistance.</p>
+      </div>
+      <div id="damagedproduct" class="main-help_body-block">
+        <h2 class="headline-2">I received a wrong/damaged product, what should I do?</h2>
+        <p>We are very sorry if the product you ordered was damaged or delivered incorrectly. So that we can quickly fix this for you, please <a class="link--primary" target="_self" href="{{ routes.root_url }}pages/contact">contact us</a> within a week with photos of the damaged product, your order number and any other details you have about your order.</p>
+        <p>After that, we will be happy to send you a replacement free of charge.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page.shipping.label",
+  "settings": [
+
+  ]
+}
+{% endschema %}

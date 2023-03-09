@@ -1,0 +1,306 @@
+{{ 'section-offset-right.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign currency_symbol = cart.currency.symbol
+-%}
+
+<div id="offset_right">
+  <div class="offset-right" :class="{ 'right-off': offsetRightState, 'right-on': !offsetRightState }">
+    <div class="offset-right_wrapper">
+      <template v-if="cart && cart.items.length > 0">
+        <div class="offset-right_header">
+          <span class="offset-right_header__title">
+            <template v-if="cart.item_count > 1">
+              <h4 class="text--body">${ cart.item_count } {{ 'general.offset.bag.header.titles.other' | t }}</h4>
+            </template>
+            <template v-else>
+              <h4 class="text--body">${ cart.item_count } {{ 'general.offset.bag.header.titles.one' | t }}</h4>
+            </template>
+          </span>
+          <button class="offset-right_header--close" @click="toggleOffsetStates">
+            {%- render 'icon-close' -%}
+            <span class="visually-hidden">{{ 'general.offset.menu.close' | t }}</span>
+          </button>
+        </div>
+        <div class="offset-right_content">
+          <div class="offset-cart_item" v-for="item in cart.items" :key="item.id">
+            <div class="offset-cart_figure" v-if="item.image">
+              <figure class="placeholder-gray">
+                <a :href="item.url" tabindex="-1">
+                  <img
+                    :src="item.image"
+                    class="featured-img"
+                    width="180"
+                    height="180"
+                    :alt="item.image.alt"
+                    loading="lazy"
+                  />
+                </a>
+              </figure>
+            </div>
+            <div class="offset-cart_figure" v-else>
+              <figure class="placeholder-gray">
+                <a :href="item.url" tabindex="-1">
+                  {{ 'product-1' | placeholder_svg_tag: 'featured-img' }}
+                </a>
+              </figure>
+            </div>
+            <div class="offset-cart_section">
+              <div class="offset-cart_section-top">
+                <div class="offset-cart_section-top-70">
+                  {%- if section.settings.show_vendor -%}
+                    <p class="headline-6 text--light margin-0">
+                      ${ item.vendor }
+                    </p>
+                  {%- endif -%}
+                  <p class="headline-4">
+                    <a :href="item.url" class="link--text" tabindex="-1">
+                      ${ item.product_title }
+                    </a>
+                  </p>
+                  <p class="product-variant-type text--light">
+                    <template v-if="item.product_type">${ item.product_type }</template>
+                    <template v-if="item.variant_title"> / ${ item.variant_title }</template>
+                  </p>
+                </div>
+                <div class="offset-cart_section-top-30">
+                  <template v-if="item.original_line_price != item.final_line_price">
+                    <span class="reduced-price">
+                      {{ currency_symbol }}${ money(item.original_line_price) }
+                    </span>
+                    <span class="compare-price">
+                      {{ currency_symbol }}${ money(item.final_line_price) }
+                    </span>
+                  </template>
+                  <template v-else>
+                    <span class="original-price">
+                      {{ currency_symbol }}${ money(item.original_line_price) }
+                    </span>
+                  </template>
+                </div>
+              </div>
+              <div class="offset-cart_section-bottom">
+                <div class="mini-cart-quantity">
+                  <input type="text" readonly v-model="item.quantity">
+                  <button class="mini-cart-quantity-button" @click="decrement(item)">-</button>
+                  <button class="mini-cart-quantity-button" @click="increment(item)">+</button>
+                </div>
+                <div class="mini-cart-remove" @click="remove(item)" title="{{ 'sections.cart.favorites.remove' | t }}">
+                    <span class="mini-cart-spinner"></span>
+                    {%- render 'icon-trash' -%}
+                  <span class="visually-hidden">{{ 'sections.cart.favorites.remove' | t }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="offset-right_footer">
+          <div class="offset-right_summary">
+            <div class="offset-summary_70">
+              <p class="summary-subtotal">{{ 'general.offset.bag.footer.subtotal' | t }}</p>
+            </div>
+            <div class="offset-summary_30">
+              <p class="summary-subtotal">{{ currency_symbol }}${ money(cart.original_total_price) }</p>
+            </div>
+          </div>
+          <template v-if="cart.cart_level_discount_applications.length > 0">
+            <div class="offset-right_summary" v-for="discount in cart.cart_level_discount_applications" :key="discount.key">
+              <div class="offset-summary_70">
+                <p class="summary-discount">
+                  {{ 'general.offset.bag.footer.discount' | t }}<span class="summary-discount_title">{%- render 'icon-product-tag' -%}${ discount.title }</span>
+                </p>
+              </div>
+              <div class="offset-summary_30">
+                <p class="summary-discount text--light">-{{ currency_symbol }}${ money(discount.total_allocated_amount) }</p>
+              </div>
+            </div>
+          </template>
+          <div class="offset-right_summary total-summary">
+            <div class="offset-summary_70">
+              <p class="summary-total">{{ 'general.offset.bag.footer.total' | t }}</p>
+            </div>
+            <div class="offset-summary_30">
+              <p class="summary-total">{{ currency_symbol }}${ money(cart.total_price) }</p>
+            </div>
+          </div>
+          <div class="offset-right_checkout">
+            <a href="{{ routes.cart_url }}" class="button medium-btn inverted-btn">
+              {{ 'general.offset.bag.footer.cart' | t }}
+            </a>
+            <a href="/checkout" class="button medium-btn">
+              {{ 'general.offset.bag.footer.checkout' | t }}
+            </a>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="offset-right_header">
+          <span class="offset-right_header__title">
+            <h4 class="text--body">{{ 'general.offset.bag.header.title' | t }}</h4>
+          </span>
+          <button class="offset-right_header--close" @click="toggleOffsetStates">
+            {%- render 'icon-close' -%}
+            <span class="visually-hidden">{{ 'general.offset.menu.close' | t }}</span>
+          </button>
+        </div>
+        <div class="offset-right_content">
+          <div class="text--info">{{ section.settings.title }}</div>
+          <div class="offset-right_collections">
+            {%- for block in section.blocks -%} 
+              <div class="offset-right_collection">
+                {%- if block.settings.image != blank -%}
+                  <figure class="placeholder-gray">
+                    <a href="{{ block.settings.link }}">
+                      <img src="{{ block.settings.image | image_url: width: 320 }}" width="100" height="100" alt="{{ block.settings.image.alt }}" loading="lazy" />
+                    </a>
+                  </figure>
+                  <a href="{{ block.settings.link }}" class="link--primary">
+                    {{ block.settings.text }}
+                  </a>
+                {%- else -%}
+                  <figure class="placeholder-gray">
+                    {% assign placeholder_image = 'collection-' | append: forloop.index %}
+                    {{ placeholder_image | placeholder_svg_tag }}
+                  </figure>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+  <div @click="toggleOffsetStates" class="offset-modal" :class="{ 'modal-on': !offsetModalState }"></div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#offset_right')) {
+      const offsetRight = Vue.createApp({
+        delimiters: ['${', '}'],
+        data() {
+          return {
+            cartData: store.state.cartState,
+            spinning: false
+          }
+        },
+        methods: {
+          toggleOffsetStates() {
+            toggleOffsetStates.closeAll()
+            toggleOffsetStates.removeKeyDown()
+            toggleOffsetStates.clearPanelState()
+          },
+          decrement(item) {
+            const data = {
+              "id": item.key,
+              "quantity": item.quantity - 1
+            }
+            axios.post('/cart/change.js', data)
+              .then(response => {
+                store.getCart()
+              })
+              .catch(error => console.log(error))
+          },
+          increment(item) {
+            const data = {
+              "id": item.key,
+              "quantity": item.quantity + 1
+            }
+            axios.post('/cart/change.js', data)
+              .then(response => {
+                store.getCart()
+              })
+              .catch(error => console.log(error))
+          },
+          remove(item) {
+            const data = {
+              "id": item.key,
+              "quantity": 0
+            }
+            this.spinning = true
+            axios.post('/cart/change.js', data)
+              .then(response => {
+                store.getCart()
+                this.spinning = false
+              })
+              .catch(error => this.spinning = false)
+          },
+          money(value) {
+            if (!value) return 0
+            return (value/100).toFixed(2)
+          }
+        },
+        computed: {
+          offsetRightState() {
+            return offsetRightState.hidden
+          },
+          offsetModalState() {
+            return offsetModalState.hidden
+          },
+          cart() {
+            return this.cartData[0]
+          }
+        }
+      }).mount('#offset_right')
+    }
+  })
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.offsetright.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Empty Shopping Bag"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "default": "There are no items in your bag.",
+      "label": "t:sections.offsetright.shoppingbag.empty.title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "default": "Start your BINSPIRED journey here...",
+      "label": "t:sections.offsetright.shoppingbag.empty.subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Bag Items"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.offsetright.shoppingbag.vendor"
+    }
+  ],
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "name": "Category",
+      "type": "category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Category",
+          "label": "Label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

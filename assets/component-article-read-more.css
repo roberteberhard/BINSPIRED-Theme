@@ -1,0 +1,135 @@
+.read-more_wrapper {
+  padding-top: 6rem;
+  padding-bottom: 8rem;
+}
+
+@media screen and (min-width: 750px) {
+  .read-more_wrapper {
+    padding-top: 8rem;
+    padding-bottom: 10rem;
+  }
+}
+
+/* Swiper */
+
+.read-more_header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.4rem;
+}
+
+.read-more_header .headline-2 {
+  margin-top: 5px;
+}
+
+.read-more_nav {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.read-more_nav .carousel-btn {
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  display: inline-flex;
+  padding: 12px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.05);
+  transition: background-color var(--duration-default) ease;
+}
+
+.read-more_nav .carousel-btn:hover {
+  outline: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.read-more_nav .carousel-btn.swiper-button-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.read-more_nav .carousel-btn.prev-btn {
+  margin-right: 1.2rem;
+}
+
+/* Article Card */
+
+.article-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.article-card_link {
+  display: block;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Card Image */
+
+.article-card_figure {
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.article-card_img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  transition: filter var(--duration-medium) ease;
+}
+
+.article-card_link:hover .article-card_img {
+  filter: brightness(85%);
+}
+
+/* Card Body */
+
+.article-card_body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.article-card_info {
+  margin-bottom: 0rem;
+}
+
+.article-card_info .headline-3 {
+  margin: 0;
+  line-height: 1.15;
+}
+
+.article-card_info--date.headline-6,
+.article-card_info--author.headline-6,
+.article-card_info--comments.headline-6 {
+  display: inline-block;
+}
+
+.article-card_excerpt {
+  margin: 0.5rem 0 0 0;
+  line-height: 1.35;
+}
+
+.article-card_tag {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.article-card_tag .link--primary {
+  margin-top: 1rem;
+  margin-right: 1.25rem;
+  color: rgba(var(--color-foreground));
+  font-size: calc(var(--font-heading-scale) * 1.2rem);
+  font-weight: 500;
+  line-height: 1.66;
+}

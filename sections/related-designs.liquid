@@ -1,0 +1,102 @@
+{%- if product.metafields.product_info.related_design %}
+  {{ 'section-related-designs.css' | asset_url | stylesheet_tag }}
+  <div class="related-designs_wrapper page-width">
+    <div class="swiper related-designs-swiper">
+      <div class ="related-designs_header">
+        <h2 class="headline-2{% if section.settings.related_designs_title == blank %} no-heading{% endif %}">{{ section.settings.related_designs_title | escape }}</h2>
+        <nav class="related-designs_nav">
+          <button class="carousel-btn prev-btn" aria-hidden="true" tabindex="-1">
+            {%- render 'icon-prev-btn' -%}
+            <span class="visually-hidden">{{ 'general.carousel.prev' | t }}</span>
+          </button>
+          <button class="carousel-btn next-btn" aria-hidden="true" tabindex="-1">
+            {%- render 'icon-next-btn' -%}
+            <span class="visually-hidden">{{ 'general.carousel.next' | t }}</span>
+          </button>
+        </nav>
+      </div>
+      <div class="swiper-wrapper">
+        {%- for item in product.metafields.product_info.related_design.value -%}
+          {% render 'related-designs-card', item: item %}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% javascript %}
+  const target = document.querySelector('.related-designs_wrapper')
+  if(target) {
+    const options = { rootMargin: '100px 0px 100px 0px' }
+    const handleIntersection = (entries) => {
+      if (entries[0].isIntersecting) {
+        handleRelatedDesignsSwiper()
+        observer.unobserve(entries[0].target)
+      }
+    }
+    const observer = new IntersectionObserver(handleIntersection, options)
+    observer.observe(target)
+  }
+
+  const handleRelatedDesignsSwiper = () => {
+    const relatedDesignsSwiper = new Swiper(".related-designs-swiper", {
+      on: {
+        afterInit: (swiper) => {
+          for (let i = 0; i < swiper.slides.length; i++) {
+            swiper.slides[i].style.opacity = !i ? 1 : 1;
+          }
+        }
+      },
+      slidesPerView: 2,
+      spaceBetween: 15,
+      loop: false,
+      navigation: {
+        nextEl: ".next-btn",
+        prevEl: ".prev-btn",
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 3,
+          spaceBetween: 15,
+        },
+        750: {
+          slidesPerView: 4,
+          spaceBetween: 15,
+        },
+        990: {
+          slidesPerView: 5,
+          spaceBetween: 15,
+        },
+        1280: {
+          slidesPerView: 6,
+          spaceBetween: 15,
+        }
+      }
+    })
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.related-designs.name",
+  "tag": "section",
+  "class": "related-designs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "related_designs_title",
+      "default": "Also available as",
+      "label": "t:sections.related-designs.settings.title.label"
+    },
+    {
+      "type": "range",
+      "id": "related_designs_to_show",
+      "min": 2,
+      "max": 36,
+      "step": 2,
+      "default": 12,
+      "label": "t:sections.related-designs.settings.products_to_show.label"
+    }
+  ]
+}
+{% endschema %}

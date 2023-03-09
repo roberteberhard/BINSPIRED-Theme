@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "customer-favorites",
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
+

@@ -1,0 +1,115 @@
+{{ 'section-product-recommendations.css' | asset_url | stylesheet_tag }}
+
+<div class="product-recommendations_wrapper page-width">
+  <div class="swiper product-recommendations-swiper">
+    <div class ="product-recommendations_header">
+      <h2 class="headline-2{% if section.settings.product_recommendations_title == blank %} no-heading{% endif %}">{{ section.settings.product_recommendations_title | escape }}</h2>
+      <nav class="product-recommendations_nav">
+        <button class="carousel-btn prev-btn" aria-hidden="true" tabindex="-1">
+          {%- render 'icon-prev-btn' -%}
+          <span class="visually-hidden">{{ 'general.carousel.prev' | t }}</span>
+        </button>
+        <button class="carousel-btn next-btn" aria-hidden="true" tabindex="-1">
+          {%- render 'icon-next-btn' -%}
+          <span class="visually-hidden">{{ 'general.carousel.next' | t }}</span>
+        </button>
+      </nav>
+    </div>
+    <product-recommendations class="product-recommendations swiper-wrapper swiper-spinner" data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.product_recommendations_to_show }}">
+      {% if recommendations.performed and recommendations.products_count > 0 %}
+        {% for recommendation in recommendations.products %}
+          <div class="swiper-slide">
+            {% render 'product-recommendation-card', card_product: recommendation, card_vendor: section.settings.show_vendor %}
+          </div>
+        {% endfor %}
+      {% endif %}
+    </product-recommendations>
+  </div>
+</div>
+
+{% javascript %}
+  class ProductRecommendations extends HTMLElement {
+    constructor() {
+      super();
+      const handleIntersection = (entries, observer) => {
+        if (!entries[0].isIntersecting) return;
+        observer.unobserve(this);
+        fetch(this.dataset.url)
+          .then(response => response.text())
+          .then(text => {
+            const html = document.createElement('div');
+            html.innerHTML = text;
+            const recommendations = html.querySelector('product-recommendations');
+            if (recommendations && recommendations.innerHTML.trim().length) {
+              this.innerHTML = recommendations.innerHTML;
+              this.classList.remove('swiper-spinner');
+              setTimeout(() => {
+                handleProductRecommendationsSwiper()
+              }, 10)
+            }
+          })
+          .catch(e => {
+            console.error(e);
+          })
+      }
+      new IntersectionObserver(handleIntersection.bind(this), {rootMargin: '200px 0px 200px 0px'}).observe(this);
+    }
+  }
+  customElements.define('product-recommendations', ProductRecommendations);
+
+  const handleProductRecommendationsSwiper = () => {
+    const productRecommendationsSwiper = new Swiper(".product-recommendations-swiper", {
+      slidesPerView: 1,
+      spaceBetween: 15,
+      loop: false,
+      navigation: {
+        nextEl: ".next-btn",
+        prevEl: ".prev-btn",
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 15,
+        },
+        990: {
+          slidesPerView: 3,
+          spaceBetween: 15,
+        }
+      }
+    });
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.product-recommendations.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "product_recommendations_title",
+      "default": "Also available as",
+      "label": "t:sections.product-recommendations.settings.title.label"
+    },
+    {
+      "type": "range",
+      "id": "product_recommendations_to_show",
+      "min": 2,
+      "max": 10,
+      "step": 2,
+      "default": 8,
+      "label": "t:sections.product-recommendations.settings.products_to_show.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.product-recommendations.settings.vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.product-recommendations.settings.show_vendor.label"
+    }
+  ]
+}
+{% endschema %}

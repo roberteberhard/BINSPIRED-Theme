@@ -1,0 +1,31 @@
+{% if product.metafields.product_info.related_products %}
+  <div class="product-options__related">
+    {%- liquid
+      assign id = product.id
+      assign relateds = product.metafields.product_info.related_products.value
+      assign has1product = false
+      for prod in relateds
+        assign has1product = true
+      endfor
+    -%}
+    {% if has1product %}
+      <div class="product-options__related--images">
+        <span class="visually-hidden">{{ 'products.product.choose_style' | t }}</span>
+        {% for prod in relateds %}
+          <a href="{{ prod.url | default: '#' }}" class="product-options__related--link{% if id == prod.id %} active{% endif %}{% if prod.available == false %} soldout{% endif %}"" aria-label="{{ prod.title }}">
+            <figure class="placeholder-gray">
+              <img
+                src="{{ prod.images[0] | image_url: width: 200 }}"
+                class="featured-img"
+                width="200"
+                height="200"
+                alt="{{ prod.title | escape }}"
+                loading="lazy"
+              />
+            </figure>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

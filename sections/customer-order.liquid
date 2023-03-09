@@ -1,0 +1,138 @@
+{{ "section-customer-account.css" | asset_url | stylesheet_tag }}
+{{ "section-customer-order.css" | asset_url | stylesheet_tag }}
+{{ "component-customer-order-item-card.css" | asset_url | stylesheet_tag }}
+
+<div class="customer">
+  <div class="customer-wrapper page-width">
+    <div id="order">
+      <header class="member-header">
+        <div class="member-title">
+          <h1 class="member-title_order headline-1">{{ "customer.order.title" | t }}</h1>
+        </div>
+        <div class="member-nav">
+          <a role="option" target="_self" tabindex="-1" class="member-nav_link m-profile" href="{{ routes.account_url }}">{{ "customer.account.menu.profile" | t }}</a>
+          <a role="option" target="_self" tabindex="-1" class="member-nav_link m-order" href="{{ routes.account_url }}/#orders">{{ "customer.account.menu.order" | t }}</a>
+          <a role="option" target="_self" tabindex="-1" class="member-nav_link m-favorite" href="{{ routes.root_url }}pages/favorites">{{ "customer.account.menu.favorite" | t }}</a>
+          <a role="option" target="_self" tabindex="-1" class="member-nav_link m-address" href="{{ routes.account_addresses_url }}">{{ "customer.account.menu.address" | t }}</a>
+        </div>
+        <div class="member-end">&nbsp;</div>
+      </header>
+    </div>
+
+    <!-- Customer Order -->
+    <section class="customer-order">
+      {%- assign order_date = order.created_at | date: format: "date" -%}
+      <h2 class="headline-2">
+        {{ "customer.order.order_number" | t: number: order.name }}
+      </h2>
+      <div class="customer-order_date">
+        <p class="order-date">{{ "customer.order.date_html" | t: date: order_date }}</p>
+        <a class="link--text" href="{{ routes.account_url }}/#orders">{{ "customer.order.back_to" | t }}</a>
+      </div>
+      {%- if order.cancelled -%}
+        {%- assign cancelled_at = order.cancelled_at | time_tag: format: "date_at_time" -%}
+        <p class="order-cancelled">
+          {{ "customer.order.cancelled_html" | t: date: cancelled_at }}
+        </p>
+        <p class="order-cancelled">
+          {{ "customer.order.cancelled_reason" | t: reason: order.cancel_reason_label }}
+        </p>
+      {%- endif -%}
+      <span class="order-status">{{ order.financial_status_label }}</span>
+      <div class="customer-order_items">
+        {%- for line_item in order.line_items -%}
+          {% render 'customer-order-item-card', product_item: line_item %}
+        {%- endfor -%}
+      </div>
+
+      <!-- Order Total -->
+      <div class="order-total">
+        <div class="order-total_group">
+          <div class="order-total_group-row row-left">
+            {{ "customer.order.subtotal" | t }}
+          </div>
+          <div class="order-total_group-row row-right" data-label="{{ 'customer.order.subtotal' | t }}">
+            <span class="strong">{{ order.line_items_subtotal_price | money }}</span>
+          </div>
+          {%- if order.cart_level_discount_applications != blank -%}
+            {%- for discount_application in order.cart_level_discount_applications -%}
+              <div class="order-total_group-row row-left">
+                {{ "customer.order.discount" | t }}
+                <span class="cart-discount">
+                  {%- render 'icon-product-tag' -%}
+                  {{- discount_application.title -}}
+                </span>
+              </div>
+              <div class="order-total_group-row row-right" data-label="{{ 'customer.order.discount' | t }}">
+                <span class="strong">-{{ discount_application.total_allocated_amount | money }}</span>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+          {%- for shipping_method in order.shipping_methods -%}
+            <div class="order-total_group-row row-left">
+              {{ "customer.order.shipping" | t }} ({{ shipping_method.title }})
+            </div>
+            <div class="order-total_group-row row-right" data-label="{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})">
+              <span class="strong">{{ shipping_method.price | money }}</span>
+            </div>
+          {%- endfor -%}
+          {%- for tax_line in order.tax_lines -%}
+            <div class="order-total_group-row row-left">
+              {{ "customer.order.tax" | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)
+            </div>
+            <div class="order-total_group-row row-right" data-label="{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)">
+              <span class="strong">{{ tax_line.price | money }}</span>
+            </div>
+          {%- endfor -%}
+          <div class="order-total_group-row row-left border-top">
+            {{ "customer.order.total" | t }}
+          </div>
+          <div class="order-total_group-row row-right border-top total" data-label="{{ 'customer.order.total' | t }}">
+            <span class="strong">{{ order.total_price | money_with_currency }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order State -->
+      <div class="order-state">
+
+        <div class="order-state_row">
+          <h3 class="headline-3">{{ "customer.order.billing_address" | t }}</h3>
+          {{ order.billing_address | format_address }}
+        </div>
+
+        <div class="order-state_row">
+          <h3 class="headline-3">{{ "customer.order.shipping_address" | t }}</h3>
+          {{ order.shipping_address | format_address }}
+        </div>
+
+        <div class="order-state_row payment">
+          <h3 class="headline-3">{{ "customer.order.payment_information" | t }}</h3>
+          {% for transaction in order.transactions %}
+            <div class="status-wrapper">
+              {%- liquid
+                assign credit_card_company = transaction.payment_details.credit_card_company
+                assign credit_card_last_4_digits = transaction.payment_details.credit_card_number
+              -%}
+              {%- if credit_card_company -%}
+                {%- case transaction.status_label -%}
+                  {%- when 'Failure' -%}
+                    {%- assign background = 'error' -%}
+                  {%- else -%}
+                    {%- assign background = 'success' -%}
+                {%- endcase -%}
+                <p>{{ credit_card_company }}</p>
+                <p>{{ credit_card_last_4_digits }}</p>
+                <span class="order-status {{ background }}">{{ transaction.status_label }}</span>
+              {%- else -%}
+                <p>{{ "customer.order.payment_by_owner" | t: owner: shop.name }}</p>
+              {%- endif -%}
+            </div>
+          {% endfor %}
+        </div>
+
+      </div>
+
+    </section>
+  </div>
+</div>

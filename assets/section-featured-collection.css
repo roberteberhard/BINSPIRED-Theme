@@ -1,0 +1,118 @@
+/* Featured Collection */
+
+.featured-collection_wrapper {
+  padding-bottom: 4.5rem;
+}
+
+@media screen and (min-width: 750px) {
+  .featured-collection_wrapper {
+    padding-bottom: 6.5rem;
+  }
+}
+
+.featured-collection_header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 4px 4px 0 0;
+  margin-bottom: 1.4rem;
+}
+
+.featured-collection_header .headline-2 {
+  margin-top: 5px;
+}
+
+.featured-collection_header .link--text {
+  margin: 0 30px 0 0;
+  font-weight: 500;
+}
+@media screen and (max-width: 720px) {
+  .featured-collection_header .link--text {
+    display: none;
+  }
+}
+
+.featured-collection_nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.featured-collection_nav .carousel-btn {
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  display: inline-flex;
+  padding: 12px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.05);
+  transition: background-color var(--duration-default) ease;
+}
+
+.featured-collection_nav .carousel-btn:hover {
+  outline: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.featured-collection_nav .carousel-btn.swiper-button-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.featured-collection_nav .carousel-btn.prev-btn {
+  margin-right: 1.2rem;
+}
+
+/* Featured Collection Card */
+
+.featured-collection {
+  opacity: 0;
+}
+
+.featured-collection-info {
+  padding: 1rem 1.5rem 0 0;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.featured-collection-info__title {
+  margin: 0.5rem 0 0.3rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.featured-collection-info__subtitle {
+  color: rgb(var(--color-foreground), 0.55);
+  font-weight: 400;
+}
+
+.featured-collection_price {
+  padding: 1.5rem 0 0.5rem;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.featured-collection_price__small {
+  padding-right: 0.4rem;
+  font-size: calc(var(--font-heading-scale) * 1.4rem);
+  font-weight: 400;
+}
+
+.featured-collection_price__original {
+  font-weight: 500;
+}
+
+.featured-collection_price__reduced {
+  padding-right: 0.5rem;
+  font-weight: 500;
+}
+
+.featured-collection_price__compare {
+  color: rgb(var(--color-foreground), 0.55);
+  text-decoration: line-through;
+}

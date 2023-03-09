@@ -1,0 +1,28 @@
+<div class="swiper announcementSwiper">
+  <div class="swiper-wrapper">
+    {%- for block in blocks -%}
+      <div class="swiper-slide">
+        {%- if block.settings.link -%}
+          <a href="{{ block.settings.link }}">
+            <div class="swiper-message page-width color-{{ bgcolor }}">{{ block.settings.text }}</div>
+          </a>
+        {%- else -%}
+          <div class="swiper-message page-width color-{{ bgcolor }}">{{ block.settings.text }}</div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const swiper = new Swiper(".announcementSwiper", {
+      effect: "fade",
+      loop: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      }
+    });
+  });
+</script>

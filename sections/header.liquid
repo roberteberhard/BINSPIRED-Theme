@@ -1,0 +1,252 @@
+{{ 'section-header.css' | asset_url | stylesheet_tag }}
+
+<header id="header">
+  <div class="header{% if section.settings.enable_sticky_header %} sticky-header{% endif %}" :class="{ 'is-fixed': headerStickyState, 'is-hidden': headerHiddenState}">
+    <div class="header-menu color-{{ section.settings.color_scheme }}{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}">
+      <div class="header-menu-wrapper page-width-large">
+        <div class="header-menu-mobile">
+          <button class="header-menu-mobile__hamburger" @click="toggleOffsetLeftState">
+            {%- render 'icon-hamburger' -%}
+            <span class="visually-hidden">{{ 'general.header.menu.mobile' | t }}</span>
+          </button>
+        </div>
+        <div class="header-menu-brand">
+          <div class="header-menu-brand__logo">
+            <a href="{{ routes.root_url }}" title="{{ 'general.header.menu.homepage' | t }}">
+              {%- render 'icon-logo' -%}
+              <span class="visually-hidden">{{ 'general.header.menu.homepage' | t }}</span>
+            </a>
+          </div>
+        </div>
+        <div class="header-menu-main">
+          {%- if section.settings.menu != blank -%}
+            <nav class="header-menu-main__navigation">
+              <ul class="header-menu-main__menu list-unstyled" :class="{ 'is-open': keyName != null }" role="list">
+                {%- for link in section.settings.menu.links -%}
+                  {%- if link.links != blank -%}
+                    <li class="header-menu-main__list" :class="{ 'is-focused': keyName === {{ forloop.index0 }}}" @mouseover.native="handleMouseOver({{ forloop.index0 }})" @mouseleave.native="handleMouseLeave">
+                      <span class="link link--menu">{{ link.title | escape }}</span>
+                      <div class="header-menu-main-dropdown">
+                        {%- for childlink in link.links -%}
+                          {%- if childlink.links != blank -%}
+                            <div class="header-menu-main-dropdown__column">
+                              <span class="menuitem--heading">{{ childlink.title | escape }}</span>
+                              {%- for grandchildlink in childlink.links -%}
+                                <a role="menuitem" aria-label="" class="menuitem--link" href="{{ grandchildlink.url }}" tabindex="-1">
+                                  {{ grandchildlink.title | escape }}
+                                </a>
+                              {%- endfor -%}
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    </li>
+                  {%- else -%}
+                    <li>
+                      <a class="link link--menu" href="{{ link.url }}" {% if link.current %} aria-current="page"{% endif %}  tabindex="-1">
+                        {{ link.title | escape }}
+                      </a>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </nav>
+          {%- endif -%}
+        </div>
+        <div class="header-menu-icons">
+          <a class="header-menu-icons__search icon--menu" @click="toggleSearchAppState" title="{{ 'general.header.menu.search' | t }}">
+            {%- render 'icon-search' -%}
+            <span class="visually-hidden">{{ 'general.header.menu.search' | t }}</span>
+          </a>
+          <a class="header-menu-icons__favorite icon--menu" href="{{ routes.root_url }}pages/favorites" title="{{ 'general.header.menu.favorites' | t }}">
+            {%- render 'icon-favorites' -%}
+            <span class="visually-hidden">{{ 'general.header.menu.favorites' | t }}</span>
+          </a>
+          {% if template == 'cart' %}
+            <a class="header-menu-icons__bagitem icon--menu" href="{{ routes.cart_url }}" title="{{ 'general.header.menu.bagitem' | t }}">
+          {% else %}
+            <a class="header-menu-icons__bagitem icon--menu" @click="toggleOffsetRightState" title="{{ 'general.header.menu.bagitem' | t }}">
+          {% endif %}
+            {%- render 'icon-bagitem' -%}
+            <span class="visually-hidden">{{ 'general.header.menu.bagitem' | t }}</span>
+            <span class="bagitem-amount" aria-hidden="true">
+              <template v-if="cart">
+                ${ cart.item_count }
+              </template>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-modal" :class="{ 'is-open': keyName != null }"></div>
+
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#header')) {
+      const headerCart = Vue.createApp({
+        delimiters: ['${', '}'],
+        data() {
+          return {
+            cartData: store.state.cartState,
+            modal: null,
+            keyName: null,
+            header: {
+              stickyBehavior: false,
+              smallBarHeight: null,
+              dropDownHeight: 0,
+              lastScrollTop: 0
+            }
+          }
+        },
+        methods: {
+          handleMouseOver(index) {
+            this.keyName = index,
+            toggleHeaderModalState.addOverflow()
+          },
+          handleMouseLeave() {
+            this.keyName = null,
+            toggleHeaderModalState.removeOverflow()
+          },
+          toggleSearchAppState() {
+            toggleSearchAppState.showSearch()
+            toggleSearchAppState.addKeyDown()
+          },
+          toggleOffsetLeftState() {
+            toggleOffsetLeftState.openMenu()
+            toggleOffsetLeftState.addKeyDown()
+          },
+          toggleOffsetRightState() {
+            toggleOffsetRightState.openCart()
+            toggleOffsetRightState.addKeyDown()
+          }
+        },
+        computed: {
+          cart() {
+            return this.cartData[0]
+          },
+          headerStickyState() {
+            if( this.header.stickyBehavior === true && dimension.windowWidth >= 990 ) {
+              dimension.headerStickyState = dimension.scrollY > this.header.smallBarHeight ? true : false
+            } else {
+              dimension.headerStickyState = false
+            }
+            return dimension.headerStickyState
+          },
+          headerHiddenState() {
+            if( this.header.stickyBehavior === true && dimension.windowWidth >= 990 ) {
+              if( dimension.scrollY > this.header.smallBarHeight && dimension.scrollY > this.header.lastScrollTop ) {
+                dimension.headerHiddenState = true
+              } else {
+                dimension.headerHiddenState = false
+              }
+            } else {
+              dimension.headerHiddenState = false
+            }
+            this.header.lastScrollTop = dimension.scrollY <= 0 ? 0 : dimension.scrollY
+            return dimension.headerHiddenState
+          }
+        },
+        mounted() {
+          this.header.smallBarHeight = document.querySelector(".header-bar") != undefined ? document.querySelector(".header-bar").clientHeight : 0
+          this.header.stickyBehavior = document.querySelector('.sticky-header') != undefined ? true : false
+        },
+        created() {
+          store.getCart()
+        }
+      }).mount('#header');
+    }
+  });
+</script>
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    {% if section.settings.logo %}
+      {% assign image_size = section.settings.logo.width | append: 'x' %}
+      "logo": {{ section.settings.logo | image_url: image_size | prepend: "https:" | json }},
+    {% endif %}
+    "sameAs": [
+      {{ settings.social_twitter_link | json }},
+      {{ settings.social_facebook_link | json }},
+      {{ settings.social_pinterest_link | json }},
+      {{ settings.social_instagram_link | json }},
+      {{ settings.social_tiktok_link | json }},
+      {{ settings.social_tumblr_link | json }},
+      {{ settings.social_snapchat_link | json }},
+      {{ settings.social_youtube_link | json }},
+      {{ settings.social_vimeo_link | json }}
+    ],
+    "url": {{ shop.url | append: page.url | json }}
+  }
+</script>
+
+{%- if request.page_type == 'index' -%}
+  {% assign potential_action_target = shop.url | append: routes.search_url | append: "?q={search_term_string}" %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"
+      },
+      "url": {{ shop.url | append: page.url | json }}
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "background-1",
+          "label": "t:sections.header.settings.color_scheme.options__1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.header.settings.color_scheme.options__2.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.header.settings.color_scheme.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:sections.header.settings.logo.label"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "t:sections.header.settings.menu.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_line_separator",
+      "default": true,
+      "label": "t:sections.header.settings.show_line_separator.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "default": true,
+      "label": "t:sections.header.settings.enable_sticky_header.label",
+      "info": "t:sections.header.settings.enable_sticky_header.info"
+    }
+  ]
+}
+{% endschema %}

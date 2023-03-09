@@ -1,0 +1,55 @@
+.main-product-modal {
+  display: none;
+  position: fixed;
+  z-index: 120;
+  inset: 0px;
+  overflow-y: scroll;
+  background-color: white;
+}
+
+.main-product-modal.active {
+  display: block;
+}
+
+.main-product-modal__grid {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding: 12px 12px 0 12px;
+}
+
+.main-product-modal__grid-picture {
+  margin-bottom: 12px;
+}
+
+.main-product-modal__grid--closer {
+  cursor: pointer;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.main-product-modal__grid--closer--btn {
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 8px;
+  border: 0;
+  outline: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 1);
+  transition: background-color var(--duration-default) ease;
+}
+
+.product-modal-closer:hover .product-modal-closer__btn {
+  background-color: rgba(255, 255, 255, 0.75);
+}

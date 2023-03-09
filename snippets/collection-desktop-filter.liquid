@@ -1,0 +1,75 @@
+<div class="desktop-filter_wrapper" :style="sidebarTopPosition">
+  <div class="desktop-results">
+    <template v-for="filter in filters" :key="filter.index">
+      <template v-if="filter.type == 'price_range'">
+        <div class="desktop-results_group open" :data-label="filter.label">
+          <div class="desktop-results_trigger" @click="handleFilterVisibleState(filter.label)">
+            <div class="desktop-results_trigger-btn" tabindex="0">
+              Shop by ${ filter.label } <span v-if="collection.price_state == 'on'">(1)</span>
+            </div>
+            <div class="desktop-results_trigger-chevron"></div>
+          </div>
+          <div class="desktop-results_items" :class="filter.label" role="group">
+            <template v-for="(value, index) in collection.price_ranges" :key="value.filter_id">
+              <div v-if="collection.price_state == 'off'" class="desktop-results_item" :class="{'disabled': (collection.price_max_range - 1) < value.filter_value_min }" @click="filterProductsBySelectedPrice('filter.v.price.gte', value.filter_value_min, 'filter.v.price.lte', value.filter_value_max)">
+                <button class="desktop-results_item-btn" role="menuitemcheckbox" type="button">
+                  <div class="pseudo-checkbox">
+                    <div class="icon-checkmark"></div>
+                  </div>
+                  <span v-if="index != collection.price_ranges.length - 1" class="desktop-results_item-label">${ value.money_value_min } - ${ value.money_value_max }</span>
+                  <span v-else class="desktop-results_item-label">Over ${ value.money_value_min }</span>
+                </button>
+              </div>
+              <div v-if="collection.price_state == 'on'" class="desktop-results_item" :class="{ 'disabled': collection.price_max_range != value.filter_value_max }" @click="filterProductsBySelectedPrice('filter.v.price.gte', value.filter_value_min, 'filter.v.price.lte', value.filter_value_max)">
+                <button class="desktop-results_item-btn" role="menuitemcheckbox" type="button">
+                  <div class="pseudo-checkbox" :class="{ 'selected': collection.price_max_range == value.filter_value_max }">
+                    <div class="icon-checkmark" :class="{ 'active': collection.price_max_range == value.filter_value_max }"></div>
+                  </div>
+                  <span v-if="index != collection.price_ranges.length - 1" class="desktop-results_item-label">${ value.money_value_min } - ${ value.money_value_max }</span>
+                  <span v-else class="desktop-results_item-label">Over ${ value.money_value_min }</span>
+                </button>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+      <template v-if="filter.type == 'list'">
+        <div class="desktop-results_group open" :data-label="filter.label">
+          <div class="desktop-results_trigger" @click="handleFilterVisibleState(filter.label)">
+            <div class="desktop-results_trigger-btn" tabindex="0">
+              ${ filter.label } <span v-if="filter.size > 0">(${ filter.size })</span>
+            </div>
+            <div class="desktop-results_trigger-chevron"></div>
+          </div>
+          <div class="desktop-results_items" :class="filter.label" role="group">
+            <template v-for="value in filter.values" :key="value.filter_id">
+              <template v-if="filter.label == 'Color'">
+                <div class="desktop-results_item-swatch" :class="[value.filter_label, {'disabled': value.filter_count == 0 }]" @click="filterProductsBySelectedOption(value.filter_param, value.filter_value)">
+                  <div class="item-swatch_color" :class="value.filter_label">
+                    <div class="swatch-checkmark" :class="{ 'active': value.filter_active == 'true' }"></div>
+                  </div>
+                  <div class="item-swatch_label" :class="{ 'active': value.filter_active == 'true' }">${ value.filter_label }</div>
+                </div>
+              </template>
+              <template v-else-if="filter.label == 'Size'">
+                <button class="desktop-results_size-btn" :class="[{ 'active': value.filter_active == 'true' }, {'disabled': value.filter_count == 0 }]" @click="filterProductsBySelectedOption(value.filter_param, value.filter_value)" role="menuitemcheckbox" type="button">
+                  <span class="desktop-results_size-label">${ value.filter_label }</span>
+                </button>
+              </template>
+              <template v-else>
+                <div class="desktop-results_item" :class="{'disabled': value.filter_count == 0 }" @click="filterProductsBySelectedOption(value.filter_param, value.filter_value)">
+                  <button class="desktop-results_item-btn" role="menuitemcheckbox" type="button">
+                    <div class="pseudo-checkbox" :class="{ 'selected': value.filter_active == 'true' }">
+                      <div class="icon-checkmark" :class="{ 'active': value.filter_active == 'true' }"></div>
+                    </div>
+                    <span class="desktop-results_item-label" :class="{ 'active': value.filter_active == 'true' }">${ value.filter_label }</span>
+                  </button>
+                </div>
+              </template>
+            </template>
+          </div>
+        </div>
+      </template>
+    </template>
+  </div>
+</div>

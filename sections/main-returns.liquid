@@ -1,0 +1,47 @@
+{{ 'section-main-help.css' | asset_url | stylesheet_tag }}
+{{ 'section-header-help.css' | asset_url | stylesheet_tag }}
+
+<div class="main-help">
+  <div class="main-help_wrapper page-width">
+    {% render 'header-help', title: page.title, active: 'returns' %}
+  </div>
+  <div class="main-help_content page-width">
+    <div class="main-help_body odd">
+      <div id="incorrectproduct" class="main-help_body-block">
+        <h2 class="headline-2">What should I do if a product is damaged or incorrect?</h2>
+        <p>We are very sorry if the product you ordered was damaged or delivered incorrectly. So that we can quickly fix this for you, please <a class="link--primary" target="_self" href="{{ routes.root_url }}pages/contact">contact us</a> immediately with photos of the damaged product, your order number, and any other details you have about your order so that we can evaluate the issue.</p>
+        <p>After that, we will gladly refund 100% of the purchase price or provide you with a free replacement, whichever you prefer.</p>
+        <p>It is best to <a class="link--primary" target="_self" href="{{ routes.root_url }}pages/contact">contact us</a> before returning any product. We do not refund orders for buyer's remorse.</p>
+        <p><span class="strong">Notification for EU consumers</span>According to Article 16(c) and (e) of the Directive 2011/83/EU of the European Parliament and of the Council of 25 October 2011 on consumer rights, the right of withdrawal may not be provided for:</p>
+        <ol class="returns-list">
+          <li>The delivery of goods that are made to customer specifications or are clearly personalized.</li>
+          <li>Sealed goods that have been unsealed after delivery and are therefore not suitable for return for reasons of health protection or hygiene.</li>
+        </ol>
+      </div>
+      <div id="exchangeproduct" class="main-help_body-block">
+        <h2 class="headline-2">How can I exchange a product?</h2>
+        <p>Unfortunately, we do not offer item exchanges at this time. We may be able to help you replace an order if it does not meet your satisfaction.</p>
+      </div>
+    </div>
+    <div class="main-help_body even">
+      <div id="returnproduct" class="main-help_body-block">
+        <h2 class="headline-2">Do I need to return the damaged product I received?</h2>
+        <p>You do not have to return a damaged or incorrect product to us. Read more about how to file a claim under the question "What should I do if a product is damaged or incorrect?"</p>
+      </div>
+      <div id="receiverefund" class="main-help_body-block">
+        <h2 class="headline-2">When will I receive my refund?</h2>
+        <p>You can expect to receive a refund to your original payment method within 5-10 days of delivery. Once you receive your refund notification, please wait an additional 3-5 days for your bank provider to post the funds to your account.</p>
+        <p>Please note that we must have received the return of your order or a shipping receipt before we can issue a refund.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page.returns.label",
+  "settings": [
+
+  ]
+}
+{% endschema %}

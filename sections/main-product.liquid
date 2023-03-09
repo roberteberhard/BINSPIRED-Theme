@@ -1,0 +1,528 @@
+{{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-modal.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-variants.css' | asset_url | stylesheet_tag }}
+
+<div id="product" class="main-product">
+  <div class="main-product_wrapper page-width">
+    <div id="productHeader" class="product-header mobile-view">
+      {%- render 'store-product-breadcrumbs' %}
+      <h1 class="headline-1">{%- if section.settings.product_vendor -%}{{ product.vendor }} {%- endif -%}{{ product.title | escape }}</h1>
+      <h2 class="headline-2">{{ product.type | escape }}</h2>
+      <div class="product-options__prices" role="status" {{ block.shopify_attributes }}>
+        {%- render 'store-product-price-mobile', product: product -%}
+      </div>
+    </div>
+    <div class="product-media">
+      <div class="product-media-mobile swiper" role="list">
+        <nav class="product-media_nav">
+          <button class="carousel-btn prev-btn" aria-hidden="true" tabindex="-1">
+            {%- render 'icon-prev-btn' -%}
+            <span class="visually-hidden">{{ 'general.carousel.prev' | t }}</span>
+          </button>
+          <button class="carousel-btn next-btn" aria-hidden="true" tabindex="-1">
+            {%- render 'icon-next-btn' -%}
+            <span class="visually-hidden">{{ 'general.carousel.next' | t }}</span>
+          </button>
+        </nav>
+        <div class="swiper-wrapper">
+          {%- liquid
+            if product.selected_or_first_available_variant.featured_media != null
+              assign featured_media = product.selected_or_first_available_variant.featured_media
+              assign media_position =  1
+              render 'product-thumbnail-mobile', media: featured_media: media_position
+            endif
+            for media in product.media
+              unless media.id == product.selected_or_first_available_variant.featured_media.id
+                assign media_position = media_position | default: 0 | plus: 1
+                render 'product-thumbnail-mobile', media: media, position: media_position
+              endunless
+            endfor
+          -%}
+        </div>
+      </div>
+      <div id="productMedia" class="product-media-desktop" role="list">
+        <div class="product-media-grid">
+          {%- liquid
+            if product.selected_or_first_available_variant.featured_media != null
+              assign featured_media = product.selected_or_first_available_variant.featured_media
+              assign media_position =  1
+              assign media_width = 0.65
+              render 'product-thumbnail-desktop', media: featured_media, position: media_position, media_width: media_width
+            endif
+            for media in product.media
+              unless media.id == product.selected_or_first_available_variant.featured_media.id
+                assign media_position = media_position | default: 0 | plus: 1
+                assign media_width = 0.65
+                render 'product-thumbnail-desktop', media: media, position: media_position, media_width: media_width
+              endunless
+            endfor
+          -%}
+        </div>
+      </div>
+    </div>
+    <div class="product-options">
+      <div class="product-options_wrapper">
+        {% liquid
+          for block in section.blocks
+            case block.type
+            when '@app'
+              render block
+            when 'text'
+              render 'store-product-text'
+            when 'breadcrumbs'
+              render 'store-product-breadcrumbs'
+            when 'title'
+              render 'store-product-title'
+            when 'price'
+              render 'store-product-price-desktop', product: product
+            when 'product_related'
+              render 'store-product-related'
+            when 'quantity_selector'
+              render 'store-product-quantity'
+            when 'variant_picker'
+              render 'store-product-variants'
+            when 'buy_buttons'
+              render 'store-product-add-to-bag'
+            when 'description'
+              render 'store-product-description'
+            when 'style'
+              render 'store-product-style'
+            when 'popup'
+              render 'store-product-popup'
+            when 'share'
+              render 'store-product-share' share_label: block.settings.share_label | escape
+            when 'rating'
+              render 'store-product-rating'
+            when 'collapsible_tab'
+              render 'store-product-collapsible' heading: block.settings.collapsible_heading | default: block.settings.page.title, content: block.settings.collapsible_content, page_content: block.settings.page.content
+            when 'custom_liquid'
+              render 'store-product-custom' content: block.settings.custom_liquid
+            endcase
+          endfor
+        %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="productModal">
+  <div class="main-product-modal" :class="{active: storeModalView}">
+    <div class="main-product-modal__grid">
+      {%- liquid
+        if product.selected_or_first_available_variant.featured_media != null
+          assign featured_media = product.selected_or_first_available_variant.featured_media
+          assign media_position =  1
+          assign media_width = 0.65
+          render 'product-thumbnail-modal', media: featured_media, position: media_position, media_width: media_width
+        endif
+        for media in product.media
+          unless media.id == product.selected_or_first_available_variant.featured_media.id
+            assign media_position = media_position | default: 0 | plus: 1
+            assign media_width = 0.65
+            render 'product-thumbnail-modal', media: media, position: media_position, media_width: media_width
+          endunless
+        endfor
+      -%}
+      <div class="main-product-modal__grid--closer" @click="hideProductModalView" aria-hidden="true">
+        <button class="main-product-modal__grid--closer--btn">
+          {%- render 'icon-close' -%}
+          <span class="visually-hidden">{{ 'general.offset.menu.close' | t }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% javascript %}
+  const mobileSwiper = new Swiper('.product-media-mobile', {
+    slidesPerView: 1,
+    spaceBetween: 4,
+    loop: false,
+    navigation: {
+      nextEl: ".next-btn",
+      prevEl: ".prev-btn",
+    }
+  })
+
+  const productModal= Vue.createApp({
+    delimiters: ['${', '}'],
+    data() {
+      return {
+        isModalView: false
+      }
+    },
+    methods: {
+      showProductModalView() {
+        if(store.state.storeModalView) {
+          setTimeout(function() {
+            const pos = store.state.storeModalPos
+            const modal = document.querySelector(".main-product-modal")
+            const rect = modal.getBoundingClientRect();
+            const image_h = rect.width
+            const viewport_h = rect.height
+            const vertical_h = viewport_h * 2
+            if(image_h > viewport_h) {
+              const diff = vertical_h > image_h ? (image_h - viewport_h) * 0.5 : (viewport_h * 0.5)
+              const endY = Math.round(((image_h * pos) - image_h) + diff)
+              modal.scroll(0, endY)
+            } else {
+              modal.scroll(0, Math.round(image_h * pos) - image_h)
+            }
+            store.addOverflow()
+          }, 5)
+        }
+      },
+      hideProductModalView() {
+        store.state.storeModalPos = 0
+        store.state.storeModalView = false
+        store.removeOverflow()
+      }
+    },
+    computed: {
+      storeModalView() {
+        if(dimension.windowWidth < 990) this.hideProductModalView()
+        if(store.state.storeModalView) this.showProductModalView()
+        return store.state.storeModalView
+      }
+    }
+  }).mount("#productModal")
+
+  const productMedia = Vue.createApp({
+    delimiters: ['${', '}'],
+    methods: {
+      showProductModalView(pos) {
+        store.state.storeModalPos = pos
+        store.state.storeModalView = true
+      }
+    }
+  }).mount("#productMedia")
+
+  const addToBagButton = Vue.createApp({
+    delimiters: ['${', '}'],
+      data() {
+        return {
+          mobileButtonHiddenState: false,
+          elemAddToBag: null,
+          elemOptions: null,
+          elemVariants: null
+        }
+      },
+      methods: {
+        handleAddToBagButton() {
+          if(this.elemAddToBag) {
+            const rect = this.elemVariants.getBoundingClientRect();
+            const elementTop = rect.bottom
+            const elementBottom = rect.top
+            this.mobileButtonHiddenState = (elementTop < -60 || elementBottom > window.innerHeight + 60)
+          }
+        },
+        storeScrollToVariant(event) {
+          event.preventDefault();
+          const scrollTop = window.pageYOffset
+          const rect = this.elemOptions.getBoundingClientRect();
+          const amount = (rect.top + scrollTop) - 55;
+          smoothScrollTo(0, amount, 600);
+        },
+        storeAddToBag(event) {
+          event.preventDefault();
+          const data =  {
+            id: store.state.storeVariantId,
+            quantitiy: 1
+          }
+          store.state.storeButtonLoader = true
+          axios.post('/cart/add.js', data)
+          .then((response) => {
+            store.getCart(true)
+            setTimeout(() => { 
+              store.state.storeButtonLoader = false
+            }, 500)
+          })
+          .catch(error => {
+            store.state.storeButtonLoader = false
+          })
+        },
+        money(value) {
+          if (!value) return 0
+          return (value/100).toFixed(2)
+        }
+      },
+      computed: {
+        storeVariantId() {
+          return store.state.storeVariantId
+        },
+        storeVariantStyle() {
+          return store.storeVariantStyle
+        },
+        storeVariantPrice() {
+          let amount = ''
+          if(store.state.storePriceState.length > 0) {
+            let price = store.state.storePriceState[0].price
+            amount = price ? this.money(price) : ''
+          }
+          return amount
+        },
+        storeVariantCompare() {
+          let amount = ''
+          if(store.state.storePriceState.length > 0) {
+            let compare = store.state.storePriceState[0].compare_at_price
+            amount = compare ? this.money(compare) : ''
+          }
+          return amount
+        },
+        storeButtonLoader() {
+          return store.state.storeButtonLoader
+        },
+        mobileSizeState() {
+          if(dimension.windowWidth < 990) this.handleAddToBagButton()
+          return dimension.windowWidth < 990 ? true : false
+        },
+        mobileButtonState() {
+          if(dimension.scrollY > 0) this.handleAddToBagButton()
+          return this.mobileButtonHiddenState
+        }
+      },
+      mounted() {
+        this.elemAddToBag = this.$refs.addToBag
+        this.elemOptions = document.querySelector(".product-options")
+        this.elemVariants = document.querySelector(".product-options__variant")
+      },
+      created() {
+        store.state.storeVariantId = ''
+        store.storeVariantStyle = 'Size'
+        store.state.storeButtonLoader = false
+      }
+  }).mount('#addToBagButton')
+{% endjavascript %}
+
+{%- liquid
+  if product.selected_or_first_available_variant.featured_media
+    assign seo_media = product.selected_or_first_available_variant.featured_media
+  else
+    assign seo_media = product.featured_media
+  endif
+-%}
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ request.origin | append: product.url | json }},
+    {% if seo_media -%}
+      "image": [
+        {{ seo_media | image_url: width: seo_media.preview_image.width | prepend: "https:" | json }}
+      ],
+    {%- endif %}
+    "description": {{ product.description | strip_html | json }},
+    {% if product.selected_or_first_available_variant.sku != blank -%}
+      "sku": {{ product.selected_or_first_available_variant.sku | json }},
+    {%- endif %}
+    "brand": {
+      "@type": "Brand",
+      "name": {{ product.vendor | json }}
+    },
+    "offers": [
+      {%- for variant in product.variants -%}
+        {
+          "@type" : "Offer",
+          {%- if variant.sku != blank -%}
+            "sku": {{ variant.sku | json }},
+          {%- endif -%}
+          {%- if variant.barcode.size == 12 -%}
+            "gtin12": {{ variant.barcode }},
+          {%- endif -%}
+          {%- if variant.barcode.size == 13 -%}
+            "gtin13": {{ variant.barcode }},
+          {%- endif -%}
+          {%- if variant.barcode.size == 14 -%}
+            "gtin14": {{ variant.barcode }},
+          {%- endif -%}
+          "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price" : {{ variant.price | divided_by: 100.00 | json }},
+          "priceCurrency" : {{ cart.currency.iso_code | json }},
+          "url" : {{ request.origin | append: variant.url | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-product.name",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "text",
+      "name": "t:sections.main-product.blocks.text.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Text block",
+          "label": "t:sections.main-product.blocks.text.settings.text.label"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            {
+              "value": "body",
+              "label": "t:sections.main-product.blocks.text.settings.text_style.options__1.label"
+            },
+            {
+              "value": "subtitle",
+              "label": "t:sections.main-product.blocks.text.settings.text_style.options__2.label"
+            },
+            {
+              "value": "uppercase",
+              "label": "t:sections.main-product.blocks.text.settings.text_style.options__3.label"
+            }
+          ],
+          "default": "body",
+          "label": "t:sections.main-product.blocks.text.settings.text_style.label"
+        }
+      ]
+    },
+    {
+      "type": "breadcrumbs",
+      "name": "t:sections.main-product.blocks.breadcrumbs.name",
+      "limit": 1
+    },
+    {
+      "type": "title",
+      "name": "t:sections.main-product.blocks.title.name",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "t:sections.main-product.blocks.price.name",
+      "limit": 1
+    },
+    {
+      "type": "product_related",
+      "name": "t:sections.main-product.blocks.product_related.name",
+      "limit": 1
+    },
+    {
+      "type": "quantity_selector",
+      "name": "t:sections.main-product.blocks.quantity_selector.name",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "t:sections.main-product.blocks.variant_picker.name",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "t:sections.main-product.blocks.buy_buttons.name",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "t:sections.main-product.blocks.description.name",
+      "limit": 1
+    },
+    {
+      "type": "style",
+      "name": "t:sections.main-product.blocks.style.name",
+      "limit": 1
+    },
+    {
+      "type": "custom_liquid",
+      "name": "t:sections.main-product.blocks.custom_liquid.name",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "t:sections.main-product.blocks.custom_liquid.settings.custom_liquid.label",
+          "info": "t:sections.main-product.blocks.custom_liquid.settings.custom_liquid.info"
+        }
+      ]
+    },
+    {
+      "type": "share",
+      "name": "t:sections.main-product.blocks.share.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "share_label",
+          "label": "t:sections.main-product.blocks.share.settings.text.label",
+          "default": "Share"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:sections.main-product.blocks.share.settings.featured_image_info.content"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:sections.main-product.blocks.share.settings.title_info.content"
+        }
+      ]
+    },
+    {
+      "type": "collapsible_tab",
+      "name": "t:sections.main-product.blocks.collapsible_tab.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "collapsible_heading",
+          "default": "Collapsible row",
+          "info": "t:sections.main-product.blocks.collapsible_tab.settings.heading.info",
+          "label": "t:sections.main-product.blocks.collapsible_tab.settings.heading.label"
+        },
+        {
+          "type": "richtext",
+          "id": "collapsible_content",
+          "label": "t:sections.main-product.blocks.collapsible_tab.settings.content.label"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "t:sections.main-product.blocks.collapsible_tab.settings.page.label"
+        }
+      ]
+    },
+    {
+      "type": "popup",
+      "name": "t:sections.main-product.blocks.popup.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Pop-up",
+          "label": "t:sections.main-product.blocks.popup.settings.link_label.label"
+        },
+        {
+          "id": "page",
+          "type": "page",
+          "label": "t:sections.main-product.blocks.popup.settings.page.label"
+        }
+      ]
+    },
+    {
+      "type": "rating",
+      "name": "t:sections.main-product.blocks.rating.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.main-product.blocks.rating.settings.paragraph.content"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "product_vendor",
+      "default": false,
+      "label": "t:sections.main-product.settings.vendor.label"
+    }
+  ]
+}
+{% endschema %}

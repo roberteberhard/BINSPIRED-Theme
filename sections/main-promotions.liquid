@@ -1,0 +1,47 @@
+{{ 'section-main-help.css' | asset_url | stylesheet_tag }}
+{{ 'section-header-help.css' | asset_url | stylesheet_tag }}
+
+<div class="main-help">
+  <div class="main-help_wrapper page-width">
+    {% render 'header-help', title: page.title, active: 'promotions' %}
+  </div>
+  <div class="main-help_content page-width">
+    <div class="main-help_body odd">
+      <div id="entercode" class="main-help_body-block">
+        <h2 class="headline-2">Where do I enter my promo code?</h2>
+        <p>You can enter your promo code on the checkout page. There you will see a discount code field. Enter your code there and click "Apply" to see the price reduction.</p>
+      </div>
+      <div id="promocode" class="main-help_body-block">
+        <h2 class="headline-2">What can I do if the promo code does not work?</h2>
+        <p>First, check that the code does not contain any typos. Then check the terms of the discount code to make sure that this offer is still valid and applies to the items in your cart. If the code still doesn't work, please <a class="link--primary" target="_self" href="{{ routes.root_url }}pages/contact">contact us</a> for assistance.</p>
+      </div>
+      <div id="promotional" class="main-help_body-block">
+        <h2 class="headline-2">Can I use more than one promo code for one order?</h2>
+        <p>Unfortunately not, only one promotional code can be applied per order.</p>
+      </div>
+    </div>
+    <div class="main-help_body even">
+      <div id="forgotcode" class="main-help_body-block">
+        <h2 class="headline-2">I placed an order but forgot to enter the promo code, what should I do?</h2>
+        <p>If you placed an order during a promotional period and forgot to apply the code, please <a class="link--primary" target="_self" href="{{ routes.root_url }}pages/contact">Contact us</a> and we will adjust the price of your order if it meets the terms of the promotion.</p>
+      </div>
+      <div id="newsletter" class="main-help_body-block">
+        <h2 class="headline-2">I signed up for the newsletter but I did not receive my 15% code. What can I do?</h2>
+        <p>First, please check if the email address has been entered correctly. Then check your spam and promotions folder to see if it landed there. If you still haven't received it, please <a class="link--primary" target="_self" href="{{ routes.root_url }}pages/contact"></a> with the email address you entered and we will help you.</p>
+      </div>
+      <div id="gifts" class="main-help_body-block">
+        <h2 class="headline-2">Do you offer the possibility to order gifts?</h2>
+        <p>Unfortunately, we do not currently offer gift options (including gift receipts, gift wrapping, or gift messages).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page.promotions.label",
+  "settings": [
+
+  ]
+}
+{% endschema %}

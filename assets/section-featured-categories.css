@@ -1,0 +1,24 @@
+.featured-categories_wrapper {
+  padding-bottom: 5rem;
+}
+
+@media screen and (min-width: 750px) {
+  .featured-categories_wrapper {
+    padding-bottom: 7rem;
+  }
+}
+
+.featured-categories_header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 4px 4px 0 0;
+  margin-bottom: 1.4rem;
+}
+
+.featured-categories_header .headline-2 {
+  margin-top: 5px;
+}

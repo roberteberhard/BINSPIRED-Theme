@@ -1,0 +1,41 @@
+{% comment %}
+    Renders the Customer oder card
+
+    Accepts:
+    - order_card: {Object} Product Liquid object (optional)
+
+    Usage:
+    {% render 'customer-order-card'', order_card: order %}
+{% endcomment %}
+
+<article class="customer-order-card swiper-slide">
+  <figure class="placeholder-gray">
+    <picture>
+      {% if order_card.line_items.first.image != blank %}
+        <img
+          src="{{ order_card.line_items.first.image | image_url: width: 640 }}"
+          class="featured-img"
+          width="100"
+          height="100"
+          alt="{{ order_card.line_items.first.image.alt }}"
+          loading="lazy"
+        >
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'featured-img' }}
+      {% endif %}
+    </picture>
+  </figure>
+  <figcaption class="customer-order_caption">
+    <div class="left-caption">
+      <p class="order-number"><a class="link--text" href="{{ order_card.customer_url }}">{{ order_card.name | escape }}</a></p>
+      <p class="financial-status">{{ order_card.financial_status_label | escape }}</p>
+    </div>
+    <div class="right-caption">
+      <p class="fulfillment-status">{{ order_card.fulfillment_status_label | escape }}</p>
+      <p class="total-price">{{ order_card.total_price | money }}</p>
+    </div>
+  </figcaption>
+  <a href="{{ order_card.customer_url }}" class="block-link" aria-label="{{ 'customer.orders.order_number_link' | t: number: order_card.name }}">
+    <span class="visually-hidden">{{ 'customer.orders.order_number_link' | t: number: order_card.name }}</span>
+  </a>
+</article>

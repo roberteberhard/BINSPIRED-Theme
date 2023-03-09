@@ -1,0 +1,541 @@
+{{ 'section-main-search.css' | asset_url | stylesheet_tag }}
+{{ 'component-collection-device-filter.css' | asset_url | stylesheet_tag }}
+{{ 'component-collection-desktop-filter.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign terms = search.terms | escape
+-%}
+
+<div id="searches">
+  <nav class="search-nav" :class="{ 'is-sticky': desktopNavStickyState }">
+    <div class="search-nav_wrapper page-width-full" :style="desktopNavTopPosition">
+      <template v-if="result">
+        <div class="search-nav_title">
+          <h1 class="headline-1"><span class="search-nav_prefix">{{ 'general.search.results' | t }}<br></span>${ result.title } <span class="max-number">(${ result.count })</span></h1>
+        </div>
+        <div class="search-nav_filter">
+          <div class="search-nav_toggle" @click="toggleDesktopFilterState">
+            {% render 'search-filters-nav-toggle' %}
+          </div>
+          <div class="search-nav_dropdown" @click="toggleDropDownSortByState" :class="{ active: results.sort.active }">
+            {% render 'search-filters-nav-dropdown' %}
+          </div>
+        </div>
+      </template>
+    </div>
+  </nav>
+  <section v-if="!result" class="desktop-loader">
+    <div class="desktop-loader_wrapper page-width-full">
+      <div class="loader-grid">
+        <div class="loader-grid_article placeholder-gray"><img src="{{ 'placeholder.png' | asset_url }}" class="featured-img" width="600" height="600" loading="lazy" /></div>
+        <div class="loader-grid_article placeholder-gray"><img src="{{ 'placeholder.png' | asset_url }}" class="featured-img" width="600" height="600" loading="lazy" /></div>
+        <div class="loader-grid_article placeholder-gray"><img src="{{ 'placeholder.png' | asset_url }}" class="featured-img" width="600" height="600" loading="lazy" /></div>
+        <div class="loader-grid_article placeholder-gray"><img src="{{ 'placeholder.png' | asset_url }}" class="featured-img" width="600" height="600" loading="lazy" /></div>
+        <div class="loader-grid_article placeholder-gray"><img src="{{ 'placeholder.png' | asset_url }}" class="featured-img" width="600" height="600" loading="lazy" /></div>
+        <div class="loader-grid_article placeholder-gray"><img src="{{ 'placeholder.png' | asset_url }}" class="featured-img" width="600" height="600" loading="lazy" /></div>
+      </div>
+    </div>
+  </section>
+  <section v-if="!result" class="device-loader">
+    <div class="loader-grid">
+      <div class="loader-grid_article placeholder-gray"><img src="{{ 'placeholder.png' | asset_url }}" class="featured-img" width="600" height="600" loading="lazy" /></div>
+      <div class="loader-grid_article placeholder-gray"><img src="{{ 'placeholder.png' | asset_url }}" class="featured-img" width="600" height="600" loading="lazy" /></div>
+      <div class="loader-grid_article placeholder-gray"><img src="{{ 'placeholder.png' | asset_url }}" class="featured-img" width="600" height="600" loading="lazy" /></div>
+      <div class="loader-grid_article placeholder-gray"><img src="{{ 'placeholder.png' | asset_url }}" class="featured-img" width="600" height="600" loading="lazy" /></div>
+    </div>
+  </section>
+  <div class="search-body">
+    <div class="search-body_wrapper page-width-full">
+      <template v-if="deviceSize">
+        <div class="search-results-header">
+          {% render 'search-header-result' %}
+        </div>
+      </template>
+      <div class="search-content">
+        <template v-if="deviceSize">
+          <div class="device-filter" :class="{ 'filter-hide': deviceModalState, 'fitler-show': !deviceModalState }">
+            {% render 'search-device-filter' %}
+          </div>
+          <div class="device-modal" :class="{ 'modal-on': !deviceModalState }"></div>
+        </template>
+        <template v-if="!deviceSize">
+          <div class="desktop-filter" :class="{ showing: filterSidebarState }" :style="sidebarMaxHeight">
+            {% render 'search-desktop-filter' %}
+          </div>
+        </template>
+        <div class="search-grid">
+          <div class="search-grid-results" :class="{ 'await': results.sort.await }">
+            <template v-if="result">
+              <article class="product-article" v-for="product in result.products" key="product.id">
+                <template v-if="product.styles.length > 1">
+                  <figure class="placeholder-gray">
+                    <template v-if="product.image">
+                      <img :srcset="product.image.srcset" :sizes="product.image.sizes" :src="product.image.src" class="featured-img" :width="product.image.width" :height="product.image.height" loading="lazy" :alt="product.image.alt" >
+                    </template>
+                    <template v-else>
+                      {{ 'image' | placeholder_svg_tag: 'featured-img' }}
+                    </template>
+                  </figure>
+                  <div class="product-article_info">
+                    {% render 'collection-article-thumbs-prices', product: product, vendor: section.settings.show_vendor %}
+                  </div>
+                  <a :href="product.url" class="block-link"><span class="visually-hidden">${ product.title }</span></a>
+                </template>
+                <template v-else>
+                  <a class="product-article_link" :href="product.url">
+                    <figure class="placeholder-gray">
+                      <template v-if="product.image">
+                        <img :srcset="product.image.srcset" :sizes="product.image.sizes" :src="product.image.src" class="featured-img" :width="product.image.width" :height="product.image.height" loading="lazy" :alt="product.image.alt" >
+                      </template>
+                      <template v-else>
+                        {{ 'image' | placeholder_svg_tag: 'featured-img' }}
+                      </template>
+                    </figure>
+                    <div class="product-article_info">
+                      {% render 'collection-article-prices', product: product, vendor: section.settings.show_vendor %}
+                    </div>
+                  </a>
+                </template>
+              </article>
+            </template>
+          </div>
+          <div class="search-loader">
+            <template v-if="result && result.current_page < result.pages">
+              <div class="load-more-spinner" :class="{ 'is-showing': spinnerLoadingState }">
+                <span class="visually-hidden">{{ 'collections.spinner' | t }}</span>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#searches')) {
+      const mainSearches = Vue.createApp({
+        delimiters: ['${', '}'],
+        data() {
+          return {
+            results: {
+              data: {
+                result: null,
+                originals: null,
+                filters: null,
+                sortby: null,
+                nextpage: 0
+              },
+              header: {
+                minibar: null,
+                menubar: null,
+                announcement: null,
+                minibarH: 0,
+                menubarH: 0,
+                announcementH: 0
+              },
+              storage: {
+                state: null
+              },
+              navbar: {
+                navigation: null,
+                navigationH: 0,
+                switch: 0,
+                stick: 0
+              },
+              sort: {
+                active: false,
+                await: false,
+                label: 'Relevance',
+                selected: 'relevance',
+              },
+              filterBar: {
+                screenH: 0,
+                sidebarH: 0,
+                maxOffsetH: 0,
+                minOffsetH: 0,
+                topPos: 0
+              },
+              filter: {
+                groups: [],
+                valuepairs: []
+              },
+              loader: {
+                spinner: null,
+                loading: false
+              },
+              observer: {
+                target: null,
+                connected: false
+              }
+            }
+          }
+        },
+        methods: {
+          showDeviceFilterState() {
+            toggleDeviceFilterState.showFilter()
+          },
+          hideDeviceFilterState() {
+            toggleDeviceFilterState.hideFilter()
+          },
+          handleObserver() {
+            if( !this.results.loader.spinner ) return
+            this.results.observer.target = new IntersectionObserver(entries => {
+              const spinner = entries[0]
+              if (spinner.isIntersecting) {
+                this.getProductsBySearchResult()
+              }
+            })
+            this.results.observer.connected = true;
+            this.results.observer.target.observe(this.results.loader.spinner)
+          },
+          handleGroupStartState() {
+            setTimeout(() => {
+              const groups = document.querySelectorAll('.desktop-results_group.open')
+              for (let i = 0; i < groups.length; i++) {
+                let group = groups[i].getElementsByClassName('desktop-results_items')
+                let clientH = group[0].clientHeight
+                groups[i].style.height = (clientH + 54) + 'px'
+              }
+            }, 750)
+          },
+          toggleDesktopFilterState() {
+            if(this.results.storage.state === 'false') {
+              localStorage.setItem('filter_sidebar_state', 'true')
+              this.results.storage.state = true
+            } else {
+              localStorage.setItem('filter_sidebar_state', 'false')
+              this.results.storage.state = false
+            }
+            this.results.sort.active = false;
+          },
+          toggleDropDownSortByState() {
+            this.results.sort.active = !this.results.sort.active
+          },
+          handleFilterVisibleState(label) {
+            const index = this.results.filter.groups.findIndex(group => group[0] === label)
+            const group = document.body.querySelector('.desktop-results_group[data-label="' + label + '"]')
+            const clientH = group.querySelector('.desktop-results_items').clientHeight
+            if(index === -1) {
+              group.style.height = '54px'
+              group.classList.remove('open')
+              group.classList.add('closed')
+              this.results.filter.groups.push([label, false])
+            } else {
+              // find lable1 index and toggle between true & false
+              for (let i = 0; i < this.results.filter.groups.length; i++) {
+                if(this.results.filter.groups[i][0] === label) {
+                  if(this.results.filter.groups[i][1]) {
+                    group.style.height = '54px'
+                    group.classList.remove('open')
+                    group.classList.add('closed')
+                    this.results.filter.groups[i][1] = false
+                  } else {
+                    group.style.height = (clientH + 54) + 'px'
+                    group.classList.remove('closed')
+                    group.classList.add('open')
+                    this.results.filter.groups[i][1] = true
+                  }
+                }
+              }
+            }
+          },
+          handleMouseOver(id, article) {
+            const index = this.results.data.result.products.findIndex((product => product.id === id))
+            this.results.data.result.products[index].url = article.url
+            this.results.data.result.products[index].title = article.title
+            this.results.data.result.products[index].image = article.image
+            this.results.data.result.products[index].price_varies = article.price_varies
+            this.results.data.result.products[index].price_min = article.price_min
+            this.results.data.result.products[index].price_max = article.price_max
+            this.results.data.result.products[index].price_min_money = article.price_min_money
+            this.results.data.result.products[index].price_max_money = article.price_max_money
+            this.results.data.result.products[index].compare_at_price_varies = article.compare_at_price_varies
+            this.results.data.result.products[index].compare_at_price_min = article.compare_at_price_min
+            this.results.data.result.products[index].compare_at_price_min_money = article.compare_at_price_min_money
+            this.results.data.result.products[index].discount_in_percent = article.discount_in_percent
+          },
+          handleMouseLeave(id) {
+            const index = this.results.data.originals.findIndex((product => product.id === id))
+            this.results.data.result.products[index].url = this.results.data.originals[index].url
+            this.results.data.result.products[index].title = this.results.data.originals[index].title
+            this.results.data.result.products[index].image = this.results.data.originals[index].image
+            this.results.data.result.products[index].price_varies = this.results.data.originals[index].price_varies
+            this.results.data.result.products[index].price_min = this.results.data.originals[index].price_min
+            this.results.data.result.products[index].price_max = this.results.data.originals[index].price_max
+            this.results.data.result.products[index].price_min_money = this.results.data.originals[index].price_min_money
+            this.results.data.result.products[index].price_max_money = this.results.data.originals[index].price_max_money
+            this.results.data.result.products[index].compare_at_price_varies = this.results.data.originals[index].compare_at_price_varies
+            this.results.data.result.products[index].compare_at_price_min = this.results.data.originals[index].compare_at_price_min
+            this.results.data.result.products[index].compare_at_price_min_money = this.results.data.originals[index].compare_at_price_min_money
+            this.results.data.result.products[index].discount_in_percent = this.results.data.originals[index].discount_in_percent
+          },
+          async getProductsBySearchResult() {
+            this.results.loader.loading = true;
+            // build url with handle, page, filters & sortby
+            let url = '/search?q={{ terms }}&options%5Bprefix%5D=last'
+            this.results.filter.valuepairs.forEach(value => (url += '&' + value[0] + '=' + value[1]))
+            url += '&sort_by=' + this.results.sort.selected
+            if( this.results.data.nextpage > 1 ) url +=' &page=' + this.results.data.nextpage
+            url += '&view=json'
+            try {
+              const response = await axios.get(url)
+              const results = await response.data
+              if( this.results.data.result === null ) {
+                // when 'firstime' data loads, then 'save' corresponding results to their array's
+                this.results.data.result = results
+                this.results.data.originals = results.products.map(item => ({...item}))
+                this.results.data.filters = results.filters.map(item => ({...item}))
+                this.results.data.sortby = results.sortby.map(item => ({...item}))
+              } else {
+                // when 'paginated' data loads, then 'update' corresponding results
+                const items = results.products.map(item => ({...item}))
+                this.results.data.result.title = results.title
+                this.results.data.result.pages = Number(results.pages)
+                this.results.data.result.current_page = Number(results.current_page)
+                this.results.data.result.count = results.count
+                this.results.data.result.products.push(...results.products)
+                this.results.data.originals.push(...items)
+              }
+              this.results.data.nextpage = Number(this.results.data.result.current_page) + 1
+              this.results.loader.loading = false;
+              // disconnect observer when last results are loaded
+              if( this.results.data.result.current_page >= this.results.data.result.pages ) {
+                this.results.observer.connected = false;
+                this.results.observer.target.disconnect();
+              }
+            } catch (error) {
+              this.results.sort.await = false
+            }
+          },
+          async sortProductsBySelectedOption(label, selected) {
+            this.results.sort.label = label
+            this.results.sort.selected = selected
+            this.results.sort.await = true
+            // build url with handle, filters & sortby
+            let url = '/search?q={{ terms }}&options%5Bprefix%5D=last'
+            this.results.filter.valuepairs.forEach(value => (url += '&' + value[0] + '=' + value[1]))
+            url += '&sort_by=' + this.results.sort.selected
+            url += '&view=json'
+            try {
+              const response = await axios.get(url)
+              const results = await response.data
+              // when data loads, clear and update results
+              this.results.data.result = []
+              this.results.data.result = results
+              this.results.data.result.title = results.title
+              this.results.data.result.pages = results.pages
+              this.results.data.result.current_page = results.current_page
+              this.results.data.result.count = results.count
+              this.results.data.originals = []
+              this.results.data.originals = results.products.map(item => ({...item}))
+              this.results.data.nextpage = Number(this.results.data.result.current_page) + 1
+              this.results.sort.await = false
+              window.scroll({top:0,behavior:'auto'})
+              // when observer is disconnected then connect it again
+              if( !this.results.observer.connected ) this.handleObserver()
+            } catch (error) {
+              this.results.sort.await = false
+            }
+          },
+          async filterProductsBySelectedPrice(param_min, value_min, param_max, value_max) {
+            this.results.sort.await = true
+            const param1 = encodeURI(param_min)
+            const value1 = encodeURI(value_min)
+            const param2 = encodeURI(param_max)
+            const value2 = encodeURI(value_max)
+            const index1 = this.results.filter.valuepairs.findIndex(filter => (filter[0] === param1 && filter[1] === value1))
+            const index2 = this.results.filter.valuepairs.findIndex(filter => (filter[0] === param1 && filter[1] === value1))
+            if(index1 === -1) {
+              this.results.filter.valuepairs.push([param1, value1])
+              this.results.filter.valuepairs.push([param2, value2])
+            }
+            else {
+              this.results.filter.valuepairs.splice(index1, 1)
+              this.results.filter.valuepairs.splice(index2, 1)
+            }
+            let url = '/search?q={{ terms }}&options%5Bprefix%5D=last'
+            this.results.filter.valuepairs.forEach(value => (url += '&' + value[0] + '=' + value[1]))
+            url += '&sort_by=' + this.results.sort.selected
+            url += '&view=json'
+            try {
+              const response = await axios.get(url)
+              const results = await response.data
+              // when data loads, clear and update results
+              this.results.data.result = []
+              this.results.data.result = results
+              this.results.data.filters = []
+              this.results.data.filters = results.filters.map(item => ({...item}))
+              this.results.data.result.title = results.title
+              this.results.data.result.pages = results.pages
+              this.results.data.result.current_page = results.current_page
+              this.results.data.result.count = results.count
+              this.results.data.originals = []
+              this.results.data.originals = results.products.map(item => ({...item}))
+              this.results.data.nextpage = Number(this.results.data.result.current_page) + 1
+              this.results.sort.await = false
+              window.scroll({top:0,behavior:'auto'})
+              // when observer is disconnected then connect it again
+              if( !this.results.observer.connected ) this.handleObserver()
+            } catch (error) {
+              this.results.sort.await = false
+            }
+          },
+          async filterProductsBySelectedOption(param, value) {
+            this.results.sort.await = true
+            const param1 = encodeURI(param)
+            const value1 = encodeURI(value)
+            const index = this.results.filter.valuepairs.findIndex(filter => (filter[0] === param1 && filter[1] === value1))
+            // push filter values to array or delete them
+            if(param === 'reset') {
+              this.results.filter.valuepairs = []
+            } else {
+              if(index === -1) {
+                this.results.filter.valuepairs.push([param1, value1])
+              } else {
+                this.results.filter.valuepairs.splice(index, 1)
+              }
+            }
+            // build url with handle, filters & sortby
+            let url = '/search?q={{ terms }}&options%5Bprefix%5D=last'
+            this.results.filter.valuepairs.forEach(value => (url += '&' + value[0] + '=' + value[1]))
+            url += '&sort_by=' + this.results.sort.selected
+            url += '&view=json'
+            try {
+              const response = await axios.get(url)
+              const results = await response.data
+              // when data loads, clear and update results
+              this.results.data.result = []
+              this.results.data.result = results
+              this.results.data.filters = []
+              this.results.data.filters = results.filters.map(item => ({...item}))
+              this.results.data.result.title = results.title
+              this.results.data.result.pages = results.pages
+              this.results.data.result.current_page = results.current_page
+              this.results.data.result.count = results.count
+              this.results.data.originals = []
+              this.results.data.originals = results.products.map(item => ({...item}))
+              this.results.data.nextpage = Number(this.results.data.result.current_page) + 1
+              this.results.sort.await = false
+              window.scroll({top:0,behavior:'auto'})
+              // when observer is disconnected then connect it again
+              if( !this.results.observer.connected ) this.handleObserver()
+            } catch (error) {
+              this.results.sort.await = false
+            }
+
+          }
+        },
+        computed: {
+          result() {
+            return this.results.data.result
+          },
+          filters() {
+            return this.results.data.filters
+          },
+          spinnerLoadingState() {
+            return this.results.loader.loading
+          },
+          deviceSize() {
+            if( dimension.windowWidth >= 990 ) {
+              this.hideDeviceFilterState()
+            }
+            return dimension.windowWidth < 990 ? true : false
+          },
+          deviceModalState() {
+            return deviceModalState.hidden
+          },
+          desktopNavStickyState() {
+            this.results.navbar.switch = 20 + this.results.navbar.minibarH + this.results.navbar.menubarH + this.results.navbar.announcementH
+            return dimension.scrollY > this.results.navbar.switch ? true : false
+          },
+          desktopNavTopPosition() {
+            if( dimension.scrollY > this.results.navbar.switch && !dimension.headerHiddenState ) {
+              this.results.navbar.stick = this.results.navbar.menubarH
+            } else {
+              this.results.navbar.stick = 0
+            }
+            return 'top: ' + this.results.navbar.stick + 'px'
+          },
+          activeFiltersAmount() {
+            let amount = 0
+            if( this.results.data.filters ) {
+              for (let i = 0; i < this.results.data.filters.length; i++) {
+                let size = parseInt(this.results.data.filters[i].size)
+                amount = size > 0 ? amount += size : amount
+              }
+            }
+            if( this.results.data.result ) { // kind of hack!
+              if( this.results.data.result.price_state == 'on' ) amount ++
+            }
+            return amount
+          },
+          filterSidebarState() {
+            this.results.storage.state = localStorage.getItem('filter_sidebar_state')
+            return this.results.storage.state === 'true' ? true : false
+          },
+          sidebarMaxHeight() {
+            this.results.filterBar.screenH = window.innerHeight;
+            this.results.navbar.minibarH = this.results.header.minibar != null ? this.results.header.minibar.clientHeight : 0
+            this.results.navbar.menubarH = this.results.header.menubar != null ? this.results.header.menubar.clientHeight : 0
+            this.results.navbar.announcementH = this.results.header.announcement != null ? this.results.header.announcement.clientHeight : 0
+            this.results.navbar.navigationH = this.results.navbar.navigation != null ? this.results.navbar.navigation.clientHeight : 0
+            this.results.filterBar.maxOffsetH = this.results.navbar.minibarH + this.results.navbar.menubarH + this.results.navbar.announcementH + this.results.navbar.navigationH
+            this.results.filterBar.minOffsetH = dimension.scrollY <= this.results.filterBar.maxOffsetH ? (this.results.filterBar.maxOffsetH - dimension.scrollY) : 0
+            this.results.filterBar.sidebarH = this.results.filterBar.screenH - (this.results.filterBar.minOffsetH + 2)
+            return 'max-height: ' + this.results.filterBar.sidebarH + 'px'
+          },
+          sidebarTopPosition() {
+            if( dimension.scrollY > this.results.navbar.switch && dimension.headerHiddenState ) {
+              this.results.filterBar.topPos = (50 - this.results.filterBar.minOffsetH)
+            } else if ( dimension.scrollY > this.results.navbar.switch && !dimension.headerHiddenState ) {
+              this.results.filterBar.topPos = (50 - this.results.filterBar.minOffsetH) + this.results.navbar.stick
+            } else {
+              this.results.filterBar.topPos = 0
+            }
+            return 'margin-top: ' + this.results.filterBar.topPos + 'px'
+          }
+        },
+        mounted() {
+          this.results.header.minibar = document.querySelector(".header-bar")
+          this.results.header.menubar = document.querySelector(".header-menu-wrapper")
+          this.results.header.announcement = document.querySelector(".announcement")
+          this.results.navbar.navigation = document.querySelector(".search-nav")
+          this.results.loader.spinner = document.querySelector(".search-loader")
+          // storage
+          if (!localStorage.getItem('filter_sidebar_state')) localStorage.setItem('filter_sidebar_state', 'true')
+          this.results.storage.state = localStorage.getItem('filter_sidebar_state')
+          localStorage.setItem('filter_sidebar_state', localStorage.getItem('filter_sidebar_state'))
+          // observer
+          this.handleObserver()
+          // handle group height
+          this.handleGroupStartState()
+        },
+        created() {
+          this.getProductsBySearchResult()
+        }
+      }).mount('#searches');
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-search.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main-search.settings.title.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.main-search.settings.show_vendor.label"
+    }
+  ]
+}
+{% endschema %}
+
+

@@ -1,0 +1,216 @@
+{% layout none %}
+{% liquid
+  for filter in collection.filters
+    if filter.type == 'price_range'
+      if filter.min_value.value
+        assign price_state = 'on'
+        assign collection_price_min = filter.min_value.value | money_without_currency | ceil
+      else
+        assign price_state = 'off'
+        assign collection_price_min = 0
+      endif
+      if filter.max_value.value
+        assign collection_price_max = filter.max_value.value | money_without_currency | ceil
+      else
+        assign collection_price_max = filter.range_max | money_without_currency | ceil
+      endif
+    endif
+  endfor
+%}
+{% paginate collection.products by settings.products_per_page %}
+{
+  "title": "{{ collection.title }}",
+  "pages": "{{ paginate.pages }}",
+  "count": "{{ collection.products_count }}",
+  "current_page": "{{ paginate.current_page }}",
+  "sortby": [
+    { "value": "manual", "name": "{{ 'collection.manual' | t }}" },
+    { "value": "created-descending", "name": "{{ 'collection.created_descending' | t }}" },
+    { "value": "best-selling", "name": "{{ 'collection.best_selling' | t }}" },
+    { "value": "price-ascending", "name": "{{ 'collection.price_ascending' | t }}" },
+    { "value": "price-descending", "name": "{{ 'collection.price_descending' | t }}" }
+  ],
+  "price_min_range": "{{ collection_price_min }}",
+  "price_max_range": "{{ collection_price_max }}",
+  "price_state": "{{ price_state }}",
+  "price_ranges": [
+    { "filter_id": "1", "filter_value_min": 0, "filter_value_max": 50, "money_value_min": "{{ 0 | money_without_trailing_zeros }}", "money_value_max": "{{ 5000 | money_without_trailing_zeros }}" },
+    { "filter_id": "2", "filter_value_min": 50, "filter_value_max": 100, "money_value_min": "{{ 5000 | money_without_trailing_zeros }}", "money_value_max": "{{ 10000 | money_without_trailing_zeros }}" },
+    { "filter_id": "3", "filter_value_min": 100, "filter_value_max": 150, "money_value_min": "{{ 10000 | money_without_trailing_zeros }}", "money_value_max": "{{ 15000 | money_without_trailing_zeros }}" },
+    { "filter_id": "4", "filter_value_min": 150, "filter_value_max": 999, "money_value_min": "{{ 15000 | money_without_trailing_zeros }}", "money_value_max": "{{ 99900 | money_without_trailing_zeros }}" }
+  ],
+  "filters": [
+    {%- for filter in collection.filters -%}
+      {% assign index = forloop.index0 %}
+      {
+        "index": "{{ index }}",
+        "label": "{{ filter.label }}",
+        "param_name": "{{ filter.param_name }}",
+        "size": "{{ filter.active_values.size }}",
+        "type": "{{ filter.type }}",
+        "values": [
+          {%- for filter_value in filter.values -%}
+            {% assign id = forloop.index0 %}
+            {
+              "filter_id": "{{ index }}{{ id }}",
+              "filter_label": "{{ filter_value.label }}",
+              "filter_value": "{{ filter_value.value }}",
+              "filter_active": "{{ filter_value.active }}",
+              "filter_count": "{{ filter_value.count }}",
+              "filter_param": "{{ filter_value.param_name }}"
+            }
+            {% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      }
+      {% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ],
+  "products": [
+    {% for product in collection.products %}
+      {%- liquid
+        assign price_min_money = product.price_min | money
+        assign price_max_money = product.price_max | money
+        assign compare_at_price_min_money = product.compare_at_price_min | money
+        if settings.currency_code_enabled
+          assign price_min_money = product.price_min | money_with_currency
+          assign price_max_money = product.price_max | money_with_currency
+          assign compare_at_price_min_money = product.compare_at_price_min | money_with_currency
+        endif
+      -%}
+      {
+        "id": "{{ product.id }}",
+        "title": "{{ product.title }}",
+        "vendor": "{{ product.vendor }}",
+        {% if product.featured_media %}
+          "image": {
+            "srcset": "{%- if product.featured_media.width >= 165 -%}{{ product.featured_media | image_url: width: 420 }} 420w,{%- endif -%}
+            {%- if product.featured_media.width >= 990 -%}{{ product.featured_media | image_url: width: 600 }} 600w,{%- endif -%}
+            {{ product.featured_media | image_url: width: 600 }} 600w",
+            "src": "{{ product.featured_media | image_url: width: 600 }}",
+            "sizes": "(max-width: 989px) 420px, (max-width: 989px) and (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) 600px, (min-width: 990px) 600px",
+            "alt": "{{ product.featured_media.alt | escape }}",
+            "width": "{{ product.featured_media.width }}",
+            "height": "{{ product.featured_media.height }}"
+          },
+        {% endif %}
+        "url": "{{ product.url }}",
+        "type": "{{ product.type }}",
+        "price_varies": "{{ product.price_varies }}",
+        "price_min": "{{ product.price_min }}",
+        "price_max": "{{ product.price_max }}",
+        "price_min_money": "{{ price_min_money }}",
+        "price_max_money": "{{ price_max_money }}",
+        "compare_at_price_varies": "{{ product.compare_at_price_varies }}",
+        "compare_at_price_min": "{{ product.compare_at_price_min }}",
+        "compare_at_price_min_money": "{{ compare_at_price_min_money }}",
+        {% liquid
+          assign percent = 0
+          if product.price_varies == true and product.compare_at_price_varies == true
+            if product.compare_at_price_min > 0
+              assign percent = product.compare_at_price_min | minus: product.price_min | times: 100.0 | divided_by: product.compare_at_price_min | money_without_currency | times: 100 | remove: '.0'
+            elsif product.compare_at_price_min == 0
+              assign percent = product.price_max | minus: product.price_min | times: 100.0 | divided_by: product.price_max | money_without_currency | times: 100 | remove: '.0'
+            endif
+          elsif product.price_varies == true and product.compare_at_price_varies == false
+            assign percent = product.compare_at_price_min | minus: product.price_min | times: 100.0 | divided_by: product.compare_at_price_min | money_without_currency | times: 100 | remove: '.0'
+          elsif product.price_varies == false and product.compare_at_price_varies == false
+            assign percent = product.compare_at_price_min | minus: product.price_min | times: 100.0 | divided_by: product.compare_at_price_min | money_without_currency | times: 100 | remove: '.0'
+          endif
+        %}
+        "discount_in_percent": "{{ percent }}",
+        "variants": [
+          {% for variant in product.variants %}
+            {
+              "id": {{ variant.id }},
+              "title": "{{ variant.title }}",
+              "option1": "{{ variant.option1 }}",
+              "option2": "{{ variant.option2 }}",
+              "option3": "{{ variant.option3 }}"
+            }
+            {% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        ],
+        {% liquid
+          assign count = 0
+          assign amount = 4
+          assign related = product.metafields.product_info.related_products.value
+          for prod in related
+            assign count = count | plus: 1
+          endfor
+          assign max = count | minus: amount
+          assign more = ""
+          if max > 0
+            assign more = "+" | append: max
+          endif
+        %}
+        "styles_max": "{{ count }}",
+        "styles_more": "{{ more }}",
+        "styles": [
+          {% for item in related limit: amount %}
+            {% if item.featured_media %}
+              {
+                "id": "{{ item.id }}",
+                "url": "{{ item.url }}",
+                "thumb": "{{ item.featured_media | image_url: width: 120 }}",
+                "article": {
+                  "id": "{{ item.id }}",
+                  "url": "{{ item.url }}",
+                  "title": "{{ item.title }}",
+                  {% if item.featured_media %}
+                    "image": {
+                      "srcset": "{%- if item.featured_media.width >= 165 -%}{{ item.featured_media | image_url: width: 420 }} 420w,{%- endif -%}
+                      {%- if item.featured_media.width >= 990 -%}{{ item.featured_media | image_url: width: 600 }} 600w,{%- endif -%}
+                      {{ item.featured_media | image_url: width: 600 }} 600w",
+                      "src": "{{ item.featured_media | image_url: width: 600 }}",
+                      "sizes": "(max-width: 989px) 420px, (max-width: 989px) and (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) 600px, (min-width: 990px) 600px",
+                      "alt": "{{ item.featured_media.alt | escape }}",
+                      "width": "{{ item.featured_media.width }}",
+                      "height": "{{ item.featured_media.height }}"
+                    },
+                  {% endif %}
+                  {%- liquid
+                    assign price_min_money_style = item.price_min | money
+                    assign price_max_money_style = item.price_max | money
+                    assign compare_at_price_min_money_style = item.compare_at_price_min | money
+                    if settings.currency_code_enabled
+                      assign price_min_money_style = item.price_min | money_with_currency
+                      assign price_max_money_style = item.price_max | money_with_currency
+                      assign compare_at_price_min_money_style = item.compare_at_price_min | money_with_currency
+                    endif
+                  -%}
+                  "price_varies": "{{ item.price_varies }}",
+                  "price_min": "{{ item.price_min }}",
+                  "price_max": "{{ item.price_max }}",
+                  "price_min_money": "{{ price_min_money_style }}",
+                  "price_max_money": "{{ price_max_money_style }}",
+                  "compare_at_price_varies": "{{ item.compare_at_price_varies }}",
+                  "compare_at_price_min": "{{ item.compare_at_price_min }}",
+                  "compare_at_price_min_money": "{{ compare_at_price_min_money_style }}",
+                  {% liquid
+                    assign percent = 0
+                    if item.price_varies == true and item.compare_at_price_varies == true
+                      if item.compare_at_price_min > 0
+                        assign percent = item.compare_at_price_min | minus: item.price_min | times: 100.0 | divided_by: item.compare_at_price_min | money_without_currency | times: 100 | remove: '.0'
+                      elsif item.compare_at_price_min == 0
+                        assign percent = item.price_max | minus: item.price_min | times: 100.0 | divided_by: item.price_max | money_without_currency | times: 100 | remove: '.0'
+                      endif
+                    elsif item.price_varies == true and item.compare_at_price_varies == false
+                      assign percent = item.compare_at_price_min | minus: item.price_min | times: 100.0 | divided_by: item.compare_at_price_min | money_without_currency | times: 100 | remove: '.0'
+                    elsif item.price_varies == false and item.compare_at_price_varies == false
+                      assign percent = item.compare_at_price_min | minus: item.price_min | times: 100.0 | divided_by: item.compare_at_price_min | money_without_currency | times: 100 | remove: '.0'
+                    endif
+                  %}
+                  "discount_in_percent": "{{ percent }}"
+                }
+              }
+            {% endif %}
+            {% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        ]
+      }
+      {% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
+{%- endpaginate -%}

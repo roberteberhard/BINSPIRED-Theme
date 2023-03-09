@@ -1,0 +1,53 @@
+.customer-addresses-card {
+  display: block;
+  position: relative;
+  width: 100%;
+  margin: 3rem 0;
+}
+
+@media screen and (min-width: 480px) {
+  .customer-addresses-card {
+    width: calc(50% - 1.5rem);
+    margin: 3rem 0.75rem;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .customer-addresses-card {
+    width: calc(33.3336% - 1.5rem);
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .customer-addresses-card {
+    width: calc(25% - 1.5rem);
+  }
+}
+
+.customer-addresses-card .addresses-card__default {
+  display: block;
+  position: absolute;
+  top: -3.5rem;
+  height: 0;
+  color: rgb(var(--color-foreground), 0.55);
+  font-size: calc(var(--font-heading-scale) * 1.4rem);
+  font-weight: 500;
+}
+
+.addresses-card__address p {
+  margin: 0 0 2.5rem;
+  line-height: 1.5;
+}
+
+.customer-addresses-card.default-card .addresses-card__address p {
+  font-weight: 500;
+}
+
+.customer-addresses-card .addresses-card__edit {
+  float: left;
+}
+
+.customer-addresses-card .addresses-card__delete {
+  float: left;
+  margin-left: 1rem;
+}

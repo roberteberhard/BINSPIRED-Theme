@@ -1,0 +1,29 @@
+{{ 'section-customer-account.css' | asset_url | stylesheet_tag }}
+{{ 'section-customer-favorites.css' | asset_url | stylesheet_tag }}
+
+<div class="customer">
+  <div class="customer-wrapper page-width">
+
+    <header class="member-header">
+      <div class="member-title">
+        <h1 class="member-title_address headline-1">{{ 'customer.account.menu.favorite' | t }}</h1>
+      </div>
+      <div class="member-nav">
+        <a role="option" target="_self" tabindex="-1" class="member-nav_link m-profile" href="{{ routes.account_url }}">{{ 'customer.account.menu.profile' | t }}</a>
+        <a role="option" target="_self" tabindex="-1" class="member-nav_link m-order" href="{{ routes.account_url }}/#orders">{{ 'customer.account.menu.order' | t }}</a>
+        <a role="option" target="_self" tabindex="-1" class="member-nav_link m-favorite active" href="{{ routes.root_url }}pages/favorites">{{ 'customer.account.menu.favorite' | t }}</a>
+        <a role="option" target="_self" tabindex="-1" class="member-nav_link m-address" href="{{ routes.account_addresses_url }}">{{ 'customer.account.menu.address' | t }}</a>
+      </div>
+      <div class="member-end">&nbsp;</div>
+    </header>
+
+    <section class="customer-favorites">
+      {%- if customer -%}
+        <h2 class="headline-3">{{ 'customer.favorites.none' | t }}</h2>
+      {%- else -%}
+        <h2 class="headline-3">{{ 'customer.favorites.signedin' | t }}</h2>
+      {%- endif -%}
+    </section>
+
+  </div>
+</div>

@@ -1,0 +1,113 @@
+{{ 'section-header-bar.css' | asset_url | stylesheet_tag }}
+
+<div id="header_bar" class="header-bar color-{{ section.settings.color_scheme }}" role="region" aria-label="{{ 'sections.header.headerbar' | t }}">
+  <div class="header-bar-wrapper page-width-large">
+    <div class="header-bar-brands">&nbsp;</div>
+    <div class="header-bar-anouncement">&nbsp;</div>
+    <div class="header-bar-navigation">
+      <ul class="header-bar-list list-unstyled">
+        <li><a class="link link--bar" href="{{ routes.root_url }}blogs/stories">Stories</a></li>
+        <li><span class="link-spacer">|</span></li>
+        <li class="dropdown-bar" :class="{ 'is-open': keyname === 'help' }" @mouseover.native="handleMouseOver('help')" @mouseleave.native="handleMouseLeave">
+          <a href="{{ routes.root_url }}pages/faqs" class="link link--bar">{{ 'general.header_bar.menu.help' | t }}</a>
+          <div class="dropdown-bar_box">
+            <div class="dropdown-menu">
+              <nav>
+                <span class="headline-4">{{ 'general.header_bar.menu.help' | t }}</span> 
+                <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.root_url }}pages/faqs" class="link link--bar">{{ 'general.header_bar.submenu.faqs' | t }}</a>
+                <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.root_url }}pages/contact" class="link link--bar">{{ 'general.header_bar.submenu.contact' | t }}</a>
+                <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.root_url }}pages/ordering" class="link link--bar">{{ 'general.header_bar.submenu.ordering' | t }}</a>
+                <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.root_url }}pages/shipping" class="link link--bar">{{ 'general.header_bar.submenu.shipping' | t }}</a>
+                <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.root_url }}pages/returns" class="link link--bar">{{ 'general.header_bar.submenu.returns' | t }}</a>
+                <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.root_url }}pages/payment" class="link link--bar">{{ 'general.header_bar.submenu.payment' | t }}</a>
+                <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.root_url }}pages/promotions" class="link link--bar">{{ 'general.header_bar.submenu.promotions' | t }}</a>
+                <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.root_url }}pages/size-guide" class="link link--bar">{{ 'general.header_bar.submenu.guide' | t }}</a>
+                <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.root_url }}pages/account" class="link link--bar">{{ 'general.header_bar.submenu.account' | t }}</a>
+              </nav>
+            </div>
+          </div>
+        </li>
+        {%- if shop.customer_accounts_enabled -%}
+          <li><span class="link-spacer">|</span></li>
+          {%- if customer -%}
+            <li class="dropdown-bar" :class="{ 'is-open': keyname === 'account' }" @mouseover.native="handleMouseOver('account')" @mouseleave.native="handleMouseLeave">
+              <a href="{{ routes.account_url }}" class="link link--bar">{{ 'customer.welcome' | t }}, {{ customer.first_name }}</a>
+              <div class="dropdown-bar_box">
+                <div class="dropdown-menu">
+                  <nav>
+                    <span class="headline-4">{{ 'customer.account.title' | t }}</span>
+                    <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.account_url }}">{{ 'customer.account.menu.profile' | t }}</a>
+                    <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.account_url }}/#orders">{{ 'customer.account.menu.order' | t }}</a>
+                    <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.root_url }}pages/favorites">{{ 'customer.account.menu.favorite' | t }}</a>
+                    <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.account_url }}/addresses">{{ 'customer.account.menu.address' | t }}</a>
+                    <a role="option" target="_self" tabindex="-1" class="dropdown-menu_link" href="{{ routes.account_logout_url }}">{{ 'customer.logout' | t }}</a>
+                  </nav>
+                </div>
+              </div>
+            </li>
+          {%- else -%}
+            <li><a href="{{ routes.account_register_url }}" class="link link--bar">{{ 'customer.register_account' | t }}</a></li>
+            <li><span class="link-spacer">|</span></li>
+            <li><a href="{{ routes.account_login_url }}" class="link link--bar">{{ 'customer.signin' | t }}</a></li>
+          {%- endif -%}
+        {%- endif -%}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#header_bar')) {
+      const headerBar = Vue.createApp({
+        delimiters: ['${', '}'],
+        data() {
+          return {
+            keyname: null
+          }
+        },
+        methods: {
+          handleMouseOver(index) {
+            this.keyname = index
+          },
+          handleMouseLeave() {
+            this.keyname = null
+          }
+        }
+      }).mount('#header_bar');
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.header_bar.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "background-1",
+          "label": "t:sections.header_bar.settings.color_scheme.options__1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.header_bar.settings.color_scheme.options__2.label"
+        },
+        {
+          "value": "background-3",
+          "label": "t:sections.header_bar.settings.color_scheme.options__2.label"
+        },
+        {
+          "value": "background-4",
+          "label": "t:sections.header_bar.settings.color_scheme.options__2.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.header_bar.settings.color_scheme.label"
+    }
+  ]
+}
+{% endschema %}
+

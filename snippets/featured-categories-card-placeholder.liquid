@@ -1,0 +1,18 @@
+{% comment %}
+    Renders the Featured categories card placeholder
+
+    Accepts:
+    - featured_count: {Number}
+
+    Usage:
+    {% render 'featured-categories-card-placeholder', featured_count: i %}
+{% endcomment %}
+
+{% assign counter = featured_count | downcase %}
+{% assign placeholder_image = 'collection-' | append: counter %}
+
+<article class="featured-categories-card swiper-slide">
+  <figure class="placeholder-gray">
+    {{ placeholder_image | placeholder_svg_tag: 'featured-img' }}
+  </figure>
+</article>

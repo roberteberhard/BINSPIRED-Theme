@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {
+        "show_vendor": true
+      }
+    },
+    "featured-collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "You May Also Like",
+        "featured_collection": "featured",
+        "featured_products_to_show": 12,
+        "featured_view": "",
+        "featured_link": "",
+        "featured_all": false,
+        "show_vendor": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "featured-collection"
+  ]
+}

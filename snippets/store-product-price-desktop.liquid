@@ -1,0 +1,113 @@
+{%- liquid
+  assign currency_code = ''
+  assign currency_symbol = cart.currency.symbol
+  if settings.currency_code_enabled == true
+    assign currency_code = ' ' | append: cart.currency.iso_code
+  endif
+-%}
+
+{%- liquid
+  if use_variant
+    assign target = product.selected_or_first_available_variant
+  else
+    assign target = product
+  endif
+-%}
+
+{%- liquid
+  assign target_price_min  = target.price_min | money
+  assign target_price_max  = target.price_max | money
+  assign target_compare_at_price_min  = target.compare_at_price_min | money
+  if settings.currency_code_enabled
+    assign target_price_min  = target.price_min | money_with_currency
+    assign target_price_max  = target.price_max | money_with_currency
+    assign target_compare_at_price_min  = target.compare_at_price_min | money_with_currency
+  endif
+-%}
+
+{% liquid
+  assign percent = 0
+  if target.price_varies == false and target.compare_at_price_varies == false
+    assign percent = target.compare_at_price_min | minus: target.price_min | times: 100.0 | divided_by: target.compare_at_price_min | money_without_currency | times: 100
+  elsif target.price_varies == true and target.compare_at_price_varies == false
+    assign percent = target.compare_at_price_min | minus: target.price_min | times: 100.0 | divided_by: target.compare_at_price_min | money_without_currency | times: 100
+  elsif target.price_varies == true and target.compare_at_price_varies == true
+    if target.compare_at_price_min > 0
+      assign percent = target.compare_at_price_min | minus: target.price_min | times: 100.0 | divided_by: target.compare_at_price_min | money_without_currency | times: 100
+    elsif target.compare_at_price_min == 0
+      assign percent = target.price_max | minus: target.price_min | times: 100.0 | divided_by: target.price_max | money_without_currency | times: 100
+    endif
+  endif
+%}
+
+<div class="product-options__prices desktop-view" role="status" {{ block.shopify_attributes }}>
+  <div id="priceDesktopView">
+    <template v-if="price && price.length > 0">
+      <template v-if="price[0].compare_at_price == null">
+        <span class="price-original">{{ currency_symbol }}${ money(price[0].price) }{{ currency_code }}</span>
+      </template>
+      <template v-else-if="price[0].compare_at_price == 0">
+        <span class="price-original">{{ currency_symbol }}${ money(price[0].price) }{{ currency_code }}</span>
+      </template>
+      <template v-else>
+        <span class="price-reduced">{{ currency_symbol }}${ money(price[0].price) }{{ currency_code }}</span><span class="price-compare">{{ currency_symbol }}${ money(price[0].compare_at_price) }{{ currency_code }}</span><span class="price-percent">${ percent(price[0].price ,price[0].compare_at_price) }{{ 'products.product.price.percent_off' | t }}</span>
+      </template>
+    </template>
+    <template v-else>
+      <div class="product-article_price">
+        {% if target.price_varies == false and target.compare_at_price_varies == false %}
+          {% if target.price_min == target.price_max and target.compare_at_price_min == 0 %}
+            <span class="price-original">{{ target_price_min }}</span>
+          {% elsif target.price_min == target.price_max and target.compare_at_price_min > 0 %}
+            <span class="price-reduced">{{ target_price_min }}</span><span class="price-compare">{{ target_compare_at_price_min }}</span>
+          {% endif %}
+        {% elsif target.price_varies == true and target.compare_at_price_varies == false %}
+          {% if target.price_max > target.price_min and target.compare_at_price_min == 0 %}
+            <span class="price-small">{{ 'products.product.price.from_price' | t }}</span><span class="price-original">{{ target_price_min }}</span>
+          {% elsif target.price_max > target.price_min and target.price_max > target.compare_at_price_min  %}
+            <span class="price-small">{{ 'products.product.price.from_price' | t }}</span><span class="price-reduced">{{ target_price_min }}</span><span class="price-compare">{{ target_compare_at_price_min }}</span>
+          {% else %}
+            <span class="price-reduced">{{ target_price_min }}</span><span class="price-compare">{{ target_compare_at_price_min }}</span>
+          {% endif %}
+        {% elsif target.price_varies == true and target.compare_at_price_varies == true  %}
+          {% if target.price_max > target.price_min and target.compare_at_price_min == 0 %}
+            <span class="price-reduced">{{ target_price_min }}</span><span class="price-compare">{{ target_price_max }}</span>
+          {% elsif target.price_max > target.price_min and target.compare_at_price_min > 0  %}
+            <span class="price-small">{{ 'products.product.price.from_price' | t }}</span><span class="price-reduced">{{ target_price_min }}</span><span class="price-compare">{{ target_compare_at_price_min }}</span>
+          {% endif %}
+        {% endif %}
+        {% if percent > 0 %}
+          {% assign prozent = percent | remove: '.0' %}
+          <span class="price-percent">{{ prozent }}{{ 'products.product.price.percent_off' | t }}</span>
+        {% endif %}
+      </div>
+    </template>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#priceDesktopView')) {
+      const offsetRight = Vue.createApp({
+        delimiters: ['${', '}'],
+        methods: {
+          money(value) {
+            if (!value) return 0
+            return (value/100).toFixed(2)
+          },
+          percent(price, compare) {
+            const amount = Math.round((1 - (price / compare)) * 100)
+            return amount > 0 ? amount : 0
+          }
+        },
+        computed: {
+          price() {
+            return store.state.storePriceState
+          }
+        }
+      }).mount('#priceDesktopView')
+    }
+  })
+</script>
+
+

@@ -1,0 +1,72 @@
+{% comment %}
+    Renders a blog article card for a given blog with settings.
+
+    Accepts:
+    - card_style: {String} A style for primary image
+    - article: {Object} Article object
+    - show_date: {String} The setting either show the article date or not. If it's not included it will not show the image by default
+    - show_author: {String} The setting either show the article author or not. If it's not included it will not show the author by default
+    - blog_url: {String} The selected blog url
+
+    Usage:
+    {% render 'featured-article-card', card_style: 'extended primary-card', article: article, show_date: section.settings.show_date, show_author: section.settings.show_author, blog_url: section.settings.blog.url %}
+{% endcomment %}
+
+<article class="article-card {{ card_style }}">
+  <a href="{{ article.url }}" class="article-card_link">
+    <figure class="article-card_figure placeholder-gray">
+      {%- if article.image -%}
+        <img
+          src="{{ article.image.src | image_url: width: 720 }}"
+          class="article-card_img"
+          width="{{ article.image.width }}"
+          height="{{ article.image.height }}"
+          alt="{{ article.image.src.alt | escape }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'article-card_img' }}
+      {%- endif -%}
+    </figure>
+    <div class="article-card_body">
+      <div class="article-card_info">
+        <h3 class="headline-3" id="Article-{{ article.id }}">
+          {{ article.title | escape }}
+        </h3>
+        {%- if show_date -%}
+          <span class="article-card_info--date headline-6">
+            {{- article.published_at | time_tag: format: 'date' -}}
+          </span>
+        {%- endif -%}
+        {%- if show_author -%}
+          <span class="article-card_info--author headline-6">
+            &nbsp;•&nbsp;{{ article.author -}}
+          </span>
+        {%- endif -%}
+        {%- if article.comments_count > 0 and blog.comments_enabled? -%}
+          <span class="article-card_info--comments headline-6">
+            &nbsp;•&nbsp;{{ 'blogs.article.comments' | t: count: article.comments_count }}
+          </span>
+        {%- endif -%}
+      </div>
+      {%- if article.excerpt.size > 0 or article.content.size > 0 -%}
+        <div class="article-card_excerpt">
+          <p class="text--info">
+            {%- if article.excerpt.size > 0 -%}
+              {{ article.excerpt | strip_html | truncatewords: 30 }}
+            {%- else -%}
+              {{ article.content | strip_html | truncatewords: 30 }}
+            {%- endif -%}
+          </p>
+      </div>
+      {%- endif -%}
+    </div>
+  </a>
+  {%- if article.tags.size > 0 -%}
+    <div class="article-card_tag" aria-label="{{ 'blogs.article.blog' | t }}">
+      {%- for tag in article.tags -%}
+        <a href="{{ blog_url }}/tagged/{{ tag | handle }}" class="link--primary" rel="tag">{{ tag }}</a>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</article>

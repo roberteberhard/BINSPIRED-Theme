@@ -1,0 +1,83 @@
+<section class="comment">
+  <div class="comment-wrapper article-adapt">
+
+    {% if article.comments_count > 0 %}
+      {%- assign anchorId = '#Comments-' | append: article.id -%}
+      <h4 id="comment-{{ article.id }}">{{ article.comments_count }} {{ 'sections.main.article.comments.title' | t: count: article.comments_count }}</h4>
+      {% paginate article.comments by 5 %}
+        {% for comment in article.comments %}
+          <article id="{{ comment.id }}" class="comment-article">
+            <header class="comment-header">
+              <span class="comment-header_author">{{ comment.author }} • {{ comment.created_at | time_tag: format: 'date' }}</span>
+            </header>
+            {{ comment.content }}
+          </article>
+        {% endfor %}
+        {% render 'pagination', paginate: paginate, anchor: anchorId %}
+      {% endpaginate %}
+    {% else %}
+        <h4>{{ 'sections.main.article.comments.subtitle' | t }}</h4>
+    {% endif %}
+
+    {% form 'new_comment', article %}
+
+        <h4>{{ 'sections.main.article.comments.subtitle' | t }}</h4>
+        <p class="">{{ 'sections.main.article.comments.marked' | t }}</p>
+
+      {% if form.errors %}
+        {% render 'icon-failed' %}
+        Oh no! Your comment was not posted
+        <ul>
+          {% for error in form.errors %}
+            <li>
+              <span>{{ form.errors.messages[error] }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% elsif form.posted_successfully? %}
+        {% render 'icon-success' %}
+        Comment is posted successfully
+      {% endif %}
+
+      <div>
+        <label for="comment_author" class="">Name</label>
+        <input
+          type="text"
+          name="comment[author]"
+          id="comment_author"
+          class=""
+          placeholder="Jande Doe"
+          required
+        />
+      </div>
+      <div>
+        <label for="comment_email" class="">Email</label>
+        <input
+          type="email"
+          name="comment[email]"
+          id="comment_email"
+          class=""
+          placeholder="jane@doe.com"
+          required
+        >
+      </div>
+      <div>
+        <label for="comment_content" class="">Comment</label>
+        <textarea
+          name="comment[body]"
+          id="comment_content"
+          class=""
+          required
+        ></textarea>
+      </div>
+      <div>
+        <input
+          type="submit"
+          value="Post comment"
+          class=""
+        >
+      </div>
+    {% endform %}
+
+  </div>
+</section>

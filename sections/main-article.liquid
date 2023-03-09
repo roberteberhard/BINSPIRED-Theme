@@ -1,0 +1,247 @@
+{{ 'section-main-article.css' | asset_url | stylesheet_tag }}
+{{ 'component-article-comments.css' | asset_url | stylesheet_tag }}
+{{ 'component-article-read-more.css' | asset_url | stylesheet_tag }}
+
+<article class="article" itemscope itemtype="http://schema.org/BlogPosting">
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+
+      {%- when 'title' -%}
+        <header class="article-adapt">
+          <h1 class="headline-1" itemprop="headline">{{ article.title | escape }}</h1>
+        </header>
+
+      {%- when 'published_date' -%}
+        <div class="article-adapt" itemscope itemtype="http://schema.org/Person">
+          {%- if block.settings.blog_show_date -%}
+            <time class="headline-6" itemprop="dateCreated pubdate datePublished" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ 'sections.main.article.published' | t }} {{ article.published_at | date: format: 'on_date' }}</time>
+          {%- endif -%}
+          {%- if block.settings.blog_show_author -%}
+            <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+              <small class="headline-6" itemprop="name">by {{ article.author }}</small>
+            </span>
+          {%- endif -%}
+        </div>
+
+      {%- when 'category' -%}
+        <div class="article-adapt">
+          <div class="article-tag" aria-label="{{ 'blogs.article.tags' }}">
+            <a class="link--primary" href="{{ blog.url }}" rel="tag">{{ blog.title }}</a>
+            {%- if article.tags.size > 0 -%}
+              {%- for tag in article.tags -%}
+                <a class="link--primary" href="{{ blog.url }}/tagged/{{ tag | handle }}" rel="tag">{{ tag }}</a>
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </div>
+
+      {%- when 'featured_image'-%}
+        <div class="article-{{ block.settings.image_height }}" id="article-{{ article.id }}">
+          <div class="article-hero_{{ block.settings.image_height }}" itemprop="image">
+            <figure class="placeholder-gray">
+              {%- if article.image -%}
+                <img
+                  srcset="{% if article.image.width >= 350 %}{{ article.image | image_url: width: 350 }} 350w,{% endif %}
+                    {% if article.image.width >= 750 %}{{ article.image | image_url: width: 750 }} 750w,{% endif %}
+                    {% if article.image.width >= 1100 %}{{ article.image | image_url: width: 1100 }} 1100w,{% endif %}
+                    {% if article.image.width >= 1500 %}{{ article.image | image_url: width: 1500 }} 1500w,{% endif %}
+                    {{ article.image | image_url: width: article.image.width }} {{ article.image.width }}w"
+                  sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 10rem), 100vw"
+                  src="{{ article.image | image_url: width: 1100 }}"
+                  alt="{{ article.image.alt | escape }}"
+                  width="{{ article.image.width }}"
+                  height="{{ article.image.height }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {% assign placeholder_image = 'lifestyle-2' %}
+                {{ placeholder_image | placeholder_svg_tag }}
+              {%- endif -%}
+            <figure>
+          </div>
+        </div>
+
+      {% when 'content' %}
+        <div class="article-adapt text--body" itemprop="articleBody">
+          {{ article.content }}
+        </div>
+
+    {% endcase %}
+  {% endfor %}
+</article>
+
+{% if blog.comments_enabled? %}
+  {% render 'article-comments' %}
+{% endif %}
+
+{% if section.settings.enable_read_more %}
+  {% render 'article-read-more', article_id: article.id, blog_name: blog.title | escape %}
+{% endif %}
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "articleBody": {{ article.content | strip_html | json }},
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": {{ shop.url | append: page.url | json }}
+    },
+    "headline": {{ article.title | json }},
+    {% if article.excerpt != blank %}
+      "description": {{ article.excerpt | strip_html | json }},
+    {% endif %}
+    {% if article.image %}
+      {% assign image_size = article.image.width | append: 'x' %}
+      "image": [
+        {{ article | image_url: image_size | prepend: "https:" | json }}
+      ],
+    {% endif %}
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+    "author": {
+      "@type": "Person",
+      "name": {{ article.author | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      {% if settings.share_image %}
+        {% assign image_size = settings.share_image.width | append: 'x' %}
+        "logo": {
+          "@type": "ImageObject",
+          "height": {{ settings.share_image.height | json }},
+          "url": {{ settings.share_image | image_url: image_size | prepend: "https:" | json }},
+          "width": {{ settings.share_image.width | json }}
+        },
+      {% endif %}
+      "name": {{ shop.name | json }}
+    }
+  }
+  </script>
+
+{% schema %}
+{
+  "name": "t:sections.main-article.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main-article.settings.header.content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Read More",
+      "label": "t:sections.main-article.settings.title.label"
+    },
+    {
+      "type": "range",
+      "id": "posts_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "default": 4,
+      "label": "t:sections.main-article.settings.posts_to_show.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_read_more",
+      "default": true,
+      "label": "t:sections.main-article.settings.enable_read_more.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "t:sections.main-article.settings.show_image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "t:sections.main-article.settings.show_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": false,
+      "label": "t:sections.main-article.settings.show_author.label"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "t:sections.main-article.blocks.title.name",
+      "limit": 1
+    },
+    {
+      "type": "published_date",
+      "name": "t:sections.main-article.blocks.published_date.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "blog_show_date",
+          "default": true,
+          "label": "t:sections.main-article.blocks.published_date.settings.label"
+        }
+      ]
+    },
+    {
+      "type": "author",
+      "name": "t:sections.main-article.blocks.author.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "blog_show_author",
+          "default": true,
+          "label": "t:sections.main-article.blocks.author.settings.label"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "name": "t:sections.main-article.blocks.category.name",
+      "limit": 1
+    },
+    {
+      "type": "featured_image",
+      "name": "Featured Image",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "image_height",
+          "options": [
+            {
+              "value": "adapt",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__1.label"
+            },
+            {
+              "value": "hidden",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__2.label"
+            },
+            {
+              "value": "medium",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__3.label"
+            },
+            {
+              "value": "large",
+              "label": "t:sections.main-article.blocks.featured_image.settings.image_height.options__4.label"
+            }
+          ],
+          "default": "adapt",
+          "label": "t:sections.main-article.blocks.featured_image.settings.image_height.label",
+          "info": "t:sections.main-article.blocks.featured_image.settings.image_height.info"
+        }
+      ]
+    },
+    {
+      "type": "content",
+      "name": "t:sections.main-article.blocks.content.name",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}

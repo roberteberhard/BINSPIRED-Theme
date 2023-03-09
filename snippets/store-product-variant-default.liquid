@@ -1,0 +1,122 @@
+{% comment %}
+  Renders the product variant row
+
+  Accepts:
+  - title: {String} Shows the title of the current variant
+  - position: {Number} Shows the position of the current variant
+  - grid: {String} Takes the grid amount class for the buttons
+
+  Usage:
+  {% render 'store-product-variant-default', title: 'Select Size', position: '1', grid: 'x3' %}
+{% endcomment %}
+
+<div class='product-variant__row'>
+  <div class='product-variant__header'>
+    <span class='product-variant__header--size'>{{ title }}</span>
+    {% case product.type | escape %}
+      {% when 'Art Print' %}
+        <a
+          href='{{ routes.root_url }}pages/size-guide#print'
+          target='_blank'
+          rel='noopener noreferrer'
+          class='product-variant__header--link'
+        >
+          {{- 'products.product.size_guide' | t -}}
+        </a>
+      {% when 'Coffee Mug' %}
+        <a
+          href='{{ routes.root_url }}pages/size-guide#mug'
+          target='_blank'
+          rel='noopener noreferrer'
+          class='product-variant__header--link'
+        >
+          {{- 'products.product.size_guide' | t -}}
+        </a>
+      {% when 'Throw Pillow' %}
+        <a
+          href='{{ routes.root_url }}pages/size-guide#pillow'
+          target='_blank'
+          rel='noopener noreferrer'
+          class='product-variant__header--link'
+        >
+          {{- 'products.product.size_guide' | t -}}
+        </a>
+      {% when 'iPhone Case' %}
+        <a
+          href='{{ routes.root_url }}pages/size-guide#iphone'
+          target='_blank'
+          rel='noopener noreferrer'
+          class='product-variant__header--link'
+        >
+          {{- 'products.product.size_guide' | t -}}
+        </a>
+      {% when 'Samsung Galaxy Case' %}
+        <a
+          href='{{ routes.root_url }}pages/size-guide#galaxy'
+          target='_blank'
+          rel='noopener noreferrer'
+          class='product-variant__header--link'
+        >
+          {{- 'products.product.size_guide' | t -}}
+        </a>
+      {% when 'Unisex T-Shirt' %}
+        <a
+          href='{{ routes.root_url }}pages/size-guide#unisex'
+          target='_blank'
+          rel='noopener noreferrer'
+          class='product-variant__header--link'
+        >
+          {{- 'products.product.size_guide' | t -}}
+        </a>
+    {% endcase %}
+  </div>
+  <div class='product-variant__grid'>
+    <div class='product-variant__buttons {{ grid }}' role='group'>
+      <template v-for='(value, index) in variants' :key='index'>
+        {%- if position == '1' -%}
+          <button
+            class='product-variant__buttons--btn'
+            :class="{ 'disabled': !value.available, 'selected': value.option1 === selected[i] }"
+            role='productitemcheckbox'
+            type='button'
+            @click='
+              selected[i] = value.option1;
+              form.selections[i] = value.option1;
+              [addStoreVariantId()]
+            '
+          >
+            <span class='product-variant__buttons--label'>${ value.option1 }</span>
+          </button>
+        {%- elsif position == '2' -%}
+          <button
+            class='product-variant__buttons--btn'
+            :class="{ 'disabled': !value.available, 'selected': value.option2 === selected[i], 'hidden': this.selected[0] != value.option1 }"
+            role='productitemcheckbox'
+            type='button'
+            @click='
+              selected[i] = value.option2;
+              form.selections[i] = value.option2;
+              [addStoreVariantId()]
+            '
+          >
+            <span class='product-variant__buttons--label'>${ value.option2 }</span>
+          </button>
+        {% elsif position == '3' %}
+          <button
+            class='product-variant__buttons--btn'
+            :class="{ 'disabled': !value.available, 'selected': value.option3 === selected[i] }"
+            role='productitemcheckbox'
+            type='button'
+            @click='
+              selected[i] = value.option3;
+              form.selections[i] = value.option3;
+              [addStoreVariantId()]
+            '
+          >
+            <span class='product-variant__buttons--label'>${ value.option3 }</span>
+          </button>
+        {% endif %}
+      </template>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,137 @@
+{{ 'section-featured-products.css' | asset_url | stylesheet_tag }}
+
+<div class="featured-products_wrapper page-width">
+  <div class="swiper featured-products-swiper">
+    <div class ="featured-products_header">
+      <h2 class="headline-2{% if section.settings.title == blank %} no-heading{% endif %}">{{ section.settings.title | escape }}</h2>
+      <nav class="featured-products_nav">
+        {%- if section.settings.featured_all -%}
+          <a href="{{ section.settings.featured_link }}" class="link--text" >{{ section.settings.featured_view }}</a>
+        {% endif %}
+        <button class="carousel-btn prev-btn" aria-hidden="true" tabindex="-1">
+          {%- render 'icon-prev-btn' -%}
+          <span class="visually-hidden">{{ 'general.carousel.prev' | t }}</span>
+        </button>
+        <button class="carousel-btn next-btn" aria-hidden="true" tabindex="-1">
+          {%- render 'icon-next-btn' -%}
+          <span class="visually-hidden">{{ 'general.carousel.next' | t }}</span>
+        </button>
+      </nav>
+    </div>
+    <div class="featured-products swiper-wrapper">
+      {%- for product in collections[section.settings.featured_products].products limit: section.settings.featured_products_to_show -%}
+        {% render 'featured-products-card', card_product: product, card_vendor: section.settings.show_vendor %}
+      {%- else -%}
+        {%- for i in (1..3) -%}
+          {% render 'featured-products-card-placeholder', card_count: i %}
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% javascript %}
+  const target = document.querySelector('.featured-products_wrapper')
+  const options = { rootMargin: '100px 0px 100px 0px' }
+  const handleIntersection = (entries) => {
+    if (entries[0].isIntersecting) {
+      handleFeaturedProductsSwiper()
+      observer.unobserve(entries[0].target)
+    }
+  }
+  const observer = new IntersectionObserver(handleIntersection, options)
+  observer.observe(target)
+
+  const handleFeaturedProductsSwiper = () => {
+    const featuredProductsSwiper = new Swiper(".featured-products-swiper", {
+      slidesPerView: 1,
+      spaceBetween: 15,
+      loop: false,
+      navigation: {
+        nextEl: ".next-btn",
+        prevEl: ".prev-btn",
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 15,
+        },
+        990: {
+          slidesPerView: 3,
+          spaceBetween: 15,
+        }
+      },
+      on: {
+        afterInit: (swiper) => {
+          const targets = document.querySelector('.featured-products')
+          targets.style.opacity = "1";
+        }
+      }
+    })
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.featured-products.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Featured Products",
+      "label": "t:sections.featured-products.settings.title.label"
+    },
+    {
+      "type": "collection",
+      "id": "featured_products",
+      "label": "t:sections.featured-products.settings.collection.label"
+    },
+    {
+      "type": "range",
+      "id": "featured_products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 2,
+      "default": 4,
+      "label": "t:sections.featured-products.settings.products_to_show.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.featured-products.settings.link.title"
+    },
+    {
+      "type": "text",
+      "id": "featured_view",
+      "default": "View All",
+      "label": "t:sections.featured-products.settings.view.label"
+    },
+    {
+      "type": "url",
+      "id": "featured_link",
+      "label": "t:sections.featured-products.settings.link.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "featured_all",
+      "default": false,
+      "label": "t:sections.featured-products.settings.show_view_all.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.featured-products.settings.vendor.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "t:sections.featured-products.settings.show_vendor.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured-products.presets.name"
+    }
+  ]
+}
+{% endschema %}

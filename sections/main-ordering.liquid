@@ -1,0 +1,95 @@
+{{ 'section-main-help.css' | asset_url | stylesheet_tag }}
+{{ 'section-header-help.css' | asset_url | stylesheet_tag }}
+
+<div class='main-help'>
+  <div class='main-help_wrapper page-width'>
+    {% render 'header-help', title: page.title, active: 'ordering' %}
+  </div>
+  <div class='main-help_content page-width'>
+    <div class='main-help_body odd'>
+      <div id='howto' class='main-help_body-block'>
+        <h2 class='headline-2'>How can I place an order on the website?</h2>
+        <p>
+          To place your order, simply select the items you want, choose the model of your choice, color and size and add
+          them to the shopping bag.
+        </p>
+        <p>
+          You can access and edit your shopping bag at any time. The validity of your bag is 14 days. When you have
+          finished shopping, go back to your shopping bag and click "Checkout".
+        </p>
+        <p>
+          On the "Checkout" page, please fill in the required fields and choose between Credit card and PayPal as your
+          preferred payment method. Then click on "Review order". If everything is correct, click "Complete order" to
+          place the order or "Return to payment" to make the necessary changes.
+        </p>
+        <p>
+          Once your order is completed, you will receive a confirmation email. However, if you do not receive the
+          confirmation email, please check your inbox and spam folder.
+        </p>
+      </div>
+      <div id='noconfirmation' class='main-help_body-block'>
+        <h2 class='headline-2'>I have not received an order confirmation!</h2>
+        <p>
+          If you placed an order with us but did not receive an order confirmation email, please check your inbox and
+          spam folder. However, it is also possible that your email address was entered incorrectly.
+        </p>
+        <p>
+          <a class='link--primary' target='_self' href='{{ routes.root_url }}pages/contact'>Contact us</a> to find out
+          if we received an order on your behalf. We will be happy to change the email address for you and send you the
+          order confirmation.
+        </p>
+      </div>
+      <div id='cancelorder' class='main-help_body-block'>
+        <h2 class='headline-2'>Can I edit/cancel my order after I have placed it?</h2>
+        <p>
+          Unfortunately, this is not possible. Once your order is placed and imported into our system, we have no way to
+          edit it or make changes for you.
+        </p>
+        <p>
+          We process your order very quickly and therefore cannot cancel it until it has shipped. However, you can
+          always return your order to us if you do not want to keep it.
+        </p>
+      </div>
+    </div>
+    <div class='main-help_body even'>
+      <div id='orderstatus' class='main-help_body-block'>
+        <h2 class='headline-2'>How can I view the status of my order?</h2>
+        <p>
+          If you were logged in to your account when you placed your order, you can view the status of your orders at
+          any time under your
+          <a class='link--primary' target='_self' href='{{ routes.root_url }}account/#orders'>Account Profile</a>. There
+          you will find the history of your orders and the current status of each order.
+        </p>
+      </div>
+      <div id='findinvoice' class='main-help_body-block'>
+        <h2 class='headline-2'>Where can I find the invoice for my order?</h2>
+        <p>
+          After completing your transaction, you will automatically receive an invoice by email. For international
+          orders, a copy of the invoice for customs will also be included in the package.
+        </p>
+        <p>
+          If you were logged into your account when you placed your order, you can also view and download the invoice
+          under your orders.
+        </p>
+      </div>
+      <div id='trackorder' class='main-help_body-block'>
+        <h2 class='headline-2'>How can I track my order?</h2>
+        <p>
+          Once your order has been shipped, you will receive a shipping confirmation. In this you will find a link to
+          the delivery company's website where you can track your order. Note that our delivery times are based on
+          business days, so do not include weekends.
+        </p>
+        <p>
+          Keep in mind that it can take up to 24-48 hours after receiving the shipping confirmation for the tracking to
+          be updated.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page.ordering.label"
+}
+{% endschema %}

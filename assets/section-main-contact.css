@@ -1,0 +1,223 @@
+.main-contact_content {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  padding-bottom: 7rem;
+}
+
+.main-contact_content .headline-2 {
+  margin: 0 0 2rem;
+}
+
+@media only screen and (min-width: 750px) {
+  .main-contact_content {
+    padding-top: 2rem;
+    padding-bottom: 10rem;
+  }
+  .main-contact_content .headline-2 {
+    font-size: calc(var(--font-heading-scale) * 2.4rem);
+  }
+}
+
+@media only screen and (min-width: 990px) {
+  .main-contact_content {
+    flex-direction: row;
+  }
+}
+
+/** Contact Description **/
+.main-contact_desc {
+  width: 100%;
+  padding-top: 3rem;
+}
+
+.main-contact_desc p {
+  line-height: 1.35;
+}
+
+.main-contact_desc .link--primary {
+  font-weight: 400;
+}
+
+@media only screen and (min-width: 990px) {
+  .main-contact_desc {
+    width: 30%;
+    padding-top: 2rem;
+  }
+}
+
+/** Contact Body **/
+
+.main-contact_body {
+  width: 100%;
+}
+
+.main-contact_body .contact-agree {
+  display: block;
+  margin-bottom: 4rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: rgb(var(--color-foreground), 0.55);
+  font-size: calc(var(--font-heading-scale) * 1.5rem);
+}
+
+.main-contact_body .success-section {
+  margin: 0 0 3rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: rgb(var(--color-base-success));
+  font-size: calc(var(--font-heading-scale) * 1.6rem);
+}
+
+.main-contact_body .error-section {
+  margin: 0 0 3rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: rgb(var(--color-base-error));
+  font-size: calc(var(--font-heading-scale) * 1.6rem);
+}
+
+.main-contact_body .contact-agree .link--primary {
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+@media only screen and (min-width: 990px) {
+  .main-contact_body {
+    width: 70%;
+    padding-left: 60px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .main-contact_body {
+    padding-right: 4%;
+  }
+}
+
+/* *************** */
+/*   Form Fields   */
+/* *************** */
+
+.main-contact_fields {
+  margin-top: 3.7rem;
+}
+
+.main-contact_fields .field {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 56px;
+  margin-bottom: 2.5rem;
+  border: 0px;
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+.main-contact_fields .field.text-area {
+  min-height: 180px;
+}
+
+.main-contact_fields .field .select-arrow {
+  position: absolute;
+  top: 16px;
+  right: 12px;
+  z-index: -1;
+}
+
+.main-contact_fields .field label {
+  pointer-events: none;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  color: rgba(var(--color-foreground), 0.55);
+  font-size: calc(var(--font-heading-scale) * 1.6rem);
+  line-height: 1.5;
+  background-color: rgb(var(--color-background));
+  transition: top var(--duration-short) ease, left var(--duration-short) ease,
+    font-size var(--duration-short) ease;
+}
+
+.main-contact_fields .field input:-webkit-autofill ~ label,
+.main-contact_fields .field input:focus ~ label,
+.main-contact_fields .field input:not(:placeholder-shown) ~ label,
+.main-contact_fields .field textarea:-webkit-autofill ~ label,
+.main-contact_fields .field textarea:focus ~ label,
+.main-contact_fields .field textarea:not(:placeholder-shown) ~ label,
+.main-contact_fields .field select.field-select:-webkit-autofill ~ label,
+.main-contact_fields .field select.field-select:focus ~ label,
+.main-contact_fields
+  .field
+  select.field-select:not(:placeholder-shown)
+  ~ label {
+  top: -9px;
+  left: 11px;
+  padding: 0 5px;
+  color: rgba(var(--color-foreground), 0.55);
+  font-size: calc(var(--font-heading-scale) * 1.2rem);
+  background-color: rgb(var(--color-background));
+}
+
+.main-contact_fields .field input[type='text']:-webkit-autofill,
+.main-contact_fields .field input[type='text']:-webkit-focus,
+.main-contact_fields .field input[type='text']:not(:placeholder-shown),
+.main-contact_fields .field input[type='tel']:-webkit-autofill,
+.main-contact_fields .field input[type='tel']:-webkit-focus,
+.main-contact_fields .field input[type='tel']:not(:placeholder-shown),
+.main-contact_fields .field input[type='email']:-webkit-autofill,
+.main-contact_fields .field input[type='email']:-webkit-focus,
+.main-contact_fields .field input[type='email']:not(:placeholder-shown),
+.main-contact_fields .field input[type='password']:-webkit-autofill,
+.main-contact_fields .field input[type='password']:-webkit-focus,
+.main-contact_fields .field input[type='password']:not(:placeholder-shown),
+.main-contact_fields .field textarea:-webkit-autofill,
+.main-contact_fields .field textarea:-webkit-focus,
+.main-contact_fields .field textarea:not(:placeholder-shown),
+.main-contact_fields .field input[type='select']:-webkit-autofill,
+.main-contact_fields .field input[type='select']:-webkit-focus,
+.main-contact_fields .field input[type='select']:not(:placeholder-shown),
+.main-contact_fields .field select.field-select:-webkit-autofill,
+.main-contact_fields .field select.field-select:-webkit-focus,
+.main-contact_fields .field select.field-select:not(:placeholder-shown) {
+  outline: transparent;
+  border: 1px solid rgba(var(--color-foreground), 1);
+}
+
+.main-contact_fields .field input[type='text']:hover,
+.main-contact_fields .field input[type='tel']:hover,
+.main-contact_fields .field input[type='email']:hover,
+.main-contact_fields .field input[type='password']:hover,
+.main-contact_fields .field textarea:hover,
+.main-contact_fields .field select.field-select:hover {
+  outline: transparent;
+  border: 1px solid rgba(var(--color-foreground), 1);
+}
+
+.main-contact_fields .field input[type='text']:focus,
+.main-contact_fields .field input[type='tel']:focus,
+.main-contact_fields .field input[type='email']:focus,
+.main-contact_fields .field input[type='password']:focus,
+.main-contact_fields .field textarea:focus,
+.main-contact_fields .field select.field-select:focus {
+  outline: transparent;
+  border: 1px solid rgba(var(--color-foreground), 1);
+}
+
+.main-contact_fields .field input[type='text']:focus ~ label,
+.main-contact_fields .field input[type='tel']:focus ~ label,
+.main-contact_fields .field input[type='email']:focus ~ label,
+.main-contact_fields .field input[type='password']:focus ~ label,
+.main-contact_fields .field textarea:focus ~ label,
+.main-contact_fields .field select.field-select:focus ~ label {
+  color: rgba(var(--color-foreground), 1);
+}
+.main-contact_fields .field input[type='text'].field-error,
+.main-contact_fields .field input[type='tel'].field-error,
+.main-contact_fields .field input[type='email'].field-error,
+.main-contact_fields .field input[type='password'].field-error,
+.main-contact_fields .field textarea.field-error,
+.main-contact_fields .field select.field-select.field-error {
+  border: 1px solid rgb(var(--color-base-error));
+}

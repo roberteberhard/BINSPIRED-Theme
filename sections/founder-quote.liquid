@@ -1,0 +1,37 @@
+{{ 'component-founder-quote.css' | asset_url | stylesheet_tag }}
+
+
+{%- if section.settings.tagline != blank -%}
+  <div class="founder-quote-wrapper page-width">
+    <p class="founder-quote_tagline">{{ section.settings.tagline | escape }}</p>
+    <p class="founder-quote_signature">- {{ section.settings.signature | escape }}</p>
+  </div>
+{%- endif -%}
+
+
+{% schema %}
+{
+  "name": "t:sections.founder-quote.name",
+  "tag": "section",
+  "class": "founder-quote",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline",
+      "default": "Add a tagline",
+      "label": "t:sections.founder-quote.settings.tagline.label"
+    },
+    {
+      "type": "text",
+      "id": "signature",
+      "default": "Add a signature",
+      "label": "t:sections.founder-quote.settings.signature.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.founder-quote.presets.name"
+    }
+  ]
+}
+{% endschema %}

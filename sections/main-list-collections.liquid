@@ -1,0 +1,219 @@
+{{ 'section-main-list-collection.css' | asset_url | stylesheet_tag }}
+
+<div id="collections" class="collections">
+  <div class="collections_wrapper page-width">
+    <header class="collections-header">
+      <div class="collections-title">
+        <h1 class="headline-1">{{ section.settings.title | escape }}</h1>
+      </div>
+      <div class="collections-count">
+        {% liquid
+          for collection in collections
+            unless collection.metafields.collection_info.list_collection == false
+              assign i = i | plus: 1
+            endunless
+          endfor
+        %}
+        {{ 'collections.results' | t: number: i }}
+      </div>
+    </header>
+    {% assign max = section.settings.collections_to_show %}
+    {%- paginate collections by max -%}
+      <div class="list-collection" data-next-url="{{ paginate.next.url }}" role="list">
+      {%- liquid
+        case section.settings.sort
+          when 'products_high' or 'products_low'
+            assign collections = collections | sort: 'all_products_count'
+          when 'date' or 'date_reversed'
+            assign collections = collections | sort: 'published_at'
+        endcase
+        if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed' or section.settings.sort == 'alphabetical_reversed'
+          assign collections = collections | reverse
+        endif
+      -%}
+      {%- for collection in collections -%}
+        {% unless collection.metafields.collection_info.list_collection == false %}
+        <article class="collections-item">
+          <figure class="placeholder-gray">
+            {%- if collection.image != blank -%}
+              <img
+                srcset="{%- if collection.image.width >= 165 -%}{{ collection.image | image_url: width: 165 }} 165w,{%- endif -%}
+                  {%- if collection.image.width >= 360 -%}{{ collection.image | image_url: width: 360 }} 360w,{%- endif -%}
+                  {%- if collection.image.width >= 535 -%}{{ collection.image | image_url: width: 535 }} 535w,{%- endif -%}
+                  {%- if collection.image.width >= 750 -%}{{ collection.image | image_url: width: 750 }} 750w,{%- endif -%}
+                  {%- if collection.image.width >= 1000 -%}{{ collection.image | image_url: width: 1000 }} 1000w,{%- endif -%}"
+                src="{{ collection.image | image_url: width: 1000 }}"
+                class="featured-img"
+                alt="{{ collection.title | escape }}"
+                height="{{ collection.image.height }}"
+                width="{{ collection.image.width }}"
+                loading="lazy"
+            >
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'featured-img' }}
+            {%- endif -%}
+            <figcaption>
+              <div class="collections-item_caption">
+                <h4 class="headline-2">{{- collection.title -}}</h4>
+                <a href="{{ collection.url }}" class="button white-btn">Shop</a>
+              </div>
+            </figcaption>
+            <a href="{{ collection.url }}" class="item-link">
+              <span class="visually-hidden">{{- collection.title -}}</span>
+            </a>
+          </figure>
+        </article>
+      {% endunless %}
+      {%- endfor -%}
+    </div>
+    {%- if paginate.pages > 1 -%}
+      <div class="load-more">
+        <div class="load-more-spinner" :class="{ 'is-showing': loadMoreSpinnerState }">
+          <span class="visually-hidden">{{ 'collections.spinner' | t }}</span>
+        </div>
+      </div>
+    {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (document.querySelector('#collections')) {
+    const collections = Vue.createApp({
+      delimiters: ['${', '}'],
+      data() {
+        return {
+          product_on_page: null,
+          spinner_on_page: null,
+          next_url: '',
+          load_more_spinner: false,
+          collectionsObserver: null,
+        }
+      },
+      methods: {
+        async loadMoreProducts() {
+          this.load_more_spinner = true;
+          try {
+            const results = await axios.get(this.next_url)
+            const text = await results.data;
+            const parser = new DOMParser();
+            const htmlDocument = parser.parseFromString(text, "text/html");
+            // results
+            const collections = htmlDocument.documentElement.querySelector(".list-collection");
+            const articles = collections.querySelectorAll('article');
+            for (var i = 0; i < articles.length; i++) {
+              this.product_on_page.appendChild(articles[i])
+            }
+            this.load_more_spinner = false;
+            this.next_url = collections.dataset.nextUrl;
+            if( !this.next_url ) {
+              this.collectionsObserver.disconnect();
+            }
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      },
+      computed: {
+        loadMoreSpinnerState() {
+          return this.load_more_spinner
+        }
+      },
+      mounted() {
+        this.product_on_page = this.$el.querySelector(".list-collection")
+        this.spinner_on_page = this.$el.querySelector(".load-more")
+        this.next_url = this.product_on_page.dataset.nextUrl
+        if( !this.spinner_on_page ) return
+        this.collectionsObserver = new IntersectionObserver(entries => {
+          const spinner = entries[0]
+          if (spinner.isIntersecting) {
+            this.loadMoreProducts()
+          }
+        })
+        this.collectionsObserver.observe(this.spinner_on_page)
+      },
+      beforeDestroy() {
+        this.collectionsObserver.disconnect();
+      }
+    }).mount('#collections');
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.main-list-collections.name",
+  "class": "spaced-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.main-list-collections.settings.title.label",
+      "default": "Collections"
+    },
+    {
+      "type": "select",
+      "id": "sort",
+      "options": [
+        {
+          "value": "alphabetical",
+          "label": "t:sections.main-list-collections.settings.sort.options__1.label"
+        },
+        {
+          "value": "alphabetical_reversed",
+          "label": "t:sections.main-list-collections.settings.sort.options__2.label"
+        },
+        {
+          "value": "date_reversed",
+          "label": "t:sections.main-list-collections.settings.sort.options__3.label"
+        },
+        {
+          "value": "date",
+          "label": "t:sections.main-list-collections.settings.sort.options__4.label"
+        },
+        {
+          "value": "products_high",
+          "label": "t:sections.main-list-collections.settings.sort.options__5.label"
+        },
+        {
+          "value": "products_low",
+          "label": "t:sections.main-list-collections.settings.sort.options__6.label"
+        }
+      ],
+      "default": "alphabetical",
+      "label": "t:sections.main-list-collections.settings.sort.label"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-list-collections.settings.image_ratio.options__1.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.main-list-collections.settings.image_ratio.options__2.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.main-list-collections.settings.image_ratio.options__3.label"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.main-list-collections.settings.image_ratio.label",
+      "info": "t:sections.main-list-collections.settings.image_ratio.info"
+    },
+    {
+      "type": "range",
+      "id": "collections_to_show",
+      "min": 2,
+      "max": 72,
+      "step": 2,
+      "default": 12,
+      "label": "t:sections.main-list-collections.settings.collections_to_show.label"
+    }
+  ]
+}
+{% endschema %}

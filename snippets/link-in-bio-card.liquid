@@ -1,0 +1,15 @@
+{% comment %}
+    Renders a link in bio card.
+
+    Accepts:
+    - link_card: {Object} Link in bio object
+
+    Usage:
+    {% render 'link-in-bio-card', link_card: block.settings %}
+{% endcomment %}
+
+{%- if link_card.title != blank and link_card.url != blank -%}
+  <a href="{{ link_card.url }}" class="button">
+    {{ link_card.title }}
+  </a>
+{%- endif -%}

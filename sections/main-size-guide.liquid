@@ -1,0 +1,223 @@
+{{ 'section-main-help.css' | asset_url | stylesheet_tag }}
+{{ 'section-header-help.css' | asset_url | stylesheet_tag }}
+
+<div id='sizeguide' class='main-help'>
+  <div class='main-help_wrapper page-width'>
+    {% render 'header-help', title: page.title, active: 'guide' %}
+  </div>
+  <div class='main-help_content page-width'>
+    <div class='main-help_desc'>
+      <div id='print' class='main-help_body-block'>
+        <h2 class='headline-2'>{{ 'general.help.size-guide.art-print.title' | t }}</h2>
+        <p>{{ 'general.help.size-guide.art-print.heading' | t }}</p>
+        <div class='main-help_heading'>
+          <h3 v-if='!units.storage.state' class='headline-3 chart-title' :class="{ 'visible': !units.storage.state}">
+            {{ 'general.help.size-guide.art-print.chart-title-cm' | t }}
+          </h3>
+          <h3 v-else-if='units.storage.state' class='headline-3 chart-title' :class="{ 'visible': units.storage.state}">
+            {{ 'general.help.size-guide.art-print.chart-title-in' | t }}
+          </h3>
+          {% render 'header-help-on-off', chbox: 'art-print' %}
+        </div>
+        <section v-if='!units.storage.state' class='main-help_chart' :class="{ 'visible': !units.storage.state}">
+          {%- render 'image-art-print-cm' -%}
+        </section>
+        <section v-if='units.storage.state' class='main-help_chart' :class="{ 'visible': units.storage.state}">
+          {%- render 'image-art-print-in' -%}
+        </section>
+      </div>
+      <div id='mug' class='main-help_body-block'>
+        <h2 class='headline-2'>{{ 'general.help.size-guide.coffee-mug.title' | t }}</h2>
+        <p>{{ 'general.help.size-guide.coffee-mug.heading' | t }}</p>
+        <div class='main-help_heading'>
+          <h3 v-if='!units.storage.state' class='headline-3 chart-title' :class="{ 'visible': !units.storage.state}">
+            {{ 'general.help.size-guide.coffee-mug.chart-title-cm' | t }}
+          </h3>
+          <h3 v-else-if='units.storage.state' class='headline-3 chart-title' :class="{ 'visible': units.storage.state}">
+            {{ 'general.help.size-guide.coffee-mug.chart-title-in' | t }}
+          </h3>
+          {% render 'header-help-on-off', chbox: 'coffee-mug' %}
+        </div>
+        <section v-if='!units.storage.state' class='main-help_chart' :class="{ 'visible': !units.storage.state}">
+          {%- render 'help-size-guide-mug-cm' -%}
+        </section>
+        <section v-if='units.storage.state' class='main-help_chart' :class="{ 'visible': units.storage.state}">
+          {%- render 'help-size-guide-mug-in' -%}
+        </section>
+      </div>
+      <div id='pillow' class='main-help_body-block'>
+        <h2 class='headline-2'>{{ 'general.help.size-guide.throw-pillow.title' | t }}</h2>
+        <p>{{ 'general.help.size-guide.throw-pillow.heading' | t }}</p>
+        <div class='main-help_heading'>
+          <h3 v-if='!units.storage.state' class='headline-3 chart-title' :class="{ 'visible': !units.storage.state}">
+            {{ 'general.help.size-guide.throw-pillow.chart-title-cm' | t }}
+          </h3>
+          <h3 v-else-if='units.storage.state' class='headline-3 chart-title' :class="{ 'visible': units.storage.state}">
+            {{ 'general.help.size-guide.throw-pillow.chart-title-in' | t }}
+          </h3>
+          {% render 'header-help-on-off', chbox: 'throw-pillow' %}
+        </div>
+        <section v-if='!units.storage.state' class='main-help_chart' :class="{ 'visible': !units.storage.state}">
+          {%- render 'help-size-guide-pillow-cm' -%}
+        </section>
+        <section v-if='units.storage.state' class='main-help_chart' :class="{ 'visible': units.storage.state}">
+          {%- render 'help-size-guide-pillow-in' -%}
+        </section>
+      </div>
+      <div id='iphone' class='main-help_body-block'>
+        <h2 class='headline-2'>{{ 'general.help.size-guide.iphone-case.title' | t }}</h2>
+        <p>{{ 'general.help.size-guide.iphone-case.heading' | t }}</p>
+        <div class='main-help_heading'>
+          <h3 v-if='!units.storage.state' class='headline-3 chart-title' :class="{ 'visible': !units.storage.state}">
+            {{ 'general.help.size-guide.iphone-case.chart-title-cm' | t }}
+          </h3>
+          <h3 v-else-if='units.storage.state' class='headline-3 chart-title' :class="{ 'visible': units.storage.state}">
+            {{ 'general.help.size-guide.iphone-case.chart-title-in' | t }}
+          </h3>
+          {% render 'header-help-on-off', chbox: 'iphone-case' %}
+        </div>
+        <section v-if='!units.storage.state' class='main-help_chart' :class="{ 'visible': !units.storage.state}">
+          {%- render 'help-size-guide-iphone-cm' -%}
+        </section>
+        <section v-if='units.storage.state' class='main-help_chart' :class="{ 'visible': units.storage.state}">
+          {%- render 'help-size-guide-iphone-in' -%}
+        </section>
+      </div>
+      <div id='galaxy' class='main-help_body-block'>
+        <h2 class='headline-2'>{{ 'general.help.size-guide.galaxy-case.title' | t }}</h2>
+        <p>{{ 'general.help.size-guide.galaxy-case.heading' | t }}</p>
+        <div class='main-help_heading'>
+          <h3 v-if='!units.storage.state' class='headline-3 chart-title' :class="{ 'visible': !units.storage.state}">
+            {{ 'general.help.size-guide.galaxy-case.chart-title-cm' | t }}
+          </h3>
+          <h3 v-else-if='units.storage.state' class='headline-3 chart-title' :class="{ 'visible': units.storage.state}">
+            {{ 'general.help.size-guide.galaxy-case.chart-title-in' | t }}
+          </h3>
+          {% render 'header-help-on-off', chbox: 'galaxy-case' %}
+        </div>
+        <section v-if='!units.storage.state' class='main-help_chart' :class="{ 'visible': !units.storage.state}">
+          {%- render 'help-size-guide-galaxy-cm' -%}
+        </section>
+        <section v-if='units.storage.state' class='main-help_chart' :class="{ 'visible': units.storage.state}">
+          {%- render 'help-size-guide-galaxy-in' -%}
+        </section>
+      </div>
+
+      <div id='unisex' class='main-help_body-block'>
+        <h2 class='headline-2'>{{ 'general.help.size-guide.unisex-shirt.title' | t }}</h2>
+        <p>{{ 'general.help.size-guide.unisex-shirt.heading' | t }}</p>
+        <div class='main-help_heading'>
+          <h3 v-if='!units.storage.state' class='headline-3 chart-title' :class="{ 'visible': !units.storage.state}">
+            {{ 'general.help.size-guide.unisex-shirt.chart-title-cm' | t }}
+          </h3>
+          <h3 v-else-if='units.storage.state' class='headline-3 chart-title' :class="{ 'visible': units.storage.state}">
+            {{ 'general.help.size-guide.unisex-shirt.chart-title-in' | t }}
+          </h3>
+          {% render 'header-help-on-off', chbox: 'unisex-shirt' %}
+        </div>
+        <section v-if='!units.storage.state' class='main-help_chart' :class="{ 'visible': !units.storage.state}">
+          {%- render 'help-size-guide-unisex-shirt-cm' -%}
+        </section>
+        <section v-if='units.storage.state' class='main-help_chart' :class="{ 'visible': units.storage.state}">
+          {%- render 'help-size-guide-unisex-shirt-in' -%}
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector('#sizeguide')) {
+      const sizeGuide = Vue.createApp({
+        delimiters: ['${', '}'],
+        data() {
+          return {
+            units: {
+              storage: {
+                state: false,
+              },
+            },
+          }
+        },
+        methods: {
+          toggleSizeUnit(e) {
+            const expr = e.target.value
+            switch (expr) {
+              case 'art-print':
+                if (this.units.storage.state === false) {
+                  this.units.storage.state = true
+                  localStorage.setItem('size_unit_state', 'true')
+                } else {
+                  this.units.storage.state = false
+                  localStorage.setItem('size_unit_state', 'false')
+                }
+                break
+              case 'coffee-mug':
+                if (this.units.storage.state === false) {
+                  this.units.storage.state = true
+                  localStorage.setItem('size_unit_state', 'true')
+                } else {
+                  this.units.storage.state = false
+                  localStorage.setItem('size_unit_state', 'false')
+                }
+                break
+              case 'throw-pillow':
+                if (this.units.storage.state === false) {
+                  this.units.storage.state = true
+                  localStorage.setItem('size_unit_state', 'true')
+                } else {
+                  this.units.storage.state = false
+                  localStorage.setItem('size_unit_state', 'false')
+                }
+                break
+              case 'iphone-case':
+                if (this.units.storage.state === false) {
+                  this.units.storage.state = true
+                  localStorage.setItem('size_unit_state', 'true')
+                } else {
+                  this.units.storage.state = false
+                  localStorage.setItem('size_unit_state', 'false')
+                }
+                break
+              case 'galaxy-case':
+                if (this.units.storage.state === false) {
+                  this.units.storage.state = true
+                  localStorage.setItem('size_unit_state', 'true')
+                } else {
+                  this.units.storage.state = false
+                  localStorage.setItem('size_unit_state', 'false')
+                }
+                break
+                break
+              case 'unisex-shirt':
+                if (this.units.storage.state === false) {
+                  this.units.storage.state = true
+                  localStorage.setItem('size_unit_state', 'true')
+                } else {
+                  this.units.storage.state = false
+                  localStorage.setItem('size_unit_state', 'false')
+                }
+                break
+              default:
+            }
+          },
+        },
+        mounted() {
+          if (!localStorage.getItem('size_unit_state')) {
+            localStorage.setItem('size_unit_state', 'false')
+          } else {
+            localStorage.setItem('size_unit_state', localStorage.getItem('size_unit_state'))
+            this.units.storage.state = localStorage.getItem('size_unit_state') === 'true' ? true : false
+          }
+        },
+      }).mount('#sizeguide')
+    }
+  })
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.page.size.label"
+}
+{% endschema %}

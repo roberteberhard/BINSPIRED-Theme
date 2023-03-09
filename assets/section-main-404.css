@@ -1,0 +1,19 @@
+@media screen and (max-width: 749px) {
+  .main-404-content {
+    margin: 12rem 0 12rem;
+  }
+  .featured-collection_wrapper {
+    padding-top: 0rem !important;
+    padding-bottom: 6rem !important;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .main-404-content {
+    margin: 12rem 0 14rem;
+  }
+  .featured-collection_wrapper {
+    padding-top: 0rem !important;
+    padding-bottom: 8rem !important;
+  }
+}

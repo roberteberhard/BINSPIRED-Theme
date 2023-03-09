@@ -1,0 +1,28 @@
+{% comment %}
+    Renders the pages header help navigation
+
+    Accepts:
+    - title: {String} Shows the title of the current page
+    - active: {String} The active navigation value. Show the navigation link as active!
+
+    Usage:
+    {% render 'header-help', title: page.title, active: 'contact' %}
+{% endcomment %}
+
+<header class="header-help">
+  <div class="help-title">
+    <h1 class="headline-1">{{ title | escape }}</h1>
+  </div>
+  <div class="help-nav">
+    <a role="option" target="_self" tabindex="-1" class="help-nav_link {% if active == 'faqs' %}active{%- endif %}" href="{{ routes.root_url }}pages/faqs">{{ 'general.help.link.faqs' | t }}</a>
+    <a role="option" target="_self" tabindex="-1" class="help-nav_link {% if active == 'contact' %}active{%- endif %}" href="{{ routes.root_url }}pages/contact">{{ 'general.help.link.contact' | t }}</a>
+    <a role="option" target="_self" tabindex="-1" class="help-nav_link {% if active == 'ordering' %}active{%- endif %}" href="{{ routes.root_url }}pages/ordering">{{ 'general.help.link.ordering' | t }}</a>
+    <a role="option" target="_self" tabindex="-1" class="help-nav_link {% if active == 'shipping' %}active{%- endif %}" href="{{ routes.root_url }}pages/shipping">{{ 'general.help.link.shipping' | t }}</a>
+    <a role="option" target="_self" tabindex="-1" class="help-nav_link {% if active == 'returns' %}active{%- endif %}" href="{{ routes.root_url }}pages/returns">{{ 'general.help.link.returns' | t }}</a>
+    <a role="option" target="_self" tabindex="-1" class="help-nav_link {% if active == 'payment' %}active{%- endif %}" href="{{ routes.root_url }}pages/payment">{{ 'general.help.link.payment' | t }}</a>
+    <a role="option" target="_self" tabindex="-1" class="help-nav_link {% if active == 'promotions' %}active{%- endif %}" href="{{ routes.root_url }}pages/promotions">{{ 'general.help.link.promotions' | t }}</a>
+    <a role="option" target="_self" tabindex="-1" class="help-nav_link {% if active == 'guide' %}active{%- endif %}" href="{{ routes.root_url }}pages/size-guide">{{ 'general.help.link.guide' | t }}</a>
+    <a role="option" target="_self" tabindex="-1" class="help-nav_link {% if active == 'account' %}active{%- endif %}" href="{{ routes.root_url }}pages/account">{{ 'general.help.link.account' | t }}</a>
+  </div>
+  <div class="help-end">&nbsp;</div>
+</header>

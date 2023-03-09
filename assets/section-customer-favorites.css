@@ -1,0 +1,19 @@
+.customer-favorites {
+  display: flex;
+  margin: 0;
+  padding: 1rem 0 3rem;
+}
+
+.customer-favorites .headline-3 {
+  margin: 0 0 5rem;
+}
+
+@media screen and (min-width: 750px) {
+  .customer-favorites {
+    padding: 2rem 0 4rem;
+  }
+
+  .customer-favorites .headline-3 {
+    margin: 0 0 7rem;
+  }
+}

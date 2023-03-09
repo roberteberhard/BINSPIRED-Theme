@@ -1,0 +1,95 @@
+{{ 'section-featured-sections.css' | asset_url | stylesheet_tag }}
+{{ 'component-featured-sections-card.css' | asset_url | stylesheet_tag }}
+
+<div class="featured-sections_wrapper page-width">
+  <div class="featured-sections_header">
+    <h2 class="headline-2{% if section.settings.title == blank %} no-heading{% endif %}">{{ section.settings.title | escape }}</h2>
+    {%- if section.settings.show_view_all -%}
+      <a class="link--text" href="{{ section.settings.link }}">{{ section.settings.view }}</a>
+    {% endif %}
+  </div>
+  <div class="featured-sections_content">
+    {%- for block in section.blocks -%}
+      {% render 'featured-sections-card', featured_card: block.settings, featured_count: forloop.index %}
+    {%- else -%}
+      {%- for i in (1..2) -%}
+        {% render 'featured-sections-card-placeholder', featured_count: i %}
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.featured-sections.name",
+  "tag": "section",
+  "class": "featured-sections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Featured",
+      "label": "t:sections.featured-sections.settings.label"
+    },
+    {
+      "type": "text",
+      "id": "view",
+      "default": "View All",
+      "label": "t:sections.featured-sections.settings.view.label"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:sections.featured-sections.settings.link.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "t:sections.featured-sections.settings.show_view_all.label"
+    }
+  ],
+  "max_blocks": 2,
+  "blocks": [
+    {
+      "type": "headline",
+      "name": "t:sections.featured-sections.blocks.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Section",
+          "label": "t:sections.featured-sections.blocks.settings.title.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "t:sections.featured-sections.blocks.settings.image_mobile.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "t:sections.featured-sections.blocks.settings.image_desktop.label"
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "default": "Shop",
+          "label": "t:sections.featured-sections.blocks.settings.button.label"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "t:sections.featured-sections.blocks.settings.url.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured-sections.presets.name"
+    }
+  ]
+}
+{% endschema %}
+

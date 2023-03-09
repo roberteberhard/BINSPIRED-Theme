@@ -1,0 +1,36 @@
+{% comment %}
+    Renders the Featured collection card
+
+    Accepts:
+    - category_card: {Object} Product Liquid object
+    - featured_count: {Number} Product loop index
+
+    Usage:
+    {% render 'featured-categories-card', category_card: block, featured_count: forloop.index %}
+{% endcomment %}
+
+<article class="featured-categories-card swiper-slide">
+  <figure class="placeholder-gray">
+    {%- if category_card.image != blank and category_card.url != blank -%}
+      <img
+        src="{{ category_card.image.src | image_url: width: 720 }}"
+        class="featured-img"
+        width="100"
+        height="100"
+        alt="{{ category_card.image.alt | escape }}"
+        loading="lazy"
+      >
+      <figcaption>
+        <div class="featured-categories_caption">
+          <h4 class="headline-2">{{ category_card.title | escape }}</h4>
+          <a href="{{ category_card.url }}" class="button white-btn">{{ category_card.button }}</a>
+        </div>
+      </figcaption>
+      <a href="{{ category_card.url }}" class="block-link"><span class="visually-hidden">{{ category_card.title | escape }}</span></a>
+    {%- else -%}
+      {% assign counter = featured_count | downcase %}
+      {% assign placeholder_image = 'collection-' | append: counter %}
+      {{ placeholder_image | placeholder_svg_tag: 'featured-img' }}
+    {%- endif -%}
+  </figure>
+</article>

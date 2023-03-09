@@ -1,0 +1,86 @@
+{{ 'component-hero-banner.css' | asset_url | stylesheet_tag }}
+
+<div class="hero-banner_wrapper page-width-large">
+  <div class="hero-banner_content">
+    <figure class="placeholder-gray">
+      {%- if section.settings.image_mobile != blank and section.settings.image_desktop != blank -%}
+        <picture>
+          <source media="(min-width: 641px)"
+            srcset="
+            {%- if section.settings.image_desktop.width >= 750 -%}{{ section.settings.image_desktop | image_url: width: 750 }} 750w,{%- endif -%}
+            {%- if section.settings.image_desktop.width >= 1100 -%}{{ section.settings.image_desktop | image_url: width: 1100 }} 1100w,{%- endif -%}
+            {%- if section.settings.image_desktop.width >= 1500 -%}{{ section.settings.image_desktop | image_url: width: 1500 }} 1500w,{%- endif -%}
+            {%- if section.settings.image_desktop.width >= 1780 -%}{{ section.settings.image_desktop | image_url: width: 1780 }} 1780w,{%- endif -%}
+            {%- if section.settings.image_desktop.width >= 1920 -%}{{ section.settings.image_desktop | image_url: width: 1920 }} 1920w,{%- endif -%}
+            {%- if section.settings.image_desktop.width >= 2380 -%}{{ section.settings.image_desktop | image_url: width: 2380 }} 2380w{%- endif -%}
+          ">
+          <source srcset="{{ section.settings.image_mobile | image_url: width: 732 }}">
+          <img
+            src="{{ section.settings.image_desktop | image_url: width: 1920 }}"
+            class="featured-img"
+            alt="{{ section.settings.image_desktop.alt | escape }}"
+            width="{{ section.settings.image_desktop.width }}"
+            height="{{ section.settings.image_desktop.height }}"
+            loading="lazy"
+          />
+        </picture>
+      {%- else -%}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'featured-img' }}
+      {%- endif -%}
+    </figure>
+    <figcaption>
+      <div class="hero-banner_caption">
+        <h4 class="hero-banner_caption-headline">{{ section.settings.heading }}</h4>
+        <p class="hero-banner_caption-message">{{ section.settings.sub_heading | escape }}</p>
+        <a href="{{ section.settings.link }}" class="button black-btn">{{ section.settings.button | escape }}</a>
+      </div>
+    </figcaption>
+    <a href="{{ section.settings.link }}" class="block-link"><span class="visually-hidden">{{ section.settings.heading }}</span></a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.hero-banner.name",
+  "tag": "section",
+  "class": "hero-banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.hero-banner.settings.heading.title.label"
+    },
+    {
+      "type": "text",
+      "id": "sub_heading",
+      "label": "t:sections.hero-banner.settings.heading.subtitle.label"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "default": "Shop",
+      "label": "t:sections.hero-banner.settings.button.label"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:sections.hero-banner.settings.link.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "t:sections.hero-banner.settings.image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "t:sections.hero-banner.settings.image_2.label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.hero-banner.presets.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,106 @@
+{% if product.available %}
+  <div class="product-options__variant">
+    <div id="productVariants" class="product-options-url" data-url="{{ routes.product_recommendations_url }}/products/{{ product.handle }}.js">
+      <template v-if="available">
+        <template v-for="(option, i) in form.options" :key="i">
+          <template v-if="option.name == 'Style' && option.position == 1">
+            {% render 'store-product-variant-active', title: 'Select Style', position: '1', grid: 'x2' %}
+          </template>
+          <template v-else-if="option.name == 'Size' && option.position == 1">
+            ${ addStoreVariantStyle('Size') }
+            {% render 'store-product-variant-default', title: 'Select Size', position: '1', grid: 'x3' %}
+          </template>
+          <template v-else-if="option.name == 'Size' && option.position == 2">
+            ${ addStoreVariantStyle('Size') }
+            {% render 'store-product-variant-default', title: 'Select Size', position: '2', grid: 'x3' %}
+          </template>
+          <template v-else-if="option.name == 'Mug Size' && option.position == 1">
+            ${ addStoreVariantStyle('Size') }
+            {% render 'store-product-variant-default', title: 'Select Size', position: '1', grid: 'x2' %}
+          </template>
+          <template v-else-if="option.name == 'Print Size' && option.position == 1">
+            ${ addStoreVariantStyle('Size') }
+            {% render 'store-product-variant-default', title: 'Select Size', position: '1', grid: 'x3' %}
+          </template>
+          <template v-else-if="option.name == 'Model' && option.position == 2">
+            ${ addStoreVariantStyle('Model') }
+            {% render 'store-product-variant-default', title: 'Select Model', position: '2', grid: 'x3' %}
+          </template>
+        </template>
+      </template>
+      <template v-else>
+        <div class="product-variant_loader">
+          <div class="product-variant_loader-spinner">
+            <span class="visually-hidden">{{ 'products.product.spinner' | t }}</span>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+{% else %}
+  <div class="product-options__variant">
+    <div class="product-options__variant--headline">
+      {{ 'products.product.sold_out_html' | t }}
+    </div>
+  </div>
+{% endif %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (document.querySelector("#productVariants")) {
+      const productForm = Vue.createApp({
+        delimiters: ['${', '}'],
+        data() {
+          return {
+            available: false,
+            variants: [],
+            selected: [],
+            form: {
+              selections: '',
+              options: []
+            }
+          }
+        },
+        methods: {
+          addStoreVariantId() {
+            this.variants.forEach((variant, i) => {
+              if (variant.option1 === this.form.selections[0] && variant.option2 === this.form.selections[1] && variant.option3 === this.form.selections[2]) {
+                store.state.storeVariantId = variant.id
+                this.handleVariantPrices()
+              }
+            })
+          },
+          addStoreVariantStyle(style) {
+            store.storeVariantStyle = style
+          },
+          handleVariantOption1() {
+            const index = this.form.options.length
+            if(index > 1) {
+              this.selected[0] = this.variants[0].option1;
+              this.form.selections[0] = this.variants[0].option1;
+            }
+          },
+          handleVariantPrices() {
+            const id = store.state.storeVariantId
+            const index = this.variants.findIndex((item => item.id === id))
+            store.state.storePriceState = [{ price: this.variants[index].price, compare_at_price: this.variants[index].compare_at_price }]
+          }
+        },
+        created() {
+          axios.get("/products/{{ product.handle }}.js")
+            .then(results => {
+              this.available = results.data.available
+              this.form.options = results.data.options.map(item => ({...item }));
+              this.variants = results.data.variants.map(item => ({...item }))
+              this.form.selections = [
+                this.selected[0] ? this.selected[0] : null,
+                this.selected[1] ? this.selected[1] : null,
+                this.selected[2] ? this.selected[2] : null
+              ]
+              this.handleVariantOption1()
+            })
+        }
+      }).mount("#productVariants");
+    }
+  });
+</script>

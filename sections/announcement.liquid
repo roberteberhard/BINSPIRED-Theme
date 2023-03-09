@@ -1,0 +1,117 @@
+{{ 'section-main-announcement.css' | asset_url | stylesheet_tag }}
+
+{% if template.name == 'index' and settings.show_on_homepage == true %}
+  <div class="announcement color-{{ section.settings.color_scheme }}">
+    {% render 'announcement-banner', blocks: section.blocks, bgcolor: section.settings.color_scheme %}
+  </div>
+{% endif %}
+
+{% if template.name == 'product' and settings.show_on_productpage == true %}
+  <div class="announcement color-{{ section.settings.color_scheme }}">
+    {% render 'announcement-banner', blocks: section.blocks, bgcolor: section.settings.color_scheme %}
+  </div>
+{% endif %}
+
+{% if template.name == 'list-collections' and settings.show_on_collectionpage == true %}
+  <div class="announcement color-{{ section.settings.color_scheme }}">
+    {% render 'announcement-banner', blocks: section.blocks, bgcolor: section.settings.color_scheme %}
+  </div>
+{% endif %}
+
+{% if template.name == 'collection' and settings.show_on_collectionpage == true %}
+  <div class="announcement color-{{ section.settings.color_scheme }}">
+    {% render 'announcement-banner', blocks: section.blocks, bgcolor: section.settings.color_scheme %}
+  </div>
+{% endif %}
+
+{% if template.name == 'search' and settings.show_on_searchpage == true %}
+  <div class="announcement color-{{ section.settings.color_scheme }}">
+    {% render 'announcement-banner', blocks: section.blocks, bgcolor: section.settings.color_scheme %}
+  </div>
+{% endif %}
+
+{% if template.name == 'login' and settings.show_on_accountpage == true %}
+  <div class="announcement color-{{ section.settings.color_scheme }}">
+    {% render 'announcement-banner', blocks: section.blocks, bgcolor: section.settings.color_scheme %}
+  </div>
+{% endif %}
+
+{% if template.name == 'register' and settings.show_on_accountpage == true %}
+  <div class="announcement color-{{ section.settings.color_scheme }}">
+    {% render 'announcement-banner', blocks: section.blocks, bgcolor: section.settings.color_scheme %}
+  </div>
+{% endif %}
+
+{% if template.name == 'cart' and settings.show_on_cartpage == true %}
+  <div class="announcement color-{{ section.settings.color_scheme }}">
+    {% render 'announcement-banner', blocks: section.blocks, bgcolor: section.settings.color_scheme %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:sections.announcement.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "background-1",
+          "label": "t:sections.announcement.settings.color_scheme.options__1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.announcement.settings.color_scheme.options__2.label"
+        },
+        {
+          "value": "background-3",
+          "label": "t:sections.announcement.settings.color_scheme.options__3.label"
+        },
+        {
+          "value": "background-4",
+          "label": "t:sections.announcement.settings.color_scheme.options__4.label"
+        },
+        {
+          "value": "background-5",
+          "label": "t:sections.announcement.settings.color_scheme.options__5.label"
+        },
+        {
+          "value": "background-6",
+          "label": "t:sections.announcement.settings.color_scheme.options__6.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.announcement.settings.color_scheme.label"
+    }
+  ],
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "t:sections.announcement.blocks.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Your announcement",
+          "label": "t:sections.announcement.blocks.settings.text.label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.announcement.blocks.settings.url.label"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "announcement"
+      }
+    ]
+  }
+}
+{% endschema %}
+

@@ -1,0 +1,431 @@
+{
+  "general": {
+    "header_bar": {
+      "menu": {
+        "help": "Help"
+      },
+      "submenu": {
+        "faqs": "FAQs",
+        "contact": "Contact Us",
+        "ordering": "Ordering",
+        "shipping": "Shipping",
+        "returns": "Returns",
+        "payment": "Payment",
+        "promotions": "Promotions",
+        "guide": "Size-Guide",
+        "account": "Account"
+      }
+    },
+    "header": {
+      "menu": {
+        "mobile": "Open Menu",
+        "homepage": "Binspired Home Page",
+        "search": "Open Search",
+        "favorites": "Favorites",
+        "profile": "Profile",
+        "bagitem": "Bag Items"
+      }
+    },
+    "search": {
+      "results": "Search results for",
+      "popular": "Popular Search Terms",
+      "suggestion": "Top Suggestions"
+    },
+    "help": {
+      "link": {
+        "faqs": "FAQs",
+        "contact": "Contact",
+        "ordering": "Ordering",
+        "shipping": "Shipping",
+        "returns": "Returns",
+        "payment": "Payment",
+        "promotions": "Promotions",
+        "guide": "Size Guide",
+        "account": "Account"
+      },
+      "size-guide": {
+        "art-print": {
+          "title": "Standard Art Print Sizes:",
+          "heading": "When choosing an art print, consider the size of the room and the wall space available. Make sure to measure the wall space before purchasing a print to ensure it will fit comfortably.",
+          "chart-title-cm": "Size Chart (21x30cm - 70x100cm)",
+          "chart-title-in": "Size Chart (8x12\" - 28x40\")"
+        },
+        "coffee-mug": {
+          "title": "Coffee Mug Size Guide:",
+          "heading": "When choosing a coffee mug, consider the size and capacity that works best for your needs. Additionally, consider the design and style of the mug to match your personal taste.",
+          "chart-title-cm": "Size Chart (11oz - 15oz)",
+          "chart-title-in": "Size Chart (11oz - 15oz)"
+        },
+        "throw-pillow": {
+          "title": "Throw Pillow Size Guide:",
+          "heading": "When choosing throw pillows, consider the size and dimensions of your furniture and the space they will occupy. Make sure to measure your furniture before purchasing throw pillows to ensure a comfortable and aesthetically pleasing fit.",
+          "chart-title-cm": "Size Chart (45x45cm - 56x56cm)",
+          "chart-title-in": "Size Chart (18x18\" - 22x22\")"
+        },
+        "iphone-case": {
+          "title": "iPhone Case Size Guide:",
+          "heading": "When choosing an iPhone case, make sure to select the size that corresponds with your specific device model. This will ensure a proper fit and protection for your device.",
+          "chart-title-cm": "Size Chart (iPhone 12 - 14)",
+          "chart-title-in": "Size Chart (iPhone 12 - 14)"
+        },
+        "galaxy-case": {
+          "title": "Samsung Galaxy Case Size Guide:",
+          "heading": "When choosing a Samsung Galaxy case, make sure to select the size that corresponds with your specific device model. This will ensure a proper fit and protection for your device.",
+          "chart-title-cm": "Size Chart (Samsung Galaxy S21 - S22)",
+          "chart-title-in": "Size Chart (Samsung Galaxy S21 - S22)"
+        },
+        "unisex-shirt": {
+          "title": "Unisex T-Shirt Size Guide:",
+          "heading": "When choosing a unisex t-shirt, it is important to consider the size and fit to ensure a comfortable and flattering look.",
+          "chart-title-cm": "Size Chart (Unisex XS - 2XL)",
+          "chart-title-in": "Size Chart (Unisex XS - 2XL)"
+        }
+      }
+    },
+    "policy": {
+      "link": {
+        "terms": "Terms of Service",
+        "privacy": "Privacy Policy",
+        "legal": "Legal Notice",
+        "disclaimer": "Disclaimer"
+      }
+    },
+    "social": {
+      "links": {
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "pinterest": "Pinterest",
+        "instagram": "Instagram",
+        "tumblr": "Tumblr",
+        "snapchat": "Snapchat",
+        "youtube": "YouTube",
+        "vimeo": "Vimeo",
+        "tiktok": "TikTok"
+      }
+    },
+    "pagination": {
+      "label": "Pagination",
+      "page": "Page {{ number }}",
+      "next": "Next page",
+      "previous": "Previous page"
+    },
+    "carousel": {
+      "next": "Next",
+      "prev": "Previous"
+    },
+    "share": {
+      "close": "Close share",
+      "copy_to_clipboard": "Copy link",
+      "share_url": "Link",
+      "success_message": "Link copied to clipboard"
+    },
+    "offset": {
+      "menu": {
+        "close": "Close Menu",
+        "heading": "Register and get inspired.",
+        "register": "Register",
+        "signin": "Sign In",
+        "favorites": "Favorites",
+        "bag": "Bag",
+        "orders": "Orders",
+        "help": "Help",
+        "all": "All"
+      },
+      "bag": {
+        "header": {
+          "title": "My Shopping Bag",
+          "titles": {
+            "one": "Item in your bag",
+            "other": "Items in your bag"
+          }
+        },
+        "content": {
+          "quantity": "Quantity",
+          "remove": "Remove"
+        },
+        "footer": {
+          "subtotal": "Subtotal",
+          "discount": "Discount",
+          "total": "Total",
+          "cart": "Got to Bag",
+          "checkout": "Checkout"
+        }
+      }
+    }
+  },
+  "accessibility": {
+    "skip_to_text": "----Skip to content",
+    "skip_to_product_info": "----Skip to product information",
+    "error": "Error",
+    "star_reviews_info": "{{ rating_value }} out of {{ rating_max }} stars"
+  },
+  "templates": {
+    "contact": {
+      "help": {
+        "headline": "Hi There!",
+        "description": "We are always happy to help and answer any questions you may have about your online purchases, returns, products or any other concerns you may have.",
+        "description_text_a_html": "Before submitting your request, please check our <a href=\"{{ url }}{{ faqs }}\" class=\"link--primary\">FAQs</a>, and <a href=\"{{ url }}{{ terms }}\" class=\"link--primary\">Terms</a> where your question may already be answered",
+        "description_text_b_html": "You can either use our contact form or our email <a href=\"mailto:{{ email }}\" class=\"link--primary\">{{ email }}</a> to send your request."
+      },
+      "form": {
+        "title": "Contact Form",
+        "name": "Your Name",
+        "email": "Your Email",
+        "order": "Your order number (if applicable)",
+        "comment": "Your Message",
+        "send": "Send now",
+        "subject": "Your Subject",
+        "post_success": "Thanks for contacting us. We'll get back to you as soon as possible.",
+        "error_heading": "Please adjust the following:",
+        "subjects": {
+          "title": "What's the reason for getting in contact?",
+          "other": "Other",
+          "urgent": "Urgent: Change wrong address for order",
+          "question": "Question about my order/delivery",
+          "product": "Product questions",
+          "wholesale": "Wholesale/discount/promo code query",
+          "press": "Press contact &amp; media"
+        }
+      },
+      "agree": {
+        "terms_html": "By sending this contact form, you agree to Binspired's <a href=\"{{ url }}{{ terms }}\" class=\"link--primary\">Terms of Service<\/a> and <a href=\"{{ url }}{{ privacy }}\" class=\"link--primary\">Privacy Policy<\/a>."
+      }
+    },
+    "footer": {
+      "policies": {
+        "terms": "Terms of service",
+        "privacy": "Privacy policy",
+        "cookie": "Cookie policy",
+        "legal": "Legal notice"
+      },
+      "rights": {
+        "description": "BINSPIRED. All Rights Reserved."
+      }
+    }
+  },
+  "sections": {
+    "header": {
+      "headerbar": "Headerbar"
+    },
+    "main": {
+      "article": {
+        "published": "Published",
+        "by": "by",
+        "comments": {
+          "title": "Comments",
+          "subtitle": "Leave a Comment",
+          "marked": "Your email address will not be published. Required fields are marked *"
+        }
+      }
+    },
+    "cart": {
+      "title": "Bag",
+      "empty_bag": "There are no items in your bag.",
+      "item_count": "Item",
+      "items_count": "Items",
+      "spinner": "Loading cart",
+      "summary": {
+        "title": "Summary",
+        "estimated_tax": "Estimated Taxes *",
+        "estimated_shipping": "Estimated Shipping *"
+      },
+      "favorites": {
+        "title": "Favorites",
+        "show_favorites": "Want to view your favorites?",
+        "unsaved_favorites": "There are no items saved to your favorites.",
+        "register": "Register",
+        "or": "or",
+        "sign_in": "Sign In",
+        "add": "Add to Favorites",
+        "remove": "Remove Item"
+      },
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "checkout": "Proceed to Checkout",
+      "taxes_and_shipping_at_checkout": "* Taxes and Shipping calculated at checkout",
+      "taxes_included_but_shipping_at_checkout": "Tax included and shipping calculated at checkout",
+      "taxes_included_and_shipping_policy_html": "Tax included. <a a class=\"link--primary\" href=\"{{ link }}\">Shipping<\/a> calculated at checkout.",
+      "taxes_and_shipping_policy_at_checkout_html": "* Taxes and <a class=\"link--primary\" href=\"{{ link }}\">Shipping<\/a> calculated at checkout"
+    }
+  },
+  "blogs": {
+    "article": {
+      "blog": "Blog",
+      "comments": {
+        "one": "{{ count }} comment",
+        "other": "{{ count }} comments"
+      }
+    }
+  },
+  "customer": {
+    "welcome": "Hi",
+    "register_account": "Register",
+    "signin": "Sign In",
+    "logout": "Log Out",
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Hello and welcome back 😀  ",
+      "create_account": "Create account",
+      "email": "Email",
+      "forgot_password": "Forgot your password?",
+      "guest_continue": "Continue",
+      "guest_title": "Continue as a guest",
+      "password": "Password",
+      "terms_html": "By logging in, you agree to Binspired's <a href=\"{{ url }}{{ terms }}\" class=\"link--primary\">Terms of Service<\/a> and <a href=\"{{ url }}{{ privacy }}\" class=\"link--primary\">Privacy Policy<\/a>.",
+      "submit": "Log In"
+    },
+    "register": {
+      "title": "Create a Binspired account",
+      "subtitle": "Registering makes checkout fast and easy and saves your order information in your account.",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "terms_html": "By creating an account, you agree to Binspired's <a href=\"{{ url }}{{ terms }}\" class=\"link--primary\">Terms of Service<\/a> and <a href=\"{{ url }}{{ privacy }}\" class=\"link--primary\">Privacy Policy<\/a>.",
+      "submit": "Join Us",
+      "login_html": "Already a Member? <a href=\"{{ link }}\" class=\"link--text\">Sign in<\/a>."
+    },
+    "recover_password": {
+      "title": "Reset Password",
+      "subtext": "Enter your email to receive instructions on how to reset your password.",
+      "success": "We've sent you an email with a link to update your password.",
+      "submit": "Reset",
+      "cancel_html": "Return to <a href=\"{{ link }}\" class=\"link--text\">Log in<\/a>."
+    },
+    "reset_password": {
+      "title": "Reset account password",
+      "subtext": "Enter a new password",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Reset password"
+    },
+    "account": {
+      "title": "Account",
+      "menu": {
+        "profile": "Profile",
+        "order": "Orders",
+        "favorite": "Favorites",
+        "address": "Addresses"
+      }
+    },
+    "favorites": {
+      "title": "Favorites",
+      "none": "Items added to your Favorites will be saved here.",
+      "signedin": "You must be signed in to save items to your favorites."
+    },
+    "activate_account": {
+      "title": "Activate account",
+      "subtext": "Create your password to activate your account.",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "terms_html": "By activating your account, you agree to Binspired's <a href=\"{{ privacy_link }}\" class=\"link--primary\">Privacy Policy<\/a> and <a href=\"{{ terms_link }}\" class=\"link--primary\">Terms of Service<\/a>.",
+      "submit": "Activate account",
+      "cancel": "Decline invitation"
+    },
+    "addresses": {
+      "title": "Saved Delivery Addresses",
+      "empty": "You currently don't have any saved delivery addresses. Add an address here to be prefilled for quicker checkout.",
+      "default": "Default address",
+      "add_new": "Add a new address",
+      "edit_address": "Edit address",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "company": "Company",
+      "address1": "Address 1",
+      "address2": "Address 2",
+      "city": "City",
+      "country": "Country\/region",
+      "province": "Province",
+      "zip": "Postal\/ZIP code",
+      "phone": "Phone",
+      "set_default": "Set as default address",
+      "add": "Add Address",
+      "close": "Close",
+      "save": "Save",
+      "edit": "Edit",
+      "delete": "Delete",
+      "delete_confirm": "Are you sure you wish to delete this address?"
+    },
+    "order": {
+      "title": "Orders",
+      "order_number": "Order {{ number }}",
+      "date_html": "Placed on {{ date }}",
+      "back_to": "Back to orders",
+      "cancelled_html": "Order Cancelled on {{ date }}",
+      "cancelled_reason": "Reason: {{ reason }}",
+      "billing_address": "Billing Address",
+      "payment_information": "Payment information",
+      "shipping_address": "Shipping Address",
+      "payment_status": "Payment Status",
+      "payment_by_owner": "This order is manually placed by {{ owner }}.",
+      "fulfillment_status": "Fulfillment Status",
+      "unfulfilled": "This item is not fulfilled",
+      "discount": "Discount",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "fulfilled_at_html": "Fulfilled: <span class=\"strong\">{{ date }}<\/span>",
+      "fulfilled_quantity_html": "We have fulfilled <span class=\"strong\">{{ count }}<\/span> item of your recent order.",
+      "fulfilled_quantities_html": "We have fulfilled <span class=\"strong\">{{ count }}<\/span> items of your recent order.",
+      "track_shipment": "Track shipment",
+      "tracking_company": "Tracking company:",
+      "tracking_number": "Tracking number:",
+      "subtotal": "Subtotal"
+    },
+    "orders": {
+      "title": "Order history",
+      "order_number_link": "Order number {{ number }}",
+      "none": "You haven't placed any orders yet."
+    }
+  },
+  "collections": {
+    "results": "{{ number }} Results",
+    "spinner": "Load more"
+  },
+  "collection": {
+    "results": " Results",
+    "show_filter": "Show Filter",
+    "hide_filter": "Hide Filter",
+    "sort_by": "Sort By",
+    "relevance": "Relevance",
+    "manual": "Featured",
+    "created_descending": "Newest",
+    "best_selling": "Best Selling",
+    "price_descending": "Price: High-Low",
+    "price_ascending": "Price: Low-High",
+    "device_filter": {
+      "title": "Filter",
+      "filter": "Filter",
+      "close": "Close",
+      "clear": "Clear",
+      "apply": "Apply",
+      "sort_by": "Sort By"
+    },
+    "color": {
+      "one": "Color",
+      "other": "Colors"
+    }
+  },
+  "products": {
+    "product": {
+      "vendor": "Vendor",
+      "select_a": "Select a ",
+      "add_to_bag": "Add to Bag - ",
+      "size_guide": "Size Guide",
+      "choose_style": "Choose a Style Color",
+      "no_frame": "Frame: Not included",
+      "sold_out_html": "<span class=\"weight-500\">Sold Out:<\/span> This item is currently unavailable.",
+      "spinner": "Loading product variants",
+      "color_shown": "Shown: ",
+      "style": "Style: ",
+      "price": {
+        "from_price": "from",
+        "percent_off": "% off",
+        "from_price_html": "From {{ price }}"
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+/* Related Designs */
+
+.related-designs_wrapper {
+  padding-bottom: 7.5rem;
+}
+
+@media screen and (min-width: 990px) {
+  .related-designs_wrapper {
+    padding-bottom: 10rem;
+  }
+}
+
+.related-designs_header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.4rem;
+}
+
+.related-designs_header .headline-2 {
+  margin-top: 5px;
+}
+
+.related-designs_nav {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.related-designs_nav .carousel-btn {
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  display: inline-flex;
+  padding: 12px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.05);
+  transition: background-color var(--duration-default) ease;
+}
+
+.related-designs_nav .carousel-btn:hover {
+  outline: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.related-designs_nav .carousel-btn.swiper-button-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.related-designs_nav .carousel-btn.prev-btn {
+  margin-right: 1.2rem;
+}
+
+/* Related Designs Card */
+
+.related-designs-card {
+  opacity: 0;
+}
+
+.related-designs-card_title {
+  margin-top: 10px;
+  font-weight: 600;
+  line-height: 1.15;
+}
